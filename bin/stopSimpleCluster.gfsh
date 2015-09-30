@@ -1,0 +1,3 @@
+stop server --dir=ServerB
+stop server --dir=ServerA
+stop locator --dir=LocatorX

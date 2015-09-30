@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+">
+
+  <context:property-placeholder location="classpath:server.properties"/>
+
+  <util:properties id="gemfireProperties">
+    <prop key="name">SpringGemFireServerFunctionCreationWithPdx</prop>
+    <prop key="mcast-port">0</prop>
+    <prop key="log-level">config</prop>
+  </util:properties>
+
+  <gfe:cache properties-ref="gemfireProperties" pdx-read-serialized="true" pdx-ignore-unread-fields="false"/>
+
+  <gfe:cache-server auto-startup="true" bind-address="${server.bind.address}" port="${server.port}"
+                    host-name-for-clients="${server.hostname.for.clients}" max-connections="${server.max.connections}"/>
+
+  <gfe:annotation-driven/>
+
+  <bean class="org.spring.data.gemfire.cache.ClientCacheFunctionExecutionWithPdxTest$ArgumentTypeCaptureFunction"/>
+
+</beans>

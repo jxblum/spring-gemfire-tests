@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+">
+
+  <util:properties id="applicationProperties">
+    <prop key="app.string.value">test</prop>
+    <prop key="app.object.value">#{T(org.spring.beans.BeanAtValueAnnotationTest$Person).JON_DOE}</prop>
+  </util:properties>
+
+  <context:property-placeholder properties-ref="applicationProperties"/>
+
+  <util:properties id="otherProperties">
+    <!--
+    <prop key="my.key">${app.object.value}</prop>
+    -->
+    <prop key="my.key">test</prop>
+  </util:properties>
+
+  <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+    <property name="converters">
+      <bean class="org.spring.beans.BeanAtValueAnnotationTest$PersonToStringConverter"/>
+    </property>
+  </bean>
+
+</beans>

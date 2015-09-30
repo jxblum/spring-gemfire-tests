@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE client-cache PUBLIC  "-//GemStone Systems, Inc.//GemFire Declarative Caching 8.0//EN"
+  "http://www.gemstone.com/dtd/cache8_0.dtd">
+<client-cache>
+  <pool name="serverPool">
+    <server host="localhost" port="12480"/>
+  </pool>
+  <pdx>
+    <pdx-serializer>
+      <class-name>
+        org.pivotal.gemfire.cache.client.ClientCacheFunctionExecutionWithPdxTest$TestDomainClassPdxSerializer
+      </class-name>
+    </pdx-serializer>
+  </pdx>
+</client-cache>

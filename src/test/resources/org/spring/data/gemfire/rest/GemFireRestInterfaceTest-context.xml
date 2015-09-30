@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+  ">
+
+  <util:properties id="gemfireProperties">
+    <prop key="name">SpringGemfireRestInterfaceTest</prop>
+    <prop key="mcast-port">0</prop>
+    <prop key="log-level">config</prop>
+    <prop key="http-service-bind-address">localhost</prop>
+    <prop key="http-service-port">8181</prop>
+    <prop key="http-service-ssl-enabled">false</prop>
+    <prop key="start-dev-rest-api">true</prop>
+  </util:properties>
+
+  <bean id="pdxSerializer" class="com.gemstone.gemfire.pdx.ReflectionBasedAutoSerializer">
+    <constructor-arg type="boolean" value="true"/>
+    <constructor-arg>
+      <list>
+        <value>org.spring.data.gemfire.rest.GemFireRestInterfaceTest.Person</value>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <gfe:cache properties-ref="gemfireProperties" pdx-serializer-ref="pdxSerializer" pdx-read-serialized="true"
+             pdx-ignore-unread-fields="false"/>
+
+  <gfe:partitioned-region id="People" persistent="false" key-constraint="java.lang.String"
+                          value-constraint="org.spring.data.gemfire.rest.GemFireRestInterfaceTest$Person"/>
+
+  <bean id="objectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean"
+        p:failOnEmptyBeans="true"
+        p:indentOutput="true"
+        p:simpleDateFormat="MM/dd/yyyy"
+    >
+    <property name="featuresToEnable">
+      <array>
+        <util:constant static-field="com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_COMMENTS"/>
+        <util:constant static-field="com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_SINGLE_QUOTES"/>
+        <util:constant static-field="com.fasterxml.jackson.databind.DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT"/>
+      </array>
+    </property>
+    <property name="featuresToDisable">
+      <array>
+        <util:constant static-field="com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES"/>
+      </array>
+    </property>
+  </bean>
+
+</beans>

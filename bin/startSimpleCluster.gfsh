@@ -1,0 +1,4 @@
+start locator --name=LocatorX --port=11235 --log-level=config
+start server --name=ServerA --server-port=12480 --log-level=config
+start server --name=ServerB --server-port=13579 --log-level=config
+list members

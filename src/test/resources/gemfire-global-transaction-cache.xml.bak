@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE cache PUBLIC  "-//GemStone Systems, Inc.//GemFire Declarative Caching 7.0//EN"
+  "http://www.gemstone.com/dtd/cache7_0.dtd">
+<cache lock-lease="120" lock-timeout="60" search-timeout="300">
+  <region name="Gemstones" refid="REPLICATE">
+    <region-attributes concurrency-level="16" ignore-jta="false" initial-capacity="101" load-factor="0.85">
+      <key-constraint>java.lang.Long</key-constraint>
+      <value-constraint>java.lang.String</value-constraint>
+    </region-attributes>
+  </region>
+  <jndi-bindings>
+    <jndi-binding jndi-name="gemfiredb"
+                  type="XAPooledDataSource"
+                  jdbc-driver-class="com.mysql.jdbc.Driver"
+                  init-pool-size="2"
+                  max-pool-size="10"
+                  idle-timeout-seconds="120"
+                  conn-pooled-datasource-class="com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource"
+                  xa-datasource-class="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"
+                  user-name="jblum"
+                  password="mys3cr3t!">
+<!--              password="encrypted(*0A81E9A8EF8348A072CA8DB1D5D468C54F20E894)">-->
+      <config-property>
+        <config-property-name>URL</config-property-name>
+        <config-property-type>java.lang.String</config-property-type>
+        <config-property-value>jdbc:mysql://localhost:3306/gemfire;autoReconnect=true</config-property-value>
+      </config-property>
+      <config-property>
+        <config-property-name>password</config-property-name>
+        <config-property-type>java.lang.String</config-property-type>
+        <config-property-value>encrypted(*0A81E9A8EF8348A072CA8DB1D5D468C54F20E894)</config-property-value>
+      </config-property>
+    </jndi-binding>
+  </jndi-bindings>
+</cache>

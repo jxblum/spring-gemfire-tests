@@ -1,0 +1,5 @@
+start locator --name=locatorX --port=11235 --log-level=config
+start server --name=springServer --disable-default-server --log-level=config  --classpath=/Users/jblum/vmdev/lab/lib/spring-gemfire-calculator-function-service.jar --spring-xml-location=org/spring/data/gemfire/cache/ClientCacheFunctionExecutionWithFunctionUpdatesTest-server-context.xml --J="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+list members
+describe member --name=springServer
+list functions

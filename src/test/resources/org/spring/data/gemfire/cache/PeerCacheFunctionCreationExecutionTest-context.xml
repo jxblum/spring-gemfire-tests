@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:gfe-data="http://www.springframework.org/schema/data/gemfire"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+		    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+        http://www.springframework.org/schema/data/gemfire http://www.springframework.org/schema/data/gemfire/spring-data-gemfire.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+">
+
+  <context:property-placeholder location="classpath:server.properties"/>
+
+  <util:properties id="gemfireProperties">
+    <prop key="name">PeerCacheFunctionCreationExecutionTest</prop>
+    <prop key="groups">testGroup</prop>
+    <prop key="locators">localhost[11235]</prop>
+    <prop key="log-level">config</prop>
+    <prop key="mcast-port">0</prop>
+    <prop key="start-locator">localhost[11235]</prop>
+  </util:properties>
+
+  <gfe:cache properties-ref="gemfireProperties"/>
+
+  <gfe:cache-server auto-startup="true" bind-address="${server.bind.address}" port="${server.port}"
+                    host-name-for-clients="${server.hostname.for.clients}" max-connections="${server.max.connections}"/>
+
+  <gfe:replicated-region id="AppData" persistent="false"/>
+
+  <gfe:replicated-region id="EmptyRegion" persistent="false"/>
+
+  <gfe:annotation-driven/>
+
+  <bean class="org.spring.data.gemfire.cache.execute.RegionFunctions"/>
+
+  <gfe-data:function-executions base-package="org.spring.data.gemfire.cache.execute">
+    <!--
+    <gfe-data:include-filter type="assignable" expression="org.spring.data.gemfire.cache.execute.Dummy"/>
+    -->
+    <gfe-data:exclude-filter type="regex" expression=".*OnServer.*"/>
+  </gfe-data:function-executions>
+
+</beans>

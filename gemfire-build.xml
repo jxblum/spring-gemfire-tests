@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="gemfire-build" default="create-custom-server-dependencies-jar">
+
+  <!-- System Environment (Variables) Reference -->
+  <property environment="env"/>
+
+  <!-- GemFire file system locations -->
+  <property name="gemfire.home" location="${env.GEMFIRE}"/>
+  <property name="gemfire.bin.dir" location="${gemfire.home}/bin"/>
+  <property name="gemfire.lib.dir" location="${gemfire.home}/lib"/>
+
+  <!-- GemFire JAR dependency versions -->
+  <property name="antlr.version" value="2.7.7"/>
+  <property name="commons-io.version" value="2.3"/>
+  <property name="commons-logging.version" value="1.1.1"/>
+  <property name="jackson.version" value="2.2.0"/>
+  <property name="jansi.version" value="1.8"/>
+  <property name="jetty.version" value="9.2.3.v20140905"/>
+  <property name="jline.version" value="1.0.S2-B"/>
+  <property name="jna.version" value="4.0.0"/>
+  <property name="log4j.version" value="2.2.1"/>
+  <property name="log4j-ext.version" value="2.2.2"/>
+  <property name="gemfire.version" value="8.0.0"/>
+  <property name="snappy.version" value="1.0.4.1"/>
+  <property name="spring.version" value="3.2.13.RELEASE"/>
+  <property name="spring-data-commons.version" value="1.9.1.RELEASE"/>
+  <property name="spring-data-gemfire.version" value="1.7.0.BUILD-SNAPSHOT"/>
+  <property name="spring-shell.version" value="1.0.0.RELEASE"/>
+
+  <!-- GemFire lib directory JAR dependencies -->
+  <property name="antlr.jar" value="antlr.jar"/>
+  <property name="commons-io.jar" value="commons-io-${commons-io.version}.jar"/>
+  <property name="commons-logging.jar" value="commons-io-${commons-logging.version}.jar"/>
+  <property name="gemfire.jar" value="gemfire.jar"/>
+  <property name="gemfire-spring-dependencies.jar" location="${gemfire.lib.dir}/gemfire-spring-dependencies.jar"/>
+  <property name="gemfire-logging-dependencies.jar" location="${gemfire.lib.dir}/gemfire-logging-dependencies.jar"/>
+  <property name="jackson-annotations.jar" value="jackson-annotations-${jackson.version}.jar"/>
+  <property name="jackson-core.jar" value="jackson-core-${jackson.version}.jar"/>
+  <property name="jackson-databind.jar" value="jackson-databind-${jackson.version}.jar"/>
+  <property name="jansi.jar" value="jansi-${jansi.version}.jar"/>
+  <property name="jetty-http.jar" value="jetty-http-${jetty.version}.jar"/>
+  <property name="jetty-io.jar" value="jetty-io-${jetty.version}.jar"/>
+  <property name="jetty-security.jar" value="jetty-security-${jetty.version}.jar"/>
+  <property name="jetty-server.jar" value="jetty-server-${jetty.version}.jar"/>
+  <property name="jetty-servlet.jar" value="jetty-servlet-${jetty.version}.jar"/>
+  <property name="jetty-util.jar" value="jetty-util-${jetty.version}.jar"/>
+  <property name="jetty-webapp.jar" value="jetty-webapp-${jetty.version}.jar"/>
+  <property name="jetty-xml.jar" value="jetty-xml-${jetty.version}.jar"/>
+  <property name="jline.jar" value="jline-${jline.version}.jar"/>
+  <property name="jna.jar" value="jna-${jna.version}.jar"/>
+  <property name="log4j-api.jar" value="log4j-api-${log4j.version}.jar"/>
+  <property name="log4j-core.jar" value="log4j-core-${log4j.version}.jar"/>
+  <property name="log4j-jcl.jar" value="log4j-jcl-${log4j-ext.version}.jar"/>
+  <property name="log4j-jul.jar" value="log4j-jul-${log4j-ext.version}.jar"/>
+  <property name="log4j-slf4j-impl.jar" value="log4j-slf4j-impl-${log4j-ext.version}.jar"/>
+  <property name="server-dependencies.jar" location="${gemfire.lib.dir}/server-dependencies.jar"/>
+  <property name="snappy.jar" value="snappy-java-${snappy.version}.jar"/>
+  <property name="spring-aop.jar" value="spring-aop-${spring.version}.jar"/>
+  <property name="spring-beans.jar" value="spring-beans-${spring.version}.jar"/>
+  <property name="spring-context.jar" value="spring-context-${spring.version}.jar"/>
+  <property name="spring-context-support.jar" value="spring-context-support-${spring.version}.jar"/>
+  <property name="spring-core.jar" value="spring-core-${spring.version}.jar"/>
+  <property name="spring-data-commons.jar" value="spring-data-commons-${spring-data-commons.version}.jar"/>
+  <property name="spring-data-gemfire.jar" value="spring-data-gemfire-${spring-data-gemfire.version}.jar"/>
+  <property name="spring-expression.jar" value="spring-expression-${spring.version}.jar"/>
+  <property name="spring-tx.jar" value="spring-tx-${spring.version}.jar"/>
+  <property name="spring-shell.jar" value="spring-shell-${spring-shell.version}.jar"/>
+
+  <target name="-is-backup-server-dependencies-jar-required" description="Determine whether GemFire's server-dependencies.jar needs to be backed up!">
+    <condition property="backup-server-dependencies-jar.condition" value="true">
+      <not>
+        <available file="${server-dependencies.jar}.bak"/>
+      </not>
+    </condition>
+  </target>
+
+  <target name="backup-server-dependencies-jar" description="Backup original GemFire server-dependencies.jar file."
+          depends="-is-backup-server-dependencies-jar-required"
+          if="backup-server-dependencies-jar.condition">
+    <copy file="${server-dependencies.jar}" tofile="${server-dependencies.jar}.bak"/>
+  </target>
+
+  <target name="create-custom-server-dependencies-jar" description="Re-creates the GEMFIRE_HOME/lib/server-dependencies.jar file."
+          depends="backup-server-dependencies-jar">
+    <jar jarfile="${server-dependencies.jar}">
+      <manifest>
+        <attribute name="Class-Path" value="${gemfire.jar} ${antlr.jar} ${commons-io.jar} ${commons-logging.jar} ${jackson-annotations.jar} ${jackson-core.jar} ${jackson-databind.jar} ${jansi.jar} ${jetty-http.jar} ${jetty-io.jar} ${jetty-security.jar} ${jetty-server.jar} ${jetty-servlet.jar} ${jetty-util.jar} ${jetty-webapp.jar} ${jetty-xml.jar} ${jline.jar} ${jna.jar} ${snappy.jar} ${spring-core.jar} ${spring-shell.jar}"/>
+        <attribute name="ServerDependencies-Version" value="${gemfire.version}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="create-gemfire-logging-dependencies-jar" description="Creates a Dependency JAR file containing all Logging JAR dependencies in the $GEMFIRE/lib directory.">
+    <delete file="${gemfire-logging-dependencies.jar}"/>
+    <jar jarfile="${gemfire-logging-dependencies.jar}">
+      <manifest>
+        <attribute name="Class-Path" value="${log4j-api.jar} ${log4j-core.jar} ${log4j-jcl.jar} ${log4j-jul.jar} ${log4j-slf4j-impl.jar}"/>
+        <attribute name="LoggingDependencies-Version" value="${gemfire.version}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="create-gemfire-spring-dependencies-jar" description="Creates a Dependency JAR file containing all Spring JAR dependencies in the $GEMFIRE/lib directory.">
+    <delete file="${gemfire-spring-dependencies.jar}"/>
+    <jar jarfile="${gemfire-spring-dependencies.jar}">
+      <manifest>
+        <attribute name="Class-Path" value="${spring-aop.jar} ${spring-beans.jar} ${spring-context.jar} ${spring-context-support.jar} ${spring-core.jar} ${spring-data-commons.jar} ${spring-data-gemfire.jar} ${spring-expression.jar} ${spring-tx.jar}"/>
+        <attribute name="SpringDependencies-Version" value="${gemfire.version}"/>
+      </manifest>
+    </jar>
+  </target>
+
+</project>

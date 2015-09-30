@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+">
+
+  <util:properties id="gemfireProperties">
+    <prop key="name">TemplateBasedRegionCreationTest</prop>
+    <prop key="mcast-port">0</prop>
+    <prop key="log-level">config</prop>
+  </util:properties>
+
+  <gfe:cache properties-ref="gemfireProperties"/>
+
+  <!--
+  <bean id="commonExpirationAttributes" class="com.gemstone.gemfire.cache.ExpirationAttributes">
+    <constructor-arg index="0" value="600"/>
+    <constructor-arg index="1" value="#{T(com.gemstone.gemfire.cache.ExpirationAction).LOCAL_INVALIDATE}"/>
+  </bean>
+  -->
+
+  <bean id="commonRegionAttributes" class="org.springframework.data.gemfire.RegionAttributesFactoryBean">
+    <property name="cloningEnabled" value="true"/>
+    <property name="concurrencyChecksEnabled" value="true"/>
+    <property name="diskSynchronous" value="true"/>
+    <!--
+    <property name="entryIdleTimeout" ref="commonExpirationAttributes"/>
+    <property name="entryTimeToLive" ref="commonExpirationAttributes"/>
+    -->
+    <property name="initialCapacity" value="1024"/>
+    <property name="keyConstraint" value="java.lang.String"/>
+    <property name="loadFactor" value="0.85"/>
+    <!--
+    <property name="regionIdleTimeout" ref="commonExpirationAttributes"/>
+    <property name="regionTimeToLive" ref="commonExpirationAttributes"/>
+    -->
+    <property name="statisticsEnabled" value="true"/>
+    <property name="valueConstraint" value="java.lang.Integer"/>
+  </bean>
+
+  <bean id="noopPartitionListener" class="org.spring.data.gemfire.cache.partition.NoOpPartitionListener"/>
+
+  <bean id="commonPartitionAttributes" class="org.springframework.data.gemfire.PartitionAttributesFactoryBean">
+    <property name="localMaxMemory" value="256"/>
+    <property name="redundantCopies" value="2"/>
+    <property name="totalMaxMemory" value="2048"/>
+    <property name="totalNumBuckets" value="227"/>
+    <property name="partitionListeners">
+      <list>
+        <ref bean="noopPartitionListener"/>
+        <bean class="org.spring.data.gemfire.cache.partition.NoOpPartitionListener"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="partitionRegionAttributes" parent="commonRegionAttributes">
+    <property name="partitionAttributes" ref="commonPartitionAttributes"/>
+  </bean>
+
+  <bean id="RegionOne" class="org.springframework.data.gemfire.ReplicatedRegionFactoryBean">
+    <property name="attributes" ref="commonRegionAttributes"/>
+    <property name="cache" ref="gemfireCache"/>
+  </bean>
+
+  <bean id="RegionTwo" class="org.springframework.data.gemfire.PartitionedRegionFactoryBean">
+    <property name="attributes" ref="partitionRegionAttributes"/>
+    <property name="cache" ref="gemfireCache"/>
+  </bean>
+
+</beans>

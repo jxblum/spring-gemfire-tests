@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:gfe-data="http://www.springframework.org/schema/data/gemfire"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+        http://www.springframework.org/schema/data/gemfire http://www.springframework.org/schema/data/gemfire/spring-data-gemfire.xsd
+">
+
+  <context:property-placeholder location="classpath:client.properties"/>
+
+  <!--
+  <gfe-data:datasource max-connections="10" min-connections="1" idle-timeout="60000" read-timeout="15000" subscription-enabled="true">
+    <gfe-data:locator host="${client.locator.host}" port="${client.locator.port}"/>
+  </gfe-data:datasource>
+  -->
+
+  <gfe:pool id="locatorConnectionPool" subscription-enabled="true">
+    <gfe:locator host="${client.locator.host}" port="${client.locator.port}"/>
+  </gfe:pool>
+
+  <gfe:client-cache pool-name="locatorConnectionPool"/>
+
+  <!--
+  <gfe-data:json-region-autoproxy region-refs="Example" pretty-print="true" convert-returned-collections="false"/>
+  -->
+
+  <gfe-data:json-region-autoproxy pretty-print="true" convert-returned-collections="false"/>
+
+  <gfe:client-region id="Example" pool-name="locatorConnectionPool" shortcut="PROXY"/>
+
+  <!--
+  <gfe:client-region id="Example" shortcut="PROXY"/>
+  -->
+
+</beans>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire-1.3.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+  ">
+
+  <util:properties id="gemfireProperties">
+    <prop key="name">springGemFirePeerCache</prop>
+    <prop key="log-level">config</prop>
+    <prop key="mcast-port">0</prop>
+  </util:properties>
+
+  <gfe:cache properties-ref="gemfireProperties"/>
+
+  <bean id="testBean" class="org.spring.beans.TestBean" p:name="MyTestBean"/>
+
+  <bean id="asyncEventListener" class="org.spring.data.gemfire.cache.asyncqueue.TestAsyncEventListener" init-method="init"/>
+  <!--
+  <bean id="asyncEventListener" class="org.spring.data.gemfire.cache.asyncqueue.TestAsyncEventListener" init-method="init">
+    <constructor-arg ref="customerService"/>
+  </bean>
+  -->
+
+  <gfe:disk-store id="dataStore" auto-compact="true" compaction-threshold="75" queue-size="50" max-oplog-size="10" time-interval="600000">
+    <!--gfe:disk-dir location="./gemfire/app-disk-store/" max-size="50"/-->
+  </gfe:disk-store>
+
+  <!-- Focal point of JIRA issue SGF-198 -->
+  <gfe:async-event-queue id="q1"
+                         name="QueueOne"
+                         persistent="true"
+                         disk-store-ref="dataStore"
+                         disk-synchronous="true"
+                         maximum-queue-memory="50"
+                         parallel="true"
+                         batch-conflation-enabled="true"
+                         batch-size="10"
+                         batch-time-interval="3"
+                         dispatcher-threads="4">
+    <gfe:async-event-listener ref="asyncEventListener"/>
+  </gfe:async-event-queue>
+
+  <gfe:async-event-queue id="q2" name="QueueTwo">
+    <gfe:async-event-listener ref="asyncEventListener"/>
+  </gfe:async-event-queue>
+
+  <gfe:partitioned-region id="Customers" persistent="true">
+    <gfe:async-event-queue-ref bean="q1"/>
+    <gfe:async-event-queue-ref bean="q2"/>
+  </gfe:partitioned-region>
+
+  <gfe:partitioned-region id="Accounts" persistent="true" disk-store-ref="dataStore" disk-synchronous="true"
+                          colocated-with="Customers">
+    <gfe:async-event-queue-ref bean="q1"/>
+  </gfe:partitioned-region>
+
+  <!--bean id="customersTemplate" class="org.springframework.data.gemfire.GemfireTemplate" p:region-ref="r1"/-->
+
+  <!--bean id="accountsTemplate" class="org.springframework.data.gemfire.GemfireTemplate" p:region-ref="r2"/-->
+
+  <bean id="customerService" class="org.spring.data.gemfire.app.service.CustomerService" init-method="init"/>
+
+  <bean id="customerDao" class="org.spring.data.gemfire.app.dao.GemfireRegionCustomerDao" init-method="init"/>
+
+  <context:annotation-config/>
+
+</beans>

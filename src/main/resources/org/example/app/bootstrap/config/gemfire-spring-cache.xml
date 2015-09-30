@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE cache PUBLIC  "-//GemStone Systems, Inc.//GemFire Declarative Caching 8.0//EN"
+  "http://www.gemstone.com/dtd/cache8_0.dtd">
+<cache>
+  <initializer>
+    <class-name>org.example.app.bootstrap.initializer.ExampleApplicationGemFireInitializer</class-name>
+    <!--
+    <parameter name="basePackages">
+      <string>org.example.app</string>
+    </parameter>
+    -->
+    <parameter name="contextConfigLocations">
+      <string>
+        classpath:org/example/app/bootstrap/config/spring-gemfire-context.xml
+      </string>
+    </parameter>
+  </initializer>
+</cache>

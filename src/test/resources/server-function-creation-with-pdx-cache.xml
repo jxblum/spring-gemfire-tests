@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!DOCTYPE cache PUBLIC  "-//GemStone Systems, Inc.//GemFire Declarative Caching 8.0//EN"
+  "http://www.gemstone.com/dtd/cache8_0.dtd">
+<cache>
+  <cache-server hostname-for-clients="localhost" port="12480"/>
+  <pdx read-serialized="true"/>
+  <function-service>
+    <function>
+      <class-name>org.pivotal.gemfire.cache.client.ClientCacheFunctionExecutionWithPdxTest$ArgumentTypeCaptureFunction</class-name>
+    </function>
+  </function-service>
+</cache>

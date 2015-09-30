@@ -1,0 +1,6 @@
+Other Spring Data GemFire issues not recorded in JIRA...
+
+1. Not able to refer to a Region bean by "Region Name".  Spring Data GemFire does not create aliases for the Region bean
+with the name attribute of the gfe:*-region element.
+
+2.

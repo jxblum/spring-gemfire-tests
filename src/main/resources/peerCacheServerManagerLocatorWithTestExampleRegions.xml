@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2014-present the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+">
+
+  <context:property-placeholder location="classpath:server.properties"/>
+
+  <!--
+  <util:properties id="gemfireProperties" location="classpath:gemfire.properties"/>
+  -->
+  <util:properties id="gemfireProperties">
+    <prop key="name">SpringGemFirePeerCacheServerManagerLocatorWithTestExampleRegion</prop>
+    <prop key="start-locator">localhost[11235]</prop>
+    <prop key="mcast-port">0</prop>
+    <prop key="log-level">config</prop>
+    <prop key="locators">localhost[11235]</prop>
+    <prop key="jmx-manager">true</prop>
+    <prop key="jmx-manager-start">true</prop>
+    <prop key="jmx-manager-port">1199</prop>
+  </util:properties>
+
+  <gfe:cache properties-ref="gemfireProperties"/>
+
+  <gfe:cache-server auto-startup="true" bind-address="${server.bind.address}" port="${server.port}"
+                    host-name-for-clients="${server.hostname.for.clients}" max-connections="${server.max.connections}">
+    <gfe:subscription-config eviction-type="ENTRY" capacity="100"/>
+  </gfe:cache-server>
+
+  <!--
+  <gfe:partitioned-region id="AppData" persistent="false"/>
+  <gfe:replicated-region id="Example" persistent="false"/>
+  <gfe:replicated-region id="Test" persistent="false"/>
+  -->
+
+  <gfe:partitioned-region id="Example" persistent="false"/>
+
+</beans>

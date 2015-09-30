@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2014-present the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+">
+
+  <util:properties id="gemfireProperties">
+    <prop key="name">SpringGemFireServerUsingClusterConfigurationAndCacheXmlExample</prop>
+    <prop key="mcast-port">0</prop>
+    <prop key="log-level">config</prop>
+    <prop key="locators">localhost[11235]</prop>
+    <!--
+    NOTE setting 'use-cluster-configuration' is not explicitly required when the Spring-configured GemFire Server
+    is started from Gfsh...
+    -->
+    <prop key="use-cluster-configuration">true</prop>
+  </util:properties>
+
+  <gfe:cache properties-ref="gemfireProperties" cache-xml-location="cache.xml" use-cluster-configuration="true"/>
+
+  <gfe:lookup-region id="BackingRegion"/>
+  <gfe:lookup-region id="CacheXmlRegion"/>
+  <gfe:lookup-region id="ClusterConfigRegion"/>
+
+  <gfe:partitioned-region id="SpringRegion" persistent="false"
+                          key-constraint="java.lang.String" value-constraint="java.lang.Integer">
+    <gfe:cache-listener>
+      <bean class="org.spring.data.gemfire.cache.DeclarableReplicatingCacheListener">
+        <property name="backingRegion" ref="BackingRegion"/>
+      </bean>
+      <bean class="org.spring.data.gemfire.cache.LoggingCacheListener"/>
+    </gfe:cache-listener>
+    <gfe:cache-loader>
+      <bean class="org.spring.data.gemfire.cache.NamedNumbersCacheLoader">
+        <property name="namedNumbers" ref="NamedNumbers"/>
+      </bean>
+    </gfe:cache-loader>
+  </gfe:partitioned-region>
+
+  <util:map id="NamedNumbers" map-class="java.util.concurrent.ConcurrentHashMap"
+            key-type="java.lang.String" value-type="java.lang.Integer">
+    <entry key="zero" value="0"/>
+    <entry key="one" value="1"/>
+    <entry key="two" value="2"/>
+    <entry key="three" value="3"/>
+    <entry key="four" value="4"/>
+    <entry key="five" value="5"/>
+    <entry key="six" value="6"/>
+    <entry key="seven" value="7"/>
+    <entry key="eight" value="8"/>
+    <entry key="nine" value="9"/>
+  </util:map>
+
+  <context:annotation-config/>
+
+</beans>

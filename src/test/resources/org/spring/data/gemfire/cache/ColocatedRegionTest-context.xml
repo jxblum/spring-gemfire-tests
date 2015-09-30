@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire-1.3.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+  ">
+
+  <util:properties id="gemfireProperties" location="classpath:gemfire.properties"/>
+
+  <gfe:cache properties-ref="gemfireProperties"/>
+
+  <!--gfe:partitioned-region id="colocatedRegion" name="Colocated" colocated-with-ref="sourceRegion"-->
+  <gfe:partitioned-region id="colocatedRegion" name="Colocated" colocated-with="Source"/>
+
+  <!-- NOTE moving the "sourceRegion" bean definition above the "dependentRegion" bean definition enables the test to pass. -->
+  <gfe:partitioned-region id="sourceRegion" name="Source"/>
+
+</beans>

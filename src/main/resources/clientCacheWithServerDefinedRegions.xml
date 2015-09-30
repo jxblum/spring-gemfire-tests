@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:gfe-data="http://www.springframework.org/schema/data/gemfire"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+        http://www.springframework.org/schema/data/gemfire http://www.springframework.org/schema/data/gemfire/spring-data-gemfire.xsd
+">
+
+  <context:property-placeholder location="classpath:client.properties"/>
+
+  <!--
+  <gfe-data:datasource max-connections="10" min-connections="1" idle-timeout="60000" read-timeout="15000">
+    <gfe-data:locator host="${client.locator.host}" port="${client.locator.port}"/>
+    &lt;!&ndash;
+    <gfe-data:server host="${client.server.host}" port="${client.server.port}"/>
+    &ndash;&gt;
+  </gfe-data:datasource>
+  -->
+
+  <gfe:pool id="clientConnectionPool" subscription-enabled="true">
+    <!--
+    <gfe:locator host="${client.locator.host}" port="${client.locator.port}"/>
+    -->
+    <gfe:server host="${client.server.host}" port="${client.server.port}"/>
+  </gfe:pool>
+
+  <gfe:client-cache pool-name="clientConnectionPool" ready-for-events="true"/>
+
+  <gfe:client-region id="Example" persistent="false" pool-name="clientConnectionPool" concurrency-checks-enabled="false">
+    <gfe:cache-listener>
+      <bean class="org.spring.data.gemfire.cache.DescribableEntryLoggingCacheListener"/>
+    </gfe:cache-listener>
+    <gfe:key-interest>
+      <bean class="java.lang.String">
+        <constructor-arg value="ALL_KEYS"/>
+      </bean>
+    </gfe:key-interest>
+    <!--
+    <gfe:regex-interest pattern=".*" receive-values="true"/>
+    -->
+  </gfe:client-region>
+
+</beans>

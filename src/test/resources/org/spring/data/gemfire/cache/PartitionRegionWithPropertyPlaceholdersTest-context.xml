@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire-1.3.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+">
+
+  <util:properties id="partitionedRegionConfigurationSettings">
+    <prop key="destroy">false</prop>
+    <prop key="multicast-enabled">false</prop>
+    <prop key="persistent">true</prop>
+    <prop key="recovery-delay">1000</prop>
+    <prop key="replication">2</prop>
+  </util:properties>
+
+  <context:property-placeholder properties-ref="partitionedRegionConfigurationSettings"/>
+  <!--
+  <context:property-placeholder location="classpath:org/spring/data/gemfire/cache/partitionRegionWithPropertyPlaceholders.properties"/>
+  -->
+
+  <bean id="testBean" class="org.spring.data.gemfire.cache.PartitionRegionWithPropertyPlaceholdersTest$TestBean">
+    <property name="replication" value="${replication}"/>
+  </bean>
+
+  <util:properties id="gemfireProperties">
+    <prop key="name">PartitionRegionWithPropertyPlaceholdersTest</prop>
+    <prop key="mcast-port">0</prop>
+    <prop key="log-level">warning</prop>
+  </util:properties>
+
+  <gfe:cache properties-ref="gemfireProperties"/>
+
+  <gfe:partitioned-region id="Tagger" copies="${replication}" destroy="${destroy}"
+    multicast-enabled="${multicast-enabled}" persistent="${persistent}" recovery-delay="${recovery-delay}"/>
+
+</beans>

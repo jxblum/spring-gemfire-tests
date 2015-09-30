@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+       ">
+
+  <util:properties id="gemfireProperties">
+    <prop key="name">PersistentRegionIndexRecreationTest</prop>
+    <prop key="log-level">config</prop>
+    <prop key="mcast-port">0</prop>
+  </util:properties>
+
+  <bean id="reflectionBasedAutoSerializer" class="com.gemstone.gemfire.pdx.ReflectionBasedAutoSerializer">
+    <constructor-arg type="boolean" value="true"/>
+    <constructor-arg>
+      <list>
+        <value>org\.spring\.data\.gemfire\.app\.beans\.Gemstone</value>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <gfe:disk-store id="GemstoneData" auto-compact="true" compaction-threshold="75">
+    <gfe:disk-dir location="./gemfire/disk-stores/gemstones"/>
+  </gfe:disk-store>
+
+  <gfe:cache properties-ref="gemfireProperties" pdx-serializer-ref="reflectionBasedAutoSerializer" pdx-persistent="true"
+             pdx-ignore-unread-fields="false" pdx-disk-store="GemstoneData"/>
+
+  <gfe:partitioned-region id="Gemstones" persistent="true" disk-store-ref="GemstoneData" index-update-type="synchronous"
+                          copies="1" key-constraint="java.lang.Long" value-constraint="org.spring.data.gemfire.app.beans.Gemstone">
+    <gfe:cache-loader>
+      <bean class="org.spring.data.gemfire.cache.PersistentRegionIndexRecreationTest$GemstoneCacheLoader"/>
+    </gfe:cache-loader>
+  </gfe:partitioned-region>
+
+  <gfe:index id="GemstoneIdx" expression="name" from="/Gemstones" type="FUNCTIONAL"/>
+
+</beans>

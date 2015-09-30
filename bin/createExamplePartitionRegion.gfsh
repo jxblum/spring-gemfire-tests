@@ -1,0 +1,5 @@
+run --file=${PWD}/../bin/startSimpleCluster.gfsh
+create region --name=Example --type=PARTITION
+list regions
+describe region --name=/Example
+get --region=/Example --key=ExampleKey

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+	      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	      http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+	      http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+	      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+	      http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+">
+
+  <util:properties id="envConfigurationSettings">
+    <prop key="datasource.type">XAPooledDataSource</prop>
+    <prop key="datasource.xa.datasource.class">com.mysql.jdbc.jdbc2.optional.MysqlXADataSource</prop>
+    <prop key="datasource.gemfire.url">jdbc:mysql://localhost:3306/gemfire?pinGlobalTxToPhysicalConnection=true</prop>
+    <prop key="datasource.gemfire.username">jblum</prop>
+    <prop key="datasource.gemfire.password"></prop>
+    <!--
+    <prop key="jdbc.driver.class">com.mysql.jdbc.Driver</prop>
+    <prop key="datasource.connection.pool.datasource.class">com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource</prop>
+    -->
+  </util:properties>
+
+  <util:properties id="gemfireProperties">
+    <!--<prop key="name">SpringGemFireGlobalTransactionTest</prop>-->
+    <prop key="name">S1</prop>
+    <prop key="mcast-port">0</prop>
+    <prop key="log-level">config</prop>
+    <!--
+    <prop key="locators">localhost[11235]</prop>
+    <prop key="start-locator">localhost[11235]</prop>
+    -->
+  </util:properties>
+
+  <util:properties id="jndiConfigurationSettings">
+    <prop key="#{T(javax.naming.Context).INITIAL_CONTEXT_FACTORY}">com.gemstone.gemfire.internal.jndi.InitialContextFactoryImpl</prop>
+  </util:properties>
+
+  <context:annotation-config/>
+
+  <context:property-placeholder properties-ref="envConfigurationSettings"/>
+
+  <!--
+  <gfe:cache cache-xml-location="/gemfire-global-transaction-cache.xml" properties-ref="gemfireCacheConfigurationSettings"/>
+
+  <gfe:lookup-region id="Gemstones"/>
+  -->
+
+  <gfe:cache properties-ref="gemfireProperties">
+    <gfe:jndi-binding jndi-name="gemfiredb"
+                      type="${datasource.type}"
+                      idle-timeout-seconds="60"
+                      init-pool-size="2"
+                      max-pool-size="10"
+                      xa-datasource-class="${datasource.xa.datasource.class}"
+                      connection-url="${datasource.gemfire.url}"
+                      user-name="${datasource.gemfire.username}"
+                      password="${datasource.gemfire.password}">
+      <gfe:jndi-prop key="URL" type="java.lang.String">${datasource.gemfire.url}</gfe:jndi-prop>
+    </gfe:jndi-binding>
+  </gfe:cache>
+
+  <gfe:replicated-region id="Gemstones" ignore-jta="false" persistent="false"
+    key-constraint="java.lang.Long" value-constraint="java.lang.String"/>
+
+  <!--
+  <gfe:transaction-manager copy-on-read="true"/>
+  -->
+
+  <bean id="txManager" class="org.springframework.transaction.jta.JtaTransactionManager">
+    <property name="jndiEnvironment" ref="jndiConfigurationSettings"/>
+    <property name="transactionManagerName" value="java:/TransactionManager"/>
+    <property name="userTransactionName" value="java:/UserTransaction"/>
+  </bean>
+
+  <tx:annotation-driven transaction-manager="txManager"/>
+
+  <bean id="gemsService" class="org.spring.data.gemfire.app.service.GemstoneService"/>
+  <!--
+  <bean id="gemsService" class="org.spring.data.gemfire.app.service.vendor.GemFireGemsService"/>
+  -->
+
+  <bean id="databaseGemsDao" class="org.spring.data.gemfire.app.dao.provider.DatabaseGemstoneDao"/>
+
+  <bean id="gemfireGemsDao" class="org.spring.data.gemfire.app.dao.vendor.GemFireGemstoneDao"/>
+
+</beans>

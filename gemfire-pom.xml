@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2014-present the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.gemstone.gemfire</groupId>
+  <artifactId>gemfire</artifactId>
+  <packaging>jar</packaging>
+  <version>__MAVEN_GEMFIRE_VERSION__</version>
+
+  <name>GemFire</name>
+  <description>Pivotal GemFire</description>
+  <url>http://www.gopivotal.com/big-data/pivotal-gemfire</url>
+
+  <issueManagement>
+    <system>Pivotal Support</system>
+    <url>https://support.gopivotal.com/hc/en-us/categories/200072748-Pivotal-GemFire-Knowledge-Base</url>
+  </issueManagement>
+
+  <organization>
+    <name>Pivotal Software, Inc.</name>
+    <url>http://www.gopivotal.com/</url>
+  </organization>
+
+  <properties>
+    <antlr.version>2.7.7</antlr.version>
+    <commons-io.version>2.3</commons-io.version>
+    <commons-logging.version>1.1.1</commons-logging.version>
+    <commons-modeler.version>2.0.1</commons-modeler.version>
+    <ecj.version>3.7.2</ecj.version>
+    <gemfire.version>7.0.2</gemfire.version>
+    <jackson.version>2.2.0</jackson.version>
+    <jansi.version>1.8</jansi.version>
+    <jline.version>1.0.S2-B</jline.version>
+    <jmock.vesion>2.5.1</jmock.vesion>
+    <junit.version>4.10</junit.version>
+    <multithreadedtc.version>1.01</multithreadedtc.version>
+    <snappy-java.version>1.0.4.1</snappy-java.version>
+    <spring.version>3.2.9.RELEASE</spring.version>
+    <spring-data-commons.version>1.8.0.RELEASE</spring-data-commons.version>
+    <spring-data-gemfire.version>1.4.0.RELEASE</spring-data-gemfire.version>
+    <spring-shell.version>1.0.0.RELEASE</spring-shell.version>
+    <tomcat-embed.version>7.0.30</tomcat-embed.version>
+    <xom.version>1.2.5</xom.version>
+    <!--
+    <xom.version>1.2.9</xom.version>
+    -->
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>gemstone-release</id>
+      <name>GemStone Maven RELEASE Repository</name>
+      <url>http://dist.gemstone.com.s3.amazonaws.com/maven/release</url>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>spring-release</id>
+      <name>Spring Maven RELEASE Repository</name>
+      <url>https://repo.spring.io/release</url>
+    </repository>
+    <repository>
+      <id>spring-milestone</id>
+      <name>Spring Maven MILESTONE Repository</name>
+      <url>https://repo.spring.io/milestone</url>
+    </repository>
+    <repository>
+      <id>spring-snapshot</id>
+      <name>Spring Maven SNAPSHOT Repository</name>
+      <url>https://repo.spring.io/snapshot</url>
+    </repository>
+    <repository>
+      <id>libs-release</id>
+      <name>Spring Maven libs-release Repository</name>
+      <url>http://repo.springframework.org/libs-release</url>
+    </repository>
+    <repository>
+      <id>ext-release-local</id>
+      <name>Spring Maven libs-release Repository</name>
+      <url>http://repo.springframework.org/ext-release-local</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <!-- GemFire -->
+    <dependency>
+      <groupId>com.gemstone.gemfire</groupId>
+      <artifactId>gemfire</artifactId>
+      <version>${gemfire.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>antlr</groupId>
+      <artifactId>antlr</artifactId>
+      <version>${antlr.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>${commons-io.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>${commons-logging.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-modeler</groupId>
+      <artifactId>commons-modeler</artifactId>
+      <version>${commons-modeler.version}</version>
+      <optional>true</optional>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jdt.core.compiler</groupId>
+      <artifactId>ecj</artifactId>
+      <version>${ecj.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>${jackson.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.jansi</groupId>
+      <artifactId>jansi</artifactId>
+      <version>${jansi.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>jline</groupId>
+      <artifactId>jline</artifactId>
+      <version>${jline.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.xerial.snappy</groupId>
+      <artifactId>snappy-java</artifactId>
+      <version>${snappy-java.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>${spring.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>commons-logging</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aop</artifactId>
+      <version>${spring.version}</version>
+      <scope>runtime</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>commons-logging</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <version>${spring.version}</version>
+      <scope>runtime</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>commons-logging</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+      <version>${spring.version}</version>
+      <scope>runtime</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>commons-logging</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>${spring.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>commons-logging</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-commons</artifactId>
+      <version>${spring-data-commons.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>commons-logging</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-gemfire</artifactId>
+      <version>${spring-data-gemfire.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>commons-logging</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.shell</groupId>
+      <artifactId>spring-shell</artifactId>
+      <version>${spring-shell.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tomcat.embed</groupId>
+      <artifactId>tomcat-embed-jasper</artifactId>
+      <version>${tomcat-embed.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tomcat.embed</groupId>
+      <artifactId>tomcat-embed-logging-juli</artifactId>
+      <version>${tomcat-embed.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>xom</groupId>
+      <artifactId>xom</artifactId>
+      <version>${xom.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <!-- Testing -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${spring.version}</version>
+      <scope>test</scope>
+      <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <artifactId>commons-logging</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.jmock</groupId>
+      <artifactId>jmock</artifactId>
+      <version>${jmock.vesion}</version>
+      <scope>test</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>edu.umd.cs.mtc</groupId>
+      <artifactId>multithreadedtc</artifactId>
+      <version>${multithreadedtc.version}</version>
+      <scope>test</scope>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
+
+</project>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE cache PUBLIC  "-//GemStone Systems, Inc.//GemFire Declarative Caching 8.0//EN"
+  "http://www.gemstone.com/dtd/cache8_0.dtd">
+<cache>
+  <region name="CacheXmlRegion" refid="PARTITION">
+    <region-attributes initial-capacity="101" load-factor="0.85">
+      <key-constraint>java.lang.String</key-constraint>
+      <value-constraint>java.lang.Integer</value-constraint>
+      <cache-listener>
+        <class-name>org.spring.data.gemfire.cache.DeclarableReplicatingCacheListener</class-name>
+      </cache-listener>
+    </region-attributes>
+  </region>
+</cache>

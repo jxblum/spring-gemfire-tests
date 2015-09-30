@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+		    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+">
+
+  <context:property-placeholder location="classpath:server.properties"/>
+
+  <util:properties id="gemfireProperties">
+    <prop key="name">ClientCacheFunctionExecutionWithStreamingTestServer</prop>
+    <prop key="jmx-manager">true</prop>
+    <prop key="jmx-manager-http-port">0</prop>
+    <prop key="jmx-manager-port">1199</prop>
+    <prop key="jmx-manager-start">true</prop>
+    <prop key="locators">localhost[11235]</prop>
+    <prop key="log-level">config</prop>
+    <prop key="mcast-port">0</prop>
+    <prop key="start-locator">localhost[11235]</prop>
+    <prop key="statistic-sampling-enabled">false</prop>
+  </util:properties>
+
+  <gfe:cache properties-ref="gemfireProperties"/>
+
+  <gfe:cache-server auto-startup="true" bind-address="${server.bind.address}" port="${server.port}"
+                    host-name-for-clients="${server.hostname.for.clients}" max-connections="${server.max.connections}"/>
+
+  <gfe:partitioned-region id="Collections" persistent="false" initial-capacity="101" load-factor="0.85"
+                          key-constraint="java.lang.String" value-constraint="java.lang.Object"/>
+
+  <gfe:partitioned-region id="Numbers" persistent="false" initial-capacity="101" load-factor="0.85"
+    key-constraint="java.lang.String" value-constraint="java.lang.Integer"/>
+
+  <gfe:annotation-driven/>
+
+  <bean class="org.spring.data.gemfire.cache.ClientCacheFunctionExecutionWithStreamingTest$GemFireServerFunctions"/>
+
+</beans>

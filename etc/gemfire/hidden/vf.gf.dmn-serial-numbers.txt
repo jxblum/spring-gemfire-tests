@@ -1,0 +1,6 @@
+----- license-vf-gf-66-t2-201105 (VMware vFabric GemFire Data Management v5.0) -----
+Y150V-00XD3-08J8Z-04YUV-Z4PFV [quantity=65535, expiration=Permanent]
+----- license-vf-gf-66-t2-201105 (VMware vFabric GemFire Data Management Node v5.0) -----
+4H65K-FUH9Q-H8J90-01396-CJQKG [quantity=0, expiration=Permanent , addon=2]
+----- license-vf-gf-66-t2-201105 (VMware vFabric GemFire Data Management Node v5.0) -----
+156DH-AN0D7-M8R10-0J2F6-3TZHG [quantity=0, expiration=Permanent , addon=3]

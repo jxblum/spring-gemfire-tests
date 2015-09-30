@@ -1,0 +1,2 @@
+stop server --name=gemfireServer
+stop locator --name=locatorX

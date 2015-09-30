@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+		    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+">
+
+  <util:properties id="gemfireProperties">
+    <prop key="name">SpringGemFirePeerCacheManagerLocatorDeveloperRestApiService</prop>
+    <prop key="mcast-port">0</prop>
+    <prop key="log-level">config</prop>
+    <prop key="locators">localhost[11235]</prop>
+    <prop key="jmx-manager">true</prop>
+    <prop key="jmx-manager-port">1199</prop>
+    <prop key="jmx-manager-start">true</prop>
+    <prop key="http-service-port">8080</prop>
+    <prop key="start-dev-rest-api">true</prop>
+    <prop key="start-locator">localhost[11235]</prop>
+    <!--
+    <prop key="log-file">./SpringGemFirePeerCache.log</prop>
+    -->
+  </util:properties>
+
+  <gfe:cache properties-ref="gemfireProperties" pdx-read-serialized="true" lazy-init="false"/>
+
+  <gfe:partitioned-region id="People" persistent="false"/>
+
+</beans>

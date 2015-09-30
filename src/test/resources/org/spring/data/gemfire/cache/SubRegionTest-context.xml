@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire-1.3.xsd">
+
+  <!--bean class="org.spring.data.gemfire.config.ForceGemFireRegionCreationBeanPostProcessor"/-->
+
+  <!--util:properties id="gemfireProperties" location="classpath:gemfire.properties"/-->
+
+  <!--gfe:cache properties-ref="gemfireProperties"/-->
+  <gfe:cache/>
+
+  <!--gfe:replicated-region id="customersRegion" name="Customers"-->
+  <gfe:replicated-region id="Customers">
+    <gfe:replicated-region name="Accounts">
+      <gfe:replicated-region name="Orders">
+        <gfe:replicated-region name="Items"/>
+      </gfe:replicated-region>
+    </gfe:replicated-region>
+  </gfe:replicated-region>
+
+  <!-- NOTE the following bean configuration meta-data works in the GemFire Developer REST API webapp -->
+  <!--
+  <gfe:replicated-region id="People" persistent="false" destroy="true">
+    <gfe:replicated-region name="Address" data-policy="REPLICATE" persistent="false" destroy="true"/>
+  </gfe:replicated-region>
+  -->
+
+  <!--bean id="customersTemplate" class="org.springframework.data.gemfire.GemfireTemplate" p:region-ref="customersRegions"/-->
+  <!--bean id="customersTemplate" class="org.springframework.data.gemfire.GemfireTemplate" p:region-ref="Customers"/-->
+
+</beans>

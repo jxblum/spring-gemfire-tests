@@ -1,0 +1,4 @@
+name=SpringDataGemFirePeerCacheServer
+mcast-port=0
+log-level=config
+#locators=localhost[11235]

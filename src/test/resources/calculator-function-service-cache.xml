@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE cache PUBLIC  "-//GemStone Systems, Inc.//GemFire Declarative Caching 8.0//EN"
+  "http://www.gemstone.com/dtd/cache8_0.dtd">
+<cache>
+  <cache-server bind-address="localhost" hostname-for-clients="localhost" port="12480" max-connections="5"/>
+  <function-service>
+    <function>
+      <class-name>org.spring.data.gemfire.cache.execute.CalculatorFunction</class-name>
+    </function>
+  </function-service>
+  <initializer>
+    <class-name>org.springframework.data.gemfire.support.SpringContextBootstrappingInitializer</class-name>
+    <parameter name="contextConfigLocations">
+      <string>
+        classpath:org/spring/data/gemfire/cache/calculator-beans-context.xml
+      </string>
+    </parameter>
+  </initializer>
+</cache>

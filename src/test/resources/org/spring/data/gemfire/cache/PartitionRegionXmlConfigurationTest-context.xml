@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+       ">
+
+  <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+    <property name="converters">
+      <list>
+        <bean class="org.spring.data.gemfire.cache.PartitionRegionXmlConfigurationTest$RegionToRegionConverter"/>
+      </list>
+    </property>
+  </bean>
+
+  <util:properties id="gemfireProperties">
+    <prop key="name">PartitionRegionXmlConfigurationTest</prop>
+    <prop key="log-level">config</prop>
+    <prop key="mcast-port">0</prop>
+  </util:properties>
+
+  <gfe:cache properties-ref="gemfireProperties"/>
+
+  <gfe:disk-store id="ExampleData" auto-compact="true" queue-size="1024">
+    <gfe:disk-dir location="./gemfire/disk-stores/example"/>
+  </gfe:disk-store>
+
+  <gfe:partitioned-region id="Example" persistent="true" disk-store-ref="ExampleData" disk-synchronous="false"
+                          key-constraint="java.lang.String" value-constraint="java.lang.Integer">
+    <gfe:cache-listener>
+      <bean class="org.spring.data.gemfire.cache.PartitionRegionXmlConfigurationTest$ExampleCacheListener"/>
+    </gfe:cache-listener>
+    <gfe:cache-loader>
+      <bean class="org.spring.data.gemfire.cache.PartitionRegionXmlConfigurationTest$NameNumberCacheLoader"/>
+    </gfe:cache-loader>
+  </gfe:partitioned-region>
+
+  <bean id="appDao" class="org.spring.data.gemfire.cache.PartitionRegionXmlConfigurationTest$ApplicationDao">
+    <property name="example" ref="Example"/>
+  </bean>
+
+</beans>

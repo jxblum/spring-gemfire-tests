@@ -1,0 +1,7 @@
+start locator --name=locatorX --port=11235 --log-level=config
+set variable --name=GEMFIRE_HOME --value=/Users/jblum/Downloads/Pivotal/GemStone/Products/GemFire/Pivotal_GemFire_810_b50625_Linux
+echo --string=${GEMFIRE_HOME}
+start server --name=gemfireServer --disable-default-server --log-level=config --classpath=${GEMFIRE_HOME}/lib/gemfire-spring-dependencies.jar:/Users/jblum/vmdev/lab/lib/spring-gemfire-calculator-function-service.jar --cache-xml-file=./conf/calculator-function-service-cache.xml --J="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+list members
+describe member --name=gemfireServer
+list functions

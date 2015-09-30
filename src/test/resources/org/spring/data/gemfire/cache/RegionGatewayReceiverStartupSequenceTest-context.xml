@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+">
+
+  <bean class="org.spring.data.gemfire.cache.RegionGatewayReceiverStartupSequenceTest$GemfireMocksBeanPostProcessor"/>
+
+  <util:properties id="gemfireProperties">
+    <prop key="name">RegionGatewayReceiverStartupSequenceTest</prop>
+    <prop key="log-level">warning</prop>
+    <prop key="mcast-port">0</prop>
+  </util:properties>
+
+  <gfe:gateway-receiver id="exampleGatewayReceiver" start-port="1234" end-port="2345"/>
+
+  <gfe:partitioned-region id="ExampleOne" persistent="false"/>
+
+  <gfe:partitioned-region id="ExampleTwo" persistent="false"/>
+
+  <gfe:replicated-region id="ExampleThree" persistent="false"/>
+
+  <gfe:replicated-region id="ExampleFour" persistent="false"/>
+
+  <gfe:cache properties-ref="gemfireProperties"/>
+
+</beans>

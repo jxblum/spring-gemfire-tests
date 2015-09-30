@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+  ">
+
+  <util:properties id="gemfireProperties">
+    <prop key="name">springGemFirePeerCache</prop>
+    <prop key="mcast-port">0</prop>
+    <prop key="log-level">warning</prop>
+  </util:properties>
+
+  <gfe:cache properties-ref="gemfireProperties"/>
+
+  <gfe:async-event-queue id="Q1" name="QueueOne" persistent="false" parallel="false" maximum-queue-memory="50"
+                         dispatcher-threads="4">
+    <gfe:async-event-listener ref="asyncEventListener"/>
+  </gfe:async-event-queue>
+
+  <bean id="asyncEventListener" class="org.spring.data.gemfire.cache.asyncqueue.QueueAsyncEventListener" init-method="init">
+    <!--
+    <constructor-arg ref="Q1"/>
+    <property name="queue" ref="Q1"/>
+    -->
+  </bean>
+
+  <bean id="testBeanOne" class="org.spring.beans.TestBean" p:name="One">
+    <!--
+    <constructor-arg ref="testBeanTwo"/>
+    -->
+    <property name="testBean" ref="testBeanTwo"/>
+  </bean>
+
+  <bean id="testBeanTwo" class="org.spring.beans.TestBean" p:name="Two">
+    <!--
+    <constructor-arg ref="testBeanOne"/>
+    -->
+    <property name="testBean" ref="testBeanOne"/>
+  </bean>
+
+  <context:annotation-config/>
+
+</beans>

@@ -1,0 +1,2 @@
+stop server --name=serverA
+stop locator --name=locatorX

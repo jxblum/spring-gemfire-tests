@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+">
+
+  <util:properties id="gemfireProperties">
+    <prop key="name">CacheServerConfigurationTest</prop>
+    <prop key="mcast-port">0</prop>
+    <prop key="log-level">warning</prop>
+    <prop key="enable-network-partition-detection">true</prop>
+  </util:properties>
+
+  <gfe:cache properties-ref="gemfireProperties"/>
+
+  <util:properties id="gemfireCacheServerProperties">
+    <prop key="gemfire.cache.server.bind-address">localhost</prop>
+    <prop key="gemfire.cache.server.port">54321</prop>
+    <prop key="gemfire.cache.server.hostname-for-clients">localhost</prop>
+    <prop key="gemfire.cache.server.load-poll-interval">10000</prop>
+    <prop key="gemfire.cache.server.max-connections">1600</prop>
+    <prop key="gemfire.cache.server.max-message-count">460000</prop>
+    <prop key="gemfire.cache.server.max-threads">2</prop>
+    <prop key="gemfire.cache.server.max-time-between-pings">120000</prop>
+    <prop key="gemfire.cache.server.message-time-to-live">360</prop>
+    <prop key="gemfire.cache.server.socket-buffer-size">16384</prop>
+  </util:properties>
+
+  <context:property-placeholder properties-ref="gemfireCacheServerProperties"/>
+
+  <gfe:cache-server id="gemfireCacheServer" auto-startup="true"
+                    bind-address="${gemfire.cache.server.bind-address}" port="${gemfire.cache.server.port}"
+                    host-name-for-clients="${gemfire.cache.server.hostname-for-clients}"
+                    load-poll-interval="${gemfire.cache.server.load-poll-interval}"
+                    max-connections="${gemfire.cache.server.max-connections}"
+                    max-threads="${gemfire.cache.server.max-threads}"
+                    max-message-count="${gemfire.cache.server.max-message-count}"
+                    max-time-between-pings="${gemfire.cache.server.max-time-between-pings}"
+                    message-time-to-live="${gemfire.cache.server.message-time-to-live}"
+                    socket-buffer-size="${gemfire.cache.server.socket-buffer-size}"/>
+
+</beans>

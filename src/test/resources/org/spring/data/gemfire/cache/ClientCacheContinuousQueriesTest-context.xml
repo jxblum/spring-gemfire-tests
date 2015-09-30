@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:gfe="http://www.springframework.org/schema/gemfire"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+">
+
+  <context:annotation-config/>
+
+  <context:property-placeholder location="classpath:client.properties"/>
+
+  <util:properties id="gemfireProperties">
+    <prop key="log-level">config</prop>
+  </util:properties>
+
+  <gfe:pool id="serverPool" subscription-enabled="true">
+    <gfe:server host="${client.server.host}" port="${client.server.port}"/>
+  </gfe:pool>
+
+  <gfe:client-cache properties-ref="gemfireProperties" pool-name="serverPool"/>
+
+  <gfe:client-region id="Example" pool-name="serverPool" shortcut="PROXY" key-constraint="java.lang.String"
+                     value-constraint="org.spring.data.gemfire.app.beans.Address"/>
+
+  <gfe:cq-listener-container id="cqListenerContainer" cache="gemfireCache" pool-name="serverPool">
+    <gfe:listener ref="testListener" query="SELECT * FROM /Example address WHERE address.city = 'Portland'" name="residents"/>
+  </gfe:cq-listener-container>
+
+  <bean id="testListener" class="org.spring.data.gemfire.cache.ClientCacheContinuousQueriesTest$TestContinuousQueryListener"/>
+
+</beans>

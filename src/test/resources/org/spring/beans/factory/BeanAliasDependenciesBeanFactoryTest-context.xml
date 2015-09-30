@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+	     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+  ">
+
+  <context:annotation-config/>
+
+  <bean class="org.spring.beans.factory.config.BeanDependencyOrderVerificationBeanPostProcessor">
+    <property name="beanNameOrderList">
+      <list>
+        <value>sourceBean</value>
+        <value>dependentBean</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="dependentBean" name="dep, Dependent" class="org.spring.beans.TestBean" p:name="Dependent" depends-on="TheSource"/>
+
+  <bean id="sourceBean" name="src, Source, TheSource" class="org.spring.beans.TestBean" p:name="Source"/>
+
+</beans>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	      http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+	      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+	      http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+  <context:annotation-config/>
+
+  <!--
+  <util:properties id="hibernateConfigurationSettings" location="classpath:hibernate.properties"/>
+  -->
+
+  <bean id="userService" class="org.spring.data.gemfire.app.service.UserService"/>
+
+  <bean id="localEntityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <property name="dataSource" ref="userDataSource"/>
+    <!--
+    <property name="jpaDialect">
+      <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+    </property>
+    -->
+    <property name="jpaProperties" ref="hibernateConfigurationSettings"/>
+    <property name="jpaVendorAdapter">
+      <bean parent="jpaVendorAdapter">
+        <property name="showSql" value="true"/>
+      </bean>
+    </property>
+    <property name="packagesToScan" value="org.spring.data.gemfire.app.beans"/>
+  </bean>
+
+  <bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+    <property name="entityManagerFactory" ref="localEntityManagerFactory"/>
+  </bean>
+
+  <tx:annotation-driven transaction-manager="txManager"/>
+
+  <!--
+  <tx:advice id="txAdvice" transaction-manager="txManager">
+    <tx:attributes>
+      <tx:method name="addAll"/>
+      &lt;!&ndash;
+      <tx:method name="addAll" isolation="READ_COMMITTED"/>
+      &ndash;&gt;
+      <tx:method name="*" read-only="true"/>
+    </tx:attributes>
+  </tx:advice>
+
+  <aop:config>
+    <aop:pointcut id="serviceMethods" expression="bean(userService)"/>
+    &lt;!&ndash;
+    <aop:pointcut id="serviceMethods" expression="execution(* org.spring.data.gemfire.app.service..*Service.*(..))"/>
+    &ndash;&gt;
+    <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods"/>
+  </aop:config>
+  -->
+
+  <beans profile="hsql">
+    <bean id="jpaVendorAdapter" abstract="true" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+      <property name="database" value="HSQL"/>
+    </bean>
+
+    <bean id="userDao" class="org.spring.data.gemfire.app.dao.provider.JpaUserDao"/>
+
+    <jdbc:embedded-database id="userDataSource" type="HSQL">
+      <jdbc:script location="classpath:data/source/schema/create-user-table.hsql.ddl.sql"/>
+    </jdbc:embedded-database>
+
+    <util:properties id="hibernateConfigurationSettings">
+      <prop key="hibernate.show_sql">true</prop>
+    </util:properties>
+  </beans>
+
+  <beans profile="sqlf">
+    <!--
+    <bean id="jpaVendorAdapter" abstract="true" class="org.spring.data.gemfire.app.dao.vendor.SQLFireHibernateJpaVendorAdapter">
+    -->
+    <bean id="jpaVendorAdapter" abstract="true" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+      <property name="database" value="DERBY"/>
+    </bean>
+
+    <bean id="userDao" class="org.spring.data.gemfire.app.dao.provider.JpaUserDao"/>
+    <!--
+    <bean id="userDao" class="org.spring.data.gemfire.app.dao.vendor.SQLFireJpaUserDao"/>
+    -->
+
+    <!--
+    <bean id="userDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    -->
+    <bean id="userDataSource" class="org.spring.core.sql.vendor.SQLFireDriverManagerDataSource">
+      <property name="driverClassName" value="com.vmware.sqlfire.jdbc.ClientDriver"/>
+      <property name="url" value="jdbc:sqlfire://localhost:1529/"/>
+      <property name="username" value="app"/>
+      <property name="password" value="app"/>
+    </bean>
+
+    <jdbc:initialize-database data-source="userDataSource">
+      <jdbc:script location="classpath:data/source/schema/create-user-table.sqlf.ddl.sql"/>
+    </jdbc:initialize-database>
+
+    <util:properties id="hibernateConfigurationSettings">
+      <prop key="hibernate.dialect">com.vmware.sqlfire.hibernate.SQLFireDialect</prop>
+      <prop key="hibernate.show_sql">true</prop>
+      <prop key="hibernate.connection.isolation">#{T(java.sql.Connection).TRANSACTION_READ_COMMITTED}</prop>
+    </util:properties>
+  </beans>
+
+</beans>
