@@ -11,6 +11,8 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
 ">
 
+  <bean class="org.spring.data.gemfire.config.DistributedSystemValidationBeanPostProcessor"/>
+
   <util:properties id="client.properties">
     <prop key="client.locator.host">localhost</prop>
     <prop key="client.locator.port">11235</prop>
