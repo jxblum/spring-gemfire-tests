@@ -6,11 +6,7 @@
     <server host="localhost" port="12480"/>
   </pool>
   <region name="Example">
-    <region-attributes refid="CACHING_PROXY" scope="distributed-ack">
-      <!--partition-attributes redundant-copies="1" total-num-buckets="113"/-->
-      <membership-attributes loss-action="no-access" resumption-action="none">
-        <required-role name="test"/>
-      </membership-attributes>
+    <region-attributes refid="CACHING_PROXY">
       <subscription-attributes interest-policy="cache-content"/>
     </region-attributes>
   </region>
