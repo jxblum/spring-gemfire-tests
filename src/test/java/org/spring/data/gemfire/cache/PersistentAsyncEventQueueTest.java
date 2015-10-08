@@ -52,8 +52,8 @@ public class PersistentAsyncEventQueueTest extends AbstractGemFireTest {
 
   @Test
   public void testDiskStoreAsyncEventQueueAndRegionsCreatedSuccessfully() {
-    assertRegionExists("Customers", "/Customers", customers);
-    assertRegionExists("Accounts", "/Accounts", accounts);
+    assertRegion(customers, "Customers", "/Customers");
+    assertRegion(accounts, "Accounts", "/Accounts");
   }
 
 }

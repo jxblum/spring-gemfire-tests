@@ -50,7 +50,7 @@ public class RegionCacheLoaderRepositoryCyclicDependencyTest extends AbstractGem
 
 	@Test
 	public void usersRegion() {
-		assertRegionExists("Users", users);
+		assertRegion(users, "Users");
 	}
 
 	public static class UsersCacheLoader implements CacheLoader {

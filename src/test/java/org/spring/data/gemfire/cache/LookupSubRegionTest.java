@@ -52,15 +52,15 @@ public class LookupSubRegionTest extends AbstractGemFireTest {
   public void testLookup() {
     Region parent = context.getBean("Parent", Region.class);
 
-    assertRegionExists("Parent", "/Parent", parent);
+    assertRegion(parent, "Parent", "/Parent");
 
     Region child = context.getBean("/Parent/Child", Region.class);
 
-    assertRegionExists("Child", "/Parent/Child", child);
+    assertRegion(child, "Child", "/Parent/Child");
 
     Region grandchild = context.getBean("/Parent/Child/Grandchild", Region.class);
 
-    assertRegionExists("Grandchild", "/Parent/Child/Grandchild", grandchild);
+    assertRegion(grandchild, "Grandchild", "/Parent/Child/Grandchild");
   }
 
 }

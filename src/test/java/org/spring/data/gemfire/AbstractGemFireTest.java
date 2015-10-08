@@ -16,10 +16,12 @@
 
 package org.spring.data.gemfire;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import java.io.File;
 
+import com.gemstone.gemfire.cache.DataPolicy;
 import com.gemstone.gemfire.cache.Region;
 
 import org.springframework.context.ApplicationContext;
@@ -31,6 +33,7 @@ import org.springframework.context.ApplicationContext;
  * @author John Blum
  * @see org.junit.Assert
  * @see org.springframework.context.ApplicationContext
+ * @see com.gemstone.gemfire.cache.Cache
  * @see com.gemstone.gemfire.cache.Region
  * @since 1.0.0
  */
@@ -41,7 +44,7 @@ public abstract class AbstractGemFireTest {
 
   protected static final boolean SUBREGION_RECURSIVE = false;
 
-  protected static final String REGION_PATH_SEPARATOR = "/";
+  protected static final String REGION_PATH_SEPARATOR = Region.SEPARATOR;
 
   protected static boolean isDebugging() {
     return debug;
@@ -55,25 +58,39 @@ public abstract class AbstractGemFireTest {
     debug = true;
   }
 
-  protected static void assertRegionExists(final String expectedRegionName, final Region region) {
-    assertRegionExists(expectedRegionName, REGION_PATH_SEPARATOR.concat(expectedRegionName), region);
+  protected static void assertRegion(final Region region, final String expectedRegionName) {
+    assertRegion(region, expectedRegionName, toRegionPath(expectedRegionName));
   }
 
-  protected static void assertRegionExists(final String expectedRegionName, final String expectedRegionPath, final Region region) {
-    assertNotNull(String.format("The Region with the expected name (%1$s) was null!", expectedRegionName), region);
+  protected static void assertRegion(final Region region, final String expectedRegionName, final String expectedRegionPath) {
+    assertThat(String.format("The Region with the expected name (%1$s) was null!", expectedRegionName), region, is(notNullValue()));
 
-    String regionName = region.getName();
-    String regionPath = region.getFullPath();
+    String actualRegionName = region.getName();
+    String actualRegionPath = region.getFullPath();
 
-    assertEquals(String.format("Expected a Region named (%1$s); but was (%2$s)!", expectedRegionName, regionName),
-      expectedRegionName, regionName);
+    assertThat(String.format("Expected a Region named (%1$s); but was (%2$s)!", expectedRegionName, actualRegionName),
+      actualRegionName, is(equalTo(expectedRegionName)));
 
-    assertEquals(String.format("Expected a Region path of (%1$s); but was (%2$s)!", expectedRegionName, regionPath),
-      expectedRegionPath, regionPath);
+    assertThat(String.format("Expected a Region path of (%1$s); but was (%2$s)!", expectedRegionName, actualRegionPath),
+      actualRegionPath, is(equalTo(expectedRegionPath)));
 
     if (isDebugging()) {
-      System.out.printf("Region (%1$s) found!%n", regionName);
+      System.out.printf("Region (%1$s) found!%n", actualRegionName);
     }
+  }
+
+  protected static void assertRegion(final Region region, final String expectedRegionName, final DataPolicy expectedDataPolicy) {
+    assertRegion(region, expectedRegionName, toRegionPath(expectedRegionName), expectedDataPolicy);
+  }
+
+  protected static void assertRegion(final Region region,
+                                     final String expectedRegionName,
+                                     final String expectedRegionPath,
+                                     final DataPolicy expectedDataPolicy)
+  {
+    assertRegion(region, expectedRegionName, expectedRegionPath);
+    assertThat(region.getAttributes(), is(notNullValue()));
+    assertThat(region.getAttributes().getDataPolicy(), is(equalTo(expectedDataPolicy)));
   }
 
   protected void printBeanNames(final ApplicationContext applicationContext, final Class<?> beanType) {
@@ -85,6 +102,7 @@ public abstract class AbstractGemFireTest {
   protected static void printRegionHierarchy(final Region<?, ?> region) {
     if (region != null) {
       System.out.printf("%1$s%n", region.getFullPath());
+
       for (Region subRegion : region.subregions(SUBREGION_RECURSIVE)) {
         printRegionHierarchy(subRegion);
       }
@@ -96,6 +114,10 @@ public abstract class AbstractGemFireTest {
 
   protected static String toPathname(final Class<?> type) {
     return type.getName().replaceAll("\\.", File.separator);
+  }
+
+  protected static String toRegionPath(final String regionName) {
+    return String.format("%1$s%2$s", REGION_PATH_SEPARATOR, regionName);
   }
 
 }

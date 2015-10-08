@@ -16,6 +16,8 @@
   <util:properties id="client.properties">
     <prop key="client.locator.host">localhost</prop>
     <prop key="client.locator.port">11235</prop>
+    <prop key="client.server.host">localhost</prop>
+    <prop key="client.server.port">12480</prop>
     <prop key="gemfire.security.ssl.enabled">true</prop>
     <prop key="gemfire.security.ssl.require-authentication">true</prop>
     <prop key="gemfire.security.ssl.protocols">any</prop>
@@ -41,6 +43,11 @@
     <prop key="mcast-port">0</prop>
   </util:properties>
 
+  <util:properties id="plainGemfireProperties">
+    <prop key="log-level">config</prop>
+    <prop key="mcast-port">0</prop>
+  </util:properties>
+
   <util:properties id="serverSslGemfireProperties">
     <prop key="log-level">config</prop>
     <prop key="server-ssl-enabled">${gemfire.security.ssl.enabled}</prop>
@@ -56,9 +63,12 @@
 
   <gfe:pool id="gemfireLocatorPool" max-connections="1" min-connections="1">
     <gfe:locator host="${client.locator.host}" port="${client.locator.port}"/>
+<!--
+    <gfe:server host="${client.server.host}" port="${client.server.port}"/>
+-->
   </gfe:pool>
 
-  <gfe:client-cache properties-ref="clusterSslGemfireProperties" pool-name="gemfireLocatorPool"/>
+  <gfe:client-cache properties-ref="serverSslGemfireProperties" pool-name="gemfireLocatorPool"/>
 
   <gfe:client-region id="Example" pool-name="gemfireLocatorPool" shortcut="PROXY"/>
 

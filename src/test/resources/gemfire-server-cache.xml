@@ -3,5 +3,5 @@
   "http://www.gemstone.com/dtd/cache8_0.dtd">
 <cache>
   <cache-server bind-address="localhost" port="12480"/>
-  <region name="Example" refid="PARTITION"/>
+  <region name="Example" refid="REPLICATE"/>
 </cache>

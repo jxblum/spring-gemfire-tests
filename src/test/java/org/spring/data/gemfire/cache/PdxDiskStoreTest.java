@@ -85,13 +85,13 @@ public class PdxDiskStoreTest extends AbstractGemFireTest {
 
   @Test
   public void testPersistentRegionWithDataCreation() {
-    assertRegionExists("PdxData", "/PdxData", pdxDataRegion);
+    assertRegion(pdxDataRegion, "PdxData", "/PdxData");
     assertEquals(NUMBER_OF_REGION_ENTRIES, pdxDataRegion.size());
   }
 
   @Test
   public void testPersistentRegionWithDataRecovery() {
-    assertRegionExists("PdxData", "/PdxData", pdxDataRegion);
+    assertRegion(pdxDataRegion, "PdxData", "/PdxData");
     assertEquals(NUMBER_OF_REGION_ENTRIES, pdxDataRegion.size());
   }
 

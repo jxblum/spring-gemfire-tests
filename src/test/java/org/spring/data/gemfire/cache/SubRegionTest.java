@@ -175,10 +175,10 @@ public class SubRegionTest extends AbstractGemFireTest {
     Region gemfireOrdersRegion = gemfireCache.getRegion("/Customers/Accounts/Orders");
     Region gemfireItemsRegion = gemfireCache.getRegion("/Customers/Accounts/Orders/Items");
 
-    assertRegionExists("Customers", "/Customers", gemfireCustomersRegion);
-    assertRegionExists("Accounts", "/Customers/Accounts", gemfireAccountsRegion);
-    assertRegionExists("Orders", "/Customers/Accounts/Orders", gemfireOrdersRegion);
-    assertRegionExists("Items", "/Customers/Accounts/Orders/Items", gemfireItemsRegion);
+    assertRegion(gemfireCustomersRegion, "Customers", "/Customers");
+    assertRegion(gemfireAccountsRegion, "Accounts", "/Customers/Accounts");
+    assertRegion(gemfireOrdersRegion, "Orders", "/Customers/Accounts/Orders");
+    assertRegion(gemfireItemsRegion, "Items", "/Customers/Accounts/Orders/Items");
 
     // The following triggers the null Regions (Accounts, Orders, Items) to be created in GemFire's Cache!
     Region springCustomersRegion = applicationContext.getBean("Customers", Region.class);
@@ -186,23 +186,23 @@ public class SubRegionTest extends AbstractGemFireTest {
     Region springOrdersRegion = applicationContext.getBean("/Customers/Accounts/Orders", Region.class);
     Region springItemsRegion = applicationContext.getBean("/Customers/Accounts/Orders/Items", Region.class);
 
-    assertRegionExists("Customers", "/Customers", springCustomersRegion);
-    assertRegionExists("Accounts", "/Customers/Accounts", springAccountsRegion);
-    assertRegionExists("Orders", "/Customers/Accounts/Orders", springOrdersRegion);
-    assertRegionExists("Items", "/Customers/Accounts/Orders/Items", springItemsRegion);
+    assertRegion(springCustomersRegion, "Customers", "/Customers");
+    assertRegion(springAccountsRegion, "Accounts", "/Customers/Accounts");
+    assertRegion(springOrdersRegion, "Orders", "/Customers/Accounts/Orders");
+    assertRegion(springItemsRegion, "Items", "/Customers/Accounts/Orders/Items");
 
     gemfireCustomersRegion = gemfireCache.getRegion("/Customers");
     gemfireAccountsRegion = gemfireCache.getRegion("/Customers/Accounts");
     gemfireOrdersRegion = gemfireCache.getRegion("/Customers/Accounts/Orders");
     gemfireItemsRegion = gemfireCache.getRegion("/Customers/Accounts/Orders/Items");
 
-    assertRegionExists("Customers", "/Customers", gemfireCustomersRegion);
+    assertRegion(gemfireCustomersRegion, "Customers", "/Customers");
     assertSame(springCustomersRegion, gemfireCustomersRegion);
-    assertRegionExists("Accounts", "/Customers/Accounts", gemfireAccountsRegion);
+    assertRegion(gemfireAccountsRegion, "Accounts", "/Customers/Accounts");
     assertSame(springAccountsRegion, gemfireAccountsRegion);
-    assertRegionExists("Orders", "/Customers/Accounts/Orders", gemfireOrdersRegion);
+    assertRegion(gemfireOrdersRegion, "Orders", "/Customers/Accounts/Orders");
     assertSame(springOrdersRegion, gemfireOrdersRegion);
-    assertRegionExists("Items", "/Customers/Accounts/Orders/Items", gemfireItemsRegion);
+    assertRegion(gemfireItemsRegion, "Items", "/Customers/Accounts/Orders/Items");
     assertSame(springItemsRegion, gemfireItemsRegion);
 
     assertSame(gemfireAccountsRegion, gemfireCustomersRegion.getSubregion("Accounts"));
@@ -223,19 +223,19 @@ public class SubRegionTest extends AbstractGemFireTest {
     System.out.printf("testSubRegionCreation Region Hierarchy:%n");
     printRegionHierarchy(customersRegion);
 
-    assertRegionExists("Customers", "/Customers", customersRegion);
+    assertRegion(customersRegion, "Customers", "/Customers");
 
     final Region accountsRegion = customersRegion.getSubregion("Accounts");
 
-    assertRegionExists("Accounts", "/Customers/Accounts", accountsRegion);
+    assertRegion(accountsRegion, "Accounts", "/Customers/Accounts");
 
     final Region ordersRegion = accountsRegion.getSubregion("Orders");
 
-    assertRegionExists("Orders", "/Customers/Accounts/Orders", ordersRegion);
+    assertRegion(ordersRegion, "Orders", "/Customers/Accounts/Orders");
 
     final Region itemsRegion = ordersRegion.getSubregion("Items");
 
-    assertRegionExists("Items", "/Customers/Accounts/Orders/Items", itemsRegion);
+    assertRegion(itemsRegion, "Items", "/Customers/Accounts/Orders/Items");
   }
 
 }

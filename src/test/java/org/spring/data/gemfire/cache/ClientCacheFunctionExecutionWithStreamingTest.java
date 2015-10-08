@@ -65,7 +65,7 @@ public class ClientCacheFunctionExecutionWithStreamingTest extends AbstractGemFi
 
   @Before
   public void setup() {
-    assertRegionExists("Numbers", numbers);
+    assertRegion(numbers, "Numbers");
 
     numbers.put("one", 1);
     numbers.put("two", 2);
@@ -73,7 +73,7 @@ public class ClientCacheFunctionExecutionWithStreamingTest extends AbstractGemFi
     numbers.put("four", 4);
     numbers.put("five", 5);
 
-    assertRegionExists("Collections", collections);
+    assertRegion(collections, "Collections");
 
     collections.put("one", new ArrayList<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)));
     collections.put("two", new ArrayList<String>(Arrays.asList("assert", "mock", "test")));

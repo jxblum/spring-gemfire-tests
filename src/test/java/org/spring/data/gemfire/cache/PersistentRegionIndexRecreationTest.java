@@ -61,7 +61,7 @@ public class PersistentRegionIndexRecreationTest extends AbstractGemFireTest {
   @Repeat(2)
   @DirtiesContext
   public void testRegionConfigurationAndData() {
-    assertRegionExists("Gemstones", gemstones);
+    assertRegion(gemstones, "Gemstones");
     assertNotNull(gemstones.getAttributes());
     assertEquals(DataPolicy.PERSISTENT_PARTITION, gemstones.getAttributes().getDataPolicy());
     assertEquals(create(2l, "DIAMOND"), gemstones.get(2l));

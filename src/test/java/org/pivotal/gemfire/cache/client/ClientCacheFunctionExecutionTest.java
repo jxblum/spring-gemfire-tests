@@ -102,7 +102,7 @@ public class ClientCacheFunctionExecutionTest extends AbstractGemFireIntegration
 
     numbers = clientCache.getRegion("/Numbers");
 
-    assertRegionExists("Numbers", numbers);
+    assertRegion(numbers, "Numbers");
 
     numbers.put("one", 1);
     numbers.put("two", 2);
@@ -112,7 +112,7 @@ public class ClientCacheFunctionExecutionTest extends AbstractGemFireIntegration
 
     collections = clientCache.getRegion("/Collections");
 
-    assertRegionExists("Collections", collections);
+    assertRegion(collections, "Collections");
 
     collections.put("one", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)));
     collections.put("two", new ArrayList<>(Arrays.asList("assert", "mock", "test")));

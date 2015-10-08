@@ -52,8 +52,8 @@ public class ColocatedRegionTest extends AbstractGemFireTest {
 
   @Test
   public void testColocatedRegionCreation() {
-    assertRegionExists("Source", "/Source", source);
-    assertRegionExists("Colocated", "/Colocated", colocated);
+    assertRegion(source, "Source", "/Source");
+    assertRegion(colocated, "Colocated", "/Colocated");
   }
 
 }

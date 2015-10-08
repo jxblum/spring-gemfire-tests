@@ -50,12 +50,12 @@ public class SubRegionNamespaceTest extends AbstractGemFireTest {
 
     printRegionHierarchy(parent);
 
-    assertRegionExists("parent", "/parent", parent);
-    assertRegionExists("child", "/parent/child", child);
+    assertRegion(parent, "parent", "/parent");
+    assertRegion(child, "child", "/parent/child");
     assertSame(child, parent.getSubregion("child"));
-    assertRegionExists("sibling", "/parent/sibling", sibling);
+    assertRegion(sibling, "sibling", "/parent/sibling");
     assertSame(sibling, parent.getSubregion("sibling"));
-    assertRegionExists("grandchild", "/parent/child/grandchild", grandchild);
+    assertRegion(grandchild, "grandchild", "/parent/child/grandchild");
     assertSame(grandchild, child.getSubregion("grandchild"));
   }
 

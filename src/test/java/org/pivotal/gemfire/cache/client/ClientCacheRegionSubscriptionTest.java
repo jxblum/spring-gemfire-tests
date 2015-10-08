@@ -67,7 +67,7 @@ public class ClientCacheRegionSubscriptionTest extends AbstractGemFireIntegratio
 
     Properties gemfireProperties = new Properties();
 
-    gemfireProperties.setProperty(DistributionConfig.NAME_NAME, ClientCacheIndexingTest.class.getSimpleName());
+    gemfireProperties.setProperty(DistributionConfig.NAME_NAME, ClientCacheRegionSubscriptionTest.class.getSimpleName());
     gemfireProperties.setProperty(DistributionConfig.ENABLE_CLUSTER_CONFIGURATION_NAME, "false");
     gemfireProperties.setProperty(DistributionConfig.HTTP_SERVICE_PORT_NAME, "0");
     gemfireProperties.setProperty(DistributionConfig.JMX_MANAGER_NAME, "false");
@@ -102,12 +102,12 @@ public class ClientCacheRegionSubscriptionTest extends AbstractGemFireIntegratio
   }
 
   @Test
-  public void testClientCacheRegionSubscriptionPolicy() {
+  public void clientCacheRegionSubscriptionPolicy() {
     assertNotNull("The GemFire Client Cache was not properly configured and initialized!", clientCache);
 
     Region<?, ?> example = clientCache.getRegion("/Example");
 
-    assertRegionExists("Example", example);
+    assertRegion(example, "Example");
 
     RegionAttributes<?, ?> exampleAttributes = example.getAttributes();
 
@@ -119,7 +119,7 @@ public class ClientCacheRegionSubscriptionTest extends AbstractGemFireIntegratio
     SubscriptionAttributes subscriptionAttributes = exampleAttributes.getSubscriptionAttributes();
 
     assertNotNull(subscriptionAttributes);
-    assertEquals(InterestPolicy.ALL, subscriptionAttributes.getInterestPolicy());
+    assertEquals(InterestPolicy.CACHE_CONTENT, subscriptionAttributes.getInterestPolicy());
   }
 
 }
