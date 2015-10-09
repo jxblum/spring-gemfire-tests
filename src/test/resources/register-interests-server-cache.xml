@@ -6,5 +6,8 @@
   <region name="Example" refid="REPLICATE"/>
   <initializer>
     <class-name>org.pivotal.gemfire.cache.client.DurableClientCacheIntegrationTest$RegionDataLoadingInitializer</class-name>
+    <parameter name="region">
+      <string>Example</string>
+    </parameter>
   </initializer>
 </cache>
