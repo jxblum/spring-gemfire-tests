@@ -36,6 +36,7 @@ import com.gemstone.gemfire.distributed.ServerLauncher.ServerState;
 import com.gemstone.gemfire.distributed.internal.DistributionConfig;
 
 import org.codeprimate.io.FileSystemUtils;
+import org.codeprimate.lang.StringUtils;
 import org.codeprimate.process.support.ProcessUtils;
 import org.spring.data.gemfire.app.main.SpringGemFireCacheServerLauncher;
 import org.spring.data.gemfire.support.DistributedSystemConfigurationUtils;
@@ -73,9 +74,13 @@ public abstract class AbstractGemFireIntegrationTest extends AbstractGemFireTest
                                                      final Properties gemfireProperties)
     throws IOException
   {
+    String gemfireMemberName = gemfireProperties.getProperty(DistributionConfig.NAME_NAME);
     String serverId = DATE_FORMAT.format(Calendar.getInstance().getTime());
 
-    File serverWorkingDirectory = FileSystemUtils.createFile("server-".concat(serverId));
+    gemfireMemberName = String.format("%1$s-%2$s", (StringUtils.hasText(gemfireMemberName)
+      ? gemfireMemberName : ""), serverId);
+
+    File serverWorkingDirectory = FileSystemUtils.createFile(gemfireMemberName.toLowerCase());
 
     Assert.isTrue(FileSystemUtils.createDirectory(serverWorkingDirectory), String.format(
       "Failed to create working directory (%1$s) in which the GemFire Server will run!", serverWorkingDirectory));
