@@ -73,7 +73,6 @@ import org.spring.data.gemfire.AbstractGemFireIntegrationTest;
  */
 public class DurableClientCacheIntegrationTest extends AbstractGemFireIntegrationTest {
 
-  private static final AtomicInteger EVENT_COUNT = new AtomicInteger(0);
   private static final AtomicInteger RUN_COUNT = new AtomicInteger(1);
 
   private static final int SERVER_PORT = 12480;
@@ -98,7 +97,7 @@ public class DurableClientCacheIntegrationTest extends AbstractGemFireIntegratio
     gemfireProperties.setProperty(DistributionConfig.NAME_NAME, gemfireMemberName);
     gemfireProperties.setProperty(DistributionConfig.HTTP_SERVICE_PORT_NAME, "0");
     gemfireProperties.setProperty(DistributionConfig.JMX_MANAGER_NAME, "false");
-    gemfireProperties.setProperty(DistributionConfig.LOG_LEVEL_NAME, "warning");
+    gemfireProperties.setProperty(DistributionConfig.LOG_LEVEL_NAME, "config");
     gemfireProperties.setProperty(DistributionConfig.MCAST_PORT_NAME, "0");
     gemfireProperties.setProperty(DistributionConfig.USE_CLUSTER_CONFIGURATION_NAME, "false");
 
@@ -170,18 +169,10 @@ public class DurableClientCacheIntegrationTest extends AbstractGemFireIntegratio
           System.out.printf("Created new entry in Region (%1$s) with key (%2$s) and value (%3$s)%n",
             event.getRegion().getFullPath(), event.getKey(), event.getNewValue());
           regionCacheListenerEventValues.add(event.getNewValue());
-          EVENT_COUNT.incrementAndGet();
         }
 
         @Override public void afterRegionLive(final RegionEvent<String, Integer> event) {
           System.out.printf("Region (%1$s) is live!%n", event.getRegion().getName());
-        }
-
-        @Override public void afterUpdate(final EntryEvent<String, Integer> event) {
-          System.out.printf("Updated entry in Region (%1$s) with key (%2$s) from (%3$s) to (%4$s)%n",
-            event.getRegion().getFullPath(), event.getKey(), event.getOldValue(), event.getNewValue());
-          regionCacheListenerEventValues.add(event.getNewValue());
-          EVENT_COUNT.incrementAndGet();
         }
       });
     }
@@ -241,7 +232,7 @@ public class DurableClientCacheIntegrationTest extends AbstractGemFireIntegratio
     ThreadUtils.waitFor(TimeUnit.SECONDS.toMillis(20)).checkEvery(TimeUnit.MILLISECONDS.toMillis(500)).on(
       new CompletableTask() {
         @Override public boolean isComplete() {
-          return (EVENT_COUNT.get() >= 2);
+          return (regionCacheListenerEventValues.size() >= 2);
         }
       }
     );
@@ -266,7 +257,12 @@ public class DurableClientCacheIntegrationTest extends AbstractGemFireIntegratio
   public void durableClientGetsUpdatesFromServerWhileClientWasOffline() {
     assumeThat(RUN_COUNT.get(), is(equalTo(2)));
     assertRegionContents(example, 1, 2, 3, 4, 5);
+
+    // the wait is necessary since the GemFire Server will not have propagated the events in the durable client's queue
+    // immediately after the client signals ready-for-events in a timely fashion before the test case
+    // makes the following assertions...
     waitForRegionEntryEvents();
+
     assertThat(regionCacheListenerEventValues.size(), is(equalTo(2)));
     assertThat(regionCacheListenerEventValues, is(equalTo(Arrays.asList(4, 5))));
   }
