@@ -38,6 +38,7 @@ import com.gemstone.gemfire.cache.Declarable;
 import com.gemstone.gemfire.cache.EntryEvent;
 import com.gemstone.gemfire.cache.InterestResultPolicy;
 import com.gemstone.gemfire.cache.Region;
+import com.gemstone.gemfire.cache.RegionEvent;
 import com.gemstone.gemfire.cache.client.ClientCache;
 import com.gemstone.gemfire.cache.client.ClientCacheFactory;
 import com.gemstone.gemfire.cache.client.ClientRegionFactory;
@@ -46,13 +47,14 @@ import com.gemstone.gemfire.cache.util.CacheListenerAdapter;
 import com.gemstone.gemfire.distributed.ServerLauncher;
 import com.gemstone.gemfire.distributed.internal.DistributionConfig;
 
+import org.codeprimate.lang.concurrent.ThreadUtils;
+import org.codeprimate.lang.concurrent.ThreadUtils.CompletableTask;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.spring.data.gemfire.AbstractGemFireIntegrationTest;
-import org.springframework.test.annotation.DirtiesContext;
 
 /**
  * The DurableClientCacheIntegrationTest class is a test suite of test cases testing the contract and behavior
@@ -65,11 +67,13 @@ import org.springframework.test.annotation.DirtiesContext;
  * @see com.gemstone.gemfire.cache.Declarable
  * @see com.gemstone.gemfire.cache.Region
  * @see com.gemstone.gemfire.cache.client.ClientCache
+ * @see com.gemstone.gemfire.cache.util.CacheListenerAdapter
  * @see com.gemstone.gemfire.distributed.ServerLauncher
  * @since 1.0.0
  */
 public class DurableClientCacheIntegrationTest extends AbstractGemFireIntegrationTest {
 
+  private static final AtomicInteger EVENT_COUNT = new AtomicInteger(0);
   private static final AtomicInteger RUN_COUNT = new AtomicInteger(1);
 
   private static final int SERVER_PORT = 12480;
@@ -86,7 +90,7 @@ public class DurableClientCacheIntegrationTest extends AbstractGemFireIntegratio
 
   @BeforeClass
   public static void setupGemFireServer() throws IOException {
-    String cacheXmlPathname = "register-interests-server-cache.xml";
+    String cacheXmlPathname = "durable-client-server-cache.xml";
     String gemfireMemberName = DurableClientCacheIntegrationTest.class.getSimpleName().concat("Server");
 
     Properties gemfireProperties = new Properties();
@@ -94,7 +98,7 @@ public class DurableClientCacheIntegrationTest extends AbstractGemFireIntegratio
     gemfireProperties.setProperty(DistributionConfig.NAME_NAME, gemfireMemberName);
     gemfireProperties.setProperty(DistributionConfig.HTTP_SERVICE_PORT_NAME, "0");
     gemfireProperties.setProperty(DistributionConfig.JMX_MANAGER_NAME, "false");
-    gemfireProperties.setProperty(DistributionConfig.LOG_LEVEL_NAME, "config");
+    gemfireProperties.setProperty(DistributionConfig.LOG_LEVEL_NAME, "warning");
     gemfireProperties.setProperty(DistributionConfig.MCAST_PORT_NAME, "0");
     gemfireProperties.setProperty(DistributionConfig.USE_CLUSTER_CONFIGURATION_NAME, "false");
 
@@ -111,7 +115,7 @@ public class DurableClientCacheIntegrationTest extends AbstractGemFireIntegratio
   public void setup() {
     clientCache = registerInterests(createClientCache(true));
 
-    //assertThat(clientCache.getDefaultPool().getPendingEventCount(), is(equalTo((RUN_COUNT.get() == 1 ? -2 : 2))));
+    assertThat(clientCache, is(notNullValue()));
 
     example = clientCache.getRegion(toRegionPath("Example"));
 
@@ -160,6 +164,28 @@ public class DurableClientCacheIntegrationTest extends AbstractGemFireIntegratio
     clientRegionFactory.setKeyConstraint(String.class);
     clientRegionFactory.setValueConstraint(Integer.class);
 
+    if (durable) {
+      clientRegionFactory.addCacheListener(new CacheListenerAdapter<String, Integer>() {
+        @Override public void afterCreate(final EntryEvent<String, Integer> event) {
+          System.out.printf("Created new entry in Region (%1$s) with key (%2$s) and value (%3$s)%n",
+            event.getRegion().getFullPath(), event.getKey(), event.getNewValue());
+          regionCacheListenerEventValues.add(event.getNewValue());
+          EVENT_COUNT.incrementAndGet();
+        }
+
+        @Override public void afterRegionLive(final RegionEvent<String, Integer> event) {
+          System.out.printf("Region (%1$s) is live!%n", event.getRegion().getName());
+        }
+
+        @Override public void afterUpdate(final EntryEvent<String, Integer> event) {
+          System.out.printf("Updated entry in Region (%1$s) with key (%2$s) from (%3$s) to (%4$s)%n",
+            event.getRegion().getFullPath(), event.getKey(), event.getOldValue(), event.getNewValue());
+          regionCacheListenerEventValues.add(event.getNewValue());
+          EVENT_COUNT.incrementAndGet();
+        }
+      });
+    }
+
     Region<String, Integer> example = clientRegionFactory.create("Example");
 
     assertRegion(example, "Example", DataPolicy.NORMAL);
@@ -172,21 +198,9 @@ public class DurableClientCacheIntegrationTest extends AbstractGemFireIntegratio
 
     assertRegion(example, "Example", DataPolicy.NORMAL);
 
-    example.getAttributesMutator().addCacheListener(new CacheListenerAdapter<String, Integer>() {
-      @Override public void afterCreate(final EntryEvent<String, Integer> event) {
-        System.out.printf("Created new entry in Region (%1$s) with key (%2$s) and value (%3$s)%n",
-          event.getRegion().getFullPath(), event.getKey(), event.getNewValue());
-        regionCacheListenerEventValues.add(event.getNewValue());
-      }
-
-      @Override public void afterUpdate(final EntryEvent<String, Integer> event) {
-        System.out.printf("Updated entry in Region (%1$s) with key (%2$s) from (%3$s) to (%4$s)%n",
-          event.getRegion().getFullPath(), event.getKey(), event.getOldValue(), event.getNewValue());
-        regionCacheListenerEventValues.add(event.getNewValue());
-      }
-    });
-
     example.registerInterestRegex(".*", InterestResultPolicy.KEYS_VALUES, true);
+
+    //assertThat(clientCache.getDefaultPool().getPendingEventCount(), is(equalTo(RUN_COUNT.get() == 1 ? -2 : 2)));
 
     clientCache.readyForEvents();
 
@@ -223,6 +237,16 @@ public class DurableClientCacheIntegrationTest extends AbstractGemFireIntegratio
     }
   }
 
+  protected void waitForRegionEntryEvents() {
+    ThreadUtils.waitFor(TimeUnit.SECONDS.toMillis(20)).checkEvery(TimeUnit.MILLISECONDS.toMillis(500)).on(
+      new CompletableTask() {
+        @Override public boolean isComplete() {
+          return (EVENT_COUNT.get() >= 2);
+        }
+      }
+    );
+  }
+
   protected void assertRegionContents(Region<?, ?> region, Object... values) {
     assertThat(region.size(), is(equalTo(values.length)));
 
@@ -232,7 +256,6 @@ public class DurableClientCacheIntegrationTest extends AbstractGemFireIntegratio
   }
 
   @Test
-  @DirtiesContext
   public void durableClientGetsInitializedWithDataOnServer() {
     assumeThat(RUN_COUNT.get(), is(equalTo(1)));
     assertRegionContents(example, 1, 2, 3);
@@ -243,12 +266,14 @@ public class DurableClientCacheIntegrationTest extends AbstractGemFireIntegratio
   public void durableClientGetsUpdatesFromServerWhileClientWasOffline() {
     assumeThat(RUN_COUNT.get(), is(equalTo(2)));
     assertRegionContents(example, 1, 2, 3, 4, 5);
+    waitForRegionEntryEvents();
     assertThat(regionCacheListenerEventValues.size(), is(equalTo(2)));
     assertThat(regionCacheListenerEventValues, is(equalTo(Arrays.asList(4, 5))));
   }
 
   public static class RegionDataLoadingInitializer<K, V> implements Declarable {
 
+    protected static final String DATA_POLICY_PARAMETER_NAME = "dataPolicy";
     protected static final String REGION_PARAMETER_NAME = "region";
 
     @SuppressWarnings("unchecked")
@@ -260,9 +285,26 @@ public class DurableClientCacheIntegrationTest extends AbstractGemFireIntegratio
       return (Map<K, V>) regionData;
     }
 
+    protected DataPolicy resolveDataPolicy(final String dataPolicyName) {
+      try {
+        for (byte ordinal = 0; ordinal < Byte.MAX_VALUE; ordinal++) {
+          DataPolicy dataPolicy = DataPolicy.fromOrdinal(ordinal);
+
+          if (dataPolicy.toString().equalsIgnoreCase(dataPolicyName)) {
+            return dataPolicy;
+          }
+        }
+      }
+      catch (Exception ignore) {
+      }
+
+      return null;
+    }
+
     @Override
     public void init(final Properties parameters) {
       String regionName = parameters.getProperty(REGION_PARAMETER_NAME);
+      String dataPolicyName = parameters.getProperty(DATA_POLICY_PARAMETER_NAME);
 
       Cache gemfireCache = CacheFactory.getAnyInstance();
 
@@ -270,7 +312,7 @@ public class DurableClientCacheIntegrationTest extends AbstractGemFireIntegratio
 
       Region<K, V> region = gemfireCache.getRegion(toRegionPath(regionName));
 
-      assertRegion(region, regionName, DataPolicy.REPLICATE);
+      assertRegion(region, regionName, resolveDataPolicy(dataPolicyName));
 
       region.putAll(getRegionData());
     }

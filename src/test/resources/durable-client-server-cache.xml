@@ -9,5 +9,8 @@
     <parameter name="region">
       <string>Example</string>
     </parameter>
+    <parameter name="dataPolicy">
+      <string>REPLICATE</string>
+    </parameter>
   </initializer>
 </cache>

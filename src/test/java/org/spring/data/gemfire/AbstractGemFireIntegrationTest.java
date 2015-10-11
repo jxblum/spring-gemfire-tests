@@ -237,4 +237,16 @@ public abstract class AbstractGemFireIntegrationTest extends AbstractGemFireTest
     }
   }
 
+  protected static void pause(final long milliseconds) {
+    final long timeout = (System.currentTimeMillis() + milliseconds);
+
+    while (System.currentTimeMillis() < timeout) {
+      try {
+        Thread.sleep(Math.min(milliseconds, TimeUnit.MILLISECONDS.toMillis(500)));
+      }
+      catch (InterruptedException ignore) {
+      }
+    }
+  }
+
 }
