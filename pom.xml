@@ -45,7 +45,7 @@
     <mockito.version>1.10.19</mockito.version>
     <multithreadedtc.version>1.01</multithreadedtc.version>
     <slf4j.version>1.7.12</slf4j.version>
-    <spring.version>4.1.7.RELEASE</spring.version>
+    <spring.version>4.2.2.BUILD-SNAPSHOT</spring.version>
     <spring-data-commons.version>1.11.0.BUILD-SNAPSHOT</spring-data-commons.version>
     <spring-data-gemfire.version>1.7.0.RELEASE</spring-data-gemfire.version>
     <!--
