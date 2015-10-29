@@ -16,6 +16,7 @@
 
 package org.spring.data.gemfire.cache;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 
@@ -174,8 +175,8 @@ public class PeerCacheFunctionCreationExecutionTest extends AbstractGemFireTest 
   public void testRegionSizeOnRegionUsingSpringGemfireOnRegionFunctionTemplate() {
     GemfireOnRegionFunctionTemplate template = new GemfireOnRegionFunctionTemplate(appData);
 
-    assertEquals(EXPECTED_REGION_SIZE, template.executeAndextract("regionSize",
-      Collections.emptySet(), appData.getName()));
+    assertThat(template.executeAndextract("regionSize", Collections.emptySet(), appData.getName()),
+      is(equalTo(EXPECTED_REGION_SIZE)));
   }
 
 }

@@ -16,6 +16,7 @@
 
 package org.spring.data.gemfire.cache;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 
@@ -180,7 +181,8 @@ public class ClientCacheFunctionExecutionTest extends AbstractGemFireIntegration
   public void testRegionSizeOnRegionUsingSpringGemfireOnRegionFunctionTemplate() {
     GemfireOnRegionFunctionTemplate template = new GemfireOnRegionFunctionTemplate(appDataProxy);
 
-    assertEquals(EXPECTED_REGION_SIZE, template.executeAndextract("regionSize", Collections.emptySet(), "AppData"));
+    assertThat(template.executeAndextract("regionSize", Collections.emptySet(), "AppData"),
+      is(equalTo(EXPECTED_REGION_SIZE)));
   }
 
   @Test(expected = RuntimeException.class)

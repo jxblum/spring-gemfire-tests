@@ -1,6 +1,7 @@
 .bak/
 .idea/
 target/
+tmp/
 *.iws
 *.ipr
 *.iml

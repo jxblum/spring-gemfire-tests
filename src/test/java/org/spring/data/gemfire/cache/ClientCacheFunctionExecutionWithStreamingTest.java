@@ -16,6 +16,7 @@
 
 package org.spring.data.gemfire.cache;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
@@ -83,7 +84,8 @@ public class ClientCacheFunctionExecutionWithStreamingTest extends AbstractGemFi
   public void testClientServerFunctionExecution() {
     GemfireOnRegionFunctionTemplate onNumbersFunctionTemplate = new GemfireOnRegionFunctionTemplate(numbers);
 
-    assertEquals(3, onNumbersFunctionTemplate.executeAndextract("addition", Collections.emptySet(), "one", "two"));
+    assertThat(onNumbersFunctionTemplate.executeAndextract("addition", Collections.emptySet(), "one", "two"),
+      is(equalTo(3)));
 
     GemfireOnRegionFunctionTemplate onCollectionsFunctionTemplate = new GemfireOnRegionFunctionTemplate(collections);
 
@@ -95,7 +97,8 @@ public class ClientCacheFunctionExecutionWithStreamingTest extends AbstractGemFi
     assertEquals(2, integers.size());
     assertTrue(integers.containsAll(Arrays.asList(0, 1)));
 
-    assertEquals(9, onNumbersFunctionTemplate.executeAndextract("addition", Collections.emptySet(), "four", "five"));
+    assertThat(onNumbersFunctionTemplate.executeAndextract("addition", Collections.emptySet(), "four", "five"),
+      is(equalTo(9)));
 
     List<Object> strings = onCollectionsFunctionTemplate.executeAndextract("streaming", Collections.emptySet(), "two");
 
