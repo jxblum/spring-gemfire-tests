@@ -31,7 +31,7 @@
   </developers>
 
   <properties>
-    <cp-core.version>1.2.0.BUILD-SNAPSHOT</cp-core.version>
+    <codeprimate-api.version>1.2.0.BUILD-SNAPSHOT</codeprimate-api.version>
     <easymock.version>3.3.1</easymock.version>
     <gemfire.version>8.2.0</gemfire.version>
     <geode.version>1.0.0-incubating-SNAPSHOT</geode.version>
@@ -45,7 +45,7 @@
     <mockito.version>1.10.19</mockito.version>
     <multithreadedtc.version>1.01</multithreadedtc.version>
     <slf4j.version>1.7.12</slf4j.version>
-    <spring.version>4.2.2.BUILD-SNAPSHOT</spring.version>
+    <spring.version>4.2.2.RELEASE</spring.version>
     <spring-data-commons.version>1.11.0.BUILD-SNAPSHOT</spring-data-commons.version>
     <spring-data-gemfire.version>1.7.0.RELEASE</spring-data-gemfire.version>
     <!--
@@ -126,10 +126,10 @@
     <!-- Codeprimate dependencies -->
     <dependency>
       <groupId>org.codeprimate</groupId>
-      <artifactId>cp-core</artifactId>
-      <version>${cp-core.version}</version>
+      <artifactId>codeprimate-api</artifactId>
+      <version>${codeprimate-api.version}</version>
       <scope>system</scope>
-      <systemPath>${basedir}/lib/cp-core-${cp-core.version}.jar</systemPath>
+      <systemPath>${basedir}/lib/codeprimate-api-${codeprimate-api.version}.jar</systemPath>
       <exclusions>
         <exclusion>
           <groupId>org.springframework</groupId>
