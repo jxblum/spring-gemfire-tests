@@ -66,6 +66,7 @@ public class MultiCachingWithGemFireIntegrationTest {
   private BookService bookService;
 
   @Resource(name = "Books")
+  @SuppressWarnings("all")
   private com.gemstone.gemfire.cache.Region<Object, Book> books;
 
   protected Object getKey(final Book book) {
@@ -91,7 +92,7 @@ public class MultiCachingWithGemFireIntegrationTest {
   }
 
   @Test
-  public void testCacheHitsAndMisses() {
+  public void cacheHitsAndMisses() {
     assertBooks();
     assertFalse(bookService.wasCacheMiss());
 
@@ -206,7 +207,7 @@ public class MultiCachingWithGemFireIntegrationTest {
 
     private static final Random ISBN_NUMBER_GENERATOR = new Random(System.currentTimeMillis());
 
-    private static final Set<ISBN> ISBN_CACHE = new ConcurrentHashSet<ISBN>();
+    private static final Set<ISBN> ISBN_CACHE = new ConcurrentHashSet<>();
 
     private static final String BOOK_TITLE_FORMAT = "Title %1$d";
 
@@ -335,10 +336,12 @@ public class MultiCachingWithGemFireIntegrationTest {
     }
 
     public static String[] toStringArray(final String value) {
-      List<String> stringArray = new ArrayList<String>(value.length());
+      List<String> stringArray = new ArrayList<>(value.length());
+
       for (char chr : value.toCharArray()) {
         stringArray.add(String.valueOf(chr));
       }
+
       return stringArray.toArray(new String[stringArray.size()]);
     }
 
@@ -430,7 +433,7 @@ public class MultiCachingWithGemFireIntegrationTest {
   @Component("isbnToUpcConverter")
   public static class IsbnToUpcConverter implements Converter<ISBN, UPC> {
 
-    public static final AtomicReference<IsbnToUpcConverter> INSTANCE = new AtomicReference<IsbnToUpcConverter>(null);
+    public static final AtomicReference<IsbnToUpcConverter> INSTANCE = new AtomicReference<>(null);
 
     public IsbnToUpcConverter() {
       INSTANCE.compareAndSet(null, this);
