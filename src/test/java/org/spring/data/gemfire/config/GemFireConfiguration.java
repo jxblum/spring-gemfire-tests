@@ -24,7 +24,6 @@ import com.gemstone.gemfire.cache.EvictionAttributes;
 import com.gemstone.gemfire.cache.PartitionAttributes;
 import com.gemstone.gemfire.cache.RegionAttributes;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
@@ -78,14 +77,12 @@ public class GemFireConfiguration {
   }
 
   @Bean
-  @Autowired
-  public CacheFactoryBean gemfireCache(@Qualifier("gemfireProperties") Properties gemfireProperties) throws Exception {
+  public CacheFactoryBean gemfireCache(@Qualifier("gemfireProperties") Properties gemfireProperties) {
     CacheFactoryBean cacheFactory = new CacheFactoryBean();
     cacheFactory.setProperties(gemfireProperties);
     return cacheFactory;
   }
 
-  @Autowired
   @Bean(name = "ExampleLocal")
   public LocalRegionFactoryBean<Long, String> exampleLocalRegion(Cache gemfireCache) throws Exception {
     LocalRegionFactoryBean<Long, String> exampleLocalRegion = new LocalRegionFactoryBean<>();
@@ -94,7 +91,6 @@ public class GemFireConfiguration {
     return exampleLocalRegion;
   }
 
-  @Autowired
   @Bean(name = "ExampleEvictionLocal")
   public LocalRegionFactoryBean<Object, Object> exampleEvictionLocalRegion(Cache gemfireCache,
     @Qualifier("defaultRegionAttributes") RegionAttributes<Object, Object> regionAttributes)
@@ -121,12 +117,10 @@ public class GemFireConfiguration {
   */
 
   @Bean
-  @Autowired
   public GemfireTemplate exampleLocalRegionTemplate(Cache gemfireCache) throws Exception {
     return new GemfireTemplate(exampleLocalRegion(gemfireCache).getObject());
   }
 
-  @Autowired
   @Bean(name = "ExamplePartition")
   /*
   NOTE need to qualify the RegionAttributes bean definition reference since GemFire's
@@ -156,7 +150,6 @@ public class GemFireConfiguration {
   }
 
   @Bean
-  @Autowired
   public RegionAttributesFactoryBean defaultRegionAttributes(EvictionAttributes evictionAttributes) {
     RegionAttributesFactoryBean regionAttributes = new RegionAttributesFactoryBean();
     regionAttributes.setEvictionAttributes(evictionAttributes);
@@ -165,7 +158,6 @@ public class GemFireConfiguration {
   }
 
   @Bean
-  @Autowired
   public RegionAttributesFactoryBean partitionRegionAttributes(PartitionAttributes partitionAttributes, EvictionAttributes evictionAttributes) {
     RegionAttributesFactoryBean regionAttributes = new RegionAttributesFactoryBean();
     regionAttributes.setEvictionAttributes(evictionAttributes);
@@ -174,7 +166,6 @@ public class GemFireConfiguration {
   }
 
   @Bean
-  @Autowired
   public PartitionAttributesFactoryBean defaultPartitionAttributes(@Value("${app.gemfire.defaults.region.partition.local-max-memory}") int localMaxMemory,
                                                                    @Value("${app.gemfire.defaults.region.partition.total-max-memory}") int totalMaxMemory)
   {
@@ -185,7 +176,6 @@ public class GemFireConfiguration {
   }
 
   @Bean
-  @Autowired
   public EvictionAttributesFactoryBean defaultEvictionAttributes(@Value("${app.gemfire.defaults.region.eviction.threshold}") int threshold) {
     EvictionAttributesFactoryBean evictionAttributes = new EvictionAttributesFactoryBean();
     evictionAttributes.setAction(EvictionAction.LOCAL_DESTROY);
