@@ -214,7 +214,7 @@ public class UseCacheExclusivelyInReadOnlyModeCachingTest {
     }
 
     @Around("@annotation(org.springframework.cache.annotation.Cacheable)")
-    public Object process(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object handleReadOnlyMode(ProceedingJoinPoint joinPoint) throws Throwable {
       System.err.printf("**Around Advice Invoked (read-only = %1$s)**%n", isReadOnly());
       if (isNotReadOnly()) {
         System.err.printf("**Proceeding with Joint Point Execution - %1$s(%2$s)**%n",
