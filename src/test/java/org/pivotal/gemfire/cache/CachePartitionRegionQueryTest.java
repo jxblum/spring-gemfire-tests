@@ -59,6 +59,7 @@ import org.junit.Test;
  * @author John Blum
  * @since 1.0.0
  */
+@SuppressWarnings("all")
 public class CachePartitionRegionQueryTest {
 
   private static final AtomicInteger expectedCount = new AtomicInteger(0);
@@ -67,15 +68,23 @@ public class CachePartitionRegionQueryTest {
 
   private static Cache gemfireCache;
 
+  private static Object cookieDoe;
   private static Object froDoe;
+  private static Object janeDoe;
+  private static Object joeDoe;
+  private static Object johnDoe;
   private static Object jonDoeOne;
   private static Object jonDoeTwo;
   private static Object jonDoeThree;
   private static Object jonDoeFour;
   private static Object jonDoeFive;
+  private static Object pieDoe;
+  private static Object ryeDoe;
+  private static Object sourDoe;
 
   protected static final String COUNT_REGION_ENTRIES_QUERY = "SELECT count(*) FROM %1$s";
   protected static final String FIND_BY_CUSTOM_SESSION_ATTRIBUTE = "SELECT s FROM %1$s s WHERE s.%2$s = $1";
+  protected static final String FIND_BY_INDEXED_SESSION_ATTRIBUTE = "SELECT s FROM %1$s s WHERE s.attributes['%2$s'] = $1";
   protected static final String FIND_BY_PRINCIPAL_NAME_QUERY = "SELECT s FROM %1$s s WHERE s.principalName = $1";
   protected static final String LOG_LEVEL = "config";
   protected static final String SESSION_REGION_NAME = "Sessions";
@@ -122,30 +131,38 @@ public class CachePartitionRegionQueryTest {
 
     QueryService queryService = gemfireCache.getQueryService();
 
-    Index principalNameIdx = queryService.createHashIndex("principalNameIdx", "principalName", toRegionFullPath(sessionRegion));
+    Index principalNameIndex = queryService.createHashIndex("principalNameIndex", "principalName", toRegionFullPath(sessionRegion));
 
-    assertThat(principalNameIdx, is(notNullValue()));
-    assertThat(principalNameIdx.getIndexedExpression(), is(equalTo("principalName")));
-    assertThat(principalNameIdx.getName(), is(equalTo("principalNameIdx")));
-    assertThat(principalNameIdx.getRegion(), is(equalTo(sessionRegion)));
+    assertThat(principalNameIndex, is(notNullValue()));
+    assertThat(principalNameIndex.getIndexedExpression(), is(equalTo("principalName")));
+    assertThat(principalNameIndex.getName(), is(equalTo("principalNameIndex")));
+    assertThat(principalNameIndex.getRegion(), is(equalTo(sessionRegion)));
+
+    Index sessionAttributesIndex = queryService.createIndex("sessionAttributesIndex", "s.attributes[*]",
+      String.format("%1$s s", toRegionFullPath(sessionRegion)));
+
+    assertThat(sessionAttributesIndex, is(notNullValue()));
+    assertThat(sessionAttributesIndex.getIndexedExpression(), is(equalTo("s.attributes[*]")));
+    assertThat(sessionAttributesIndex.getName(), is(equalTo("sessionAttributesIndex")));
+    assertThat(sessionAttributesIndex.getRegion(), is(equalTo(sessionRegion)));
 
     setupSessionData();
   }
 
   private static void setupSessionData() {
     jonDoeOne = save(touch(setAttribute(createSession("jonDoe"), "custom", "1")));
-    save(touch(setAttribute(createSession("janeDoe"), "custom", "2")));
+    janeDoe = save(touch(setAttribute(createSession("janeDoe"), "custom", "2")));
     jonDoeTwo = save(touch(setAttribute(createSession("jonDoe"), "custom", "3")));
-    save(touch(setAttribute(createSession("cookieDoe"), "custom", "4")));
+    cookieDoe = save(touch(setAttribute(createSession("cookieDoe"), "custom", "4")));
     froDoe = save(touch(setAttribute(createSession("froDoe"), "custom", "5")));
     jonDoeThree = save(touch(setAttribute(createSession("jonDoe"), "custom", "6")));
-    save(touch(setAttribute(createSession("pieDoe"), "custom", "7")));
-    save(touch(setAttribute(createSession("joeDoe"), "custom", "8")));
+    pieDoe = save(touch(setAttribute(createSession("pieDoe"), "custom", "7")));
+    joeDoe = save(touch(setAttribute(createSession("joeDoe"), "custom", "8")));
     jonDoeFour = save(touch(setAttribute(createSession("jonDoe"), "custom", "9")));
-    save(touch(setAttribute(createSession("ryeDoe"), "custom", "10")));
-    save(touch(setAttribute(createSession("johnDoe"), "custom", "11")));
+    ryeDoe = save(touch(setAttribute(createSession("ryeDoe"), "custom", "10")));
+    johnDoe = save(touch(setAttribute(createSession("johnDoe"), "custom", "11")));
     jonDoeFive = save(touch(setAttribute(createSession("jonDoe"), "custom", "12")));
-    save(touch(setAttribute(createSession("sourDoe"), "custom", "13")));
+    sourDoe = save(touch(setAttribute(createSession("sourDoe"), "custom", "13")));
   }
 
   @AfterClass
@@ -164,7 +181,7 @@ public class CachePartitionRegionQueryTest {
     }
     else {
       throw new AssertionError(String.format("(%1$s) is not an instance of (%2$s) or (%3$s)",
-        session, Session.class, PdxInstance.class));
+        session, Session.class.getName(), PdxInstance.class.getName()));
     }
   }
 
@@ -244,7 +261,27 @@ public class CachePartitionRegionQueryTest {
   }
 
   @Test
-  public void findSessionByCustomSessionAttribute() {
+  public void findSessionsbyCustomSessionAttributeUsingIndexedMapKeyBasedPredicate() {
+    Object johnDoe = gemfireCache.<String, Session>getRegion(SESSION_REGION_NAME).get(
+      getSessionId(CachePartitionRegionQueryTest.johnDoe));
+
+    assertSession(johnDoe, "johnDoe", "11");
+
+    johnDoe = doFindByIndexedSessionAttribute("custom", "11");
+
+    assertSession(johnDoe, "johnDoe", "11");
+  }
+
+  protected Session doFindByIndexedSessionAttribute(String attributeName, Object attributeValue) {
+    String queryString = String.format(FIND_BY_INDEXED_SESSION_ATTRIBUTE, "%1$s", attributeName);
+
+    SelectResults<Object> results = executeQuery(queryString, attributeValue);
+
+    return (results.size() > 0 ? toSession(results.asList().get(0)) : null);
+  }
+
+  @Test
+  public void findSessionsByCustomSessionAttributeUsingPropertyBasedPredicate() {
     Object froDoe = gemfireCache.<String, Session>getRegion(SESSION_REGION_NAME).get(
       getSessionId(CachePartitionRegionQueryTest.froDoe));
 
@@ -332,7 +369,6 @@ public class CachePartitionRegionQueryTest {
     return buffer.toString();
   }
 
-  @SuppressWarnings("unused")
   public static final class Session implements Comparable<Session>, PdxSerializable {
 
     protected static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-dd-MM-hh-mm-ss.S");
@@ -360,7 +396,7 @@ public class CachePartitionRegionQueryTest {
 
     private Object assertValidId(Object id) {
       if (isInvalidId(id)) {
-        throw new IllegalArgumentException(String.format("(%1$s) is not valid", id));
+        throw new IllegalArgumentException(String.format("id (%1$s) is not valid", id));
       }
 
       return id;
@@ -486,6 +522,9 @@ public class CachePartitionRegionQueryTest {
       writer.writeInt("maxInactiveIntervalInSeconds", getMaxInactiveIntervalInSeconds());
       writer.writeString("principalName", getPrincipalName());
       writer.markIdentityField("id");
+
+      // write Session attributes
+      writer.writeObject("attributes", attributes);
 
       Set<String> attributeNames = new HashSet<>(nullSafeSet(getAttributeNames()));
 
