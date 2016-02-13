@@ -39,6 +39,7 @@ public class TestApp {
     System.out.printf("%1$s", ClientCacheFunctionExecutionWithPdxTest.class.getName().replaceAll("\\.",
       File.separator).concat("-context.xml"));
   }
+
   protected static void printRegexPatternMatches() {
     Pattern regex = Pattern.compile("org\\.pivotal\\.gemfire\\.cache\\.client\\.ClientCacheFunctionExecutionWithPdxTest\\$Test.+");
 

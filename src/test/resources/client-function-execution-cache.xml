@@ -6,9 +6,9 @@
     <server host="localhost" port="12480"/>
   </pool>
   <region name="Collections">
-    <region-attributes  pool-name="locatorPool" refid="PROXY"/>
+    <region-attributes  pool-name="serverPool" refid="PROXY"/>
   </region>
   <region name="Numbers">
-    <region-attributes  pool-name="locatorPool" refid="PROXY"/>
+    <region-attributes  pool-name="serverPool" refid="PROXY"/>
   </region>
 </client-cache>
