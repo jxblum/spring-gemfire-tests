@@ -46,11 +46,13 @@
     <multithreadedtc.version>1.01</multithreadedtc.version>
     <slf4j.version>1.7.12</slf4j.version>
     <spring.version>4.2.4.RELEASE</spring.version>
+    <spring-boot.version>1.3.2.RELEASE</spring-boot.version>
     <spring-data-commons.version>1.12.0.M1</spring-data-commons.version>
     <spring-data-gemfire.version>1.8.0.M1</spring-data-gemfire.version>
     <!--
     <spring-data-gemfire.version>1.7.0.APACHE-GEODE-EA-SNAPSHOT</spring-data-gemfire.version>
-    <spring-data-jpa.version>1.8.0.M1</spring-data-jpa.version>
+    <spring-data-gemfire.version>1.7.0.APACHE-GEODE-EA-M1</spring-data-gemfire.version>
+    <spring-data-jpa.version>1.7.2.RELEASE</spring-data-jpa.version>
     -->
     <spring-shell.version>1.0.0.RELEASE</spring-shell.version>
     <sqlfire.version>1.1.2</sqlfire.version>
@@ -113,6 +115,7 @@
       <scope>system</scope>
       <systemPath>${java.home}/../lib/tools.jar</systemPath>
     </dependency>
+
     <!-- Codeprimate dependencies -->
     <dependency>
       <groupId>org.codeprimate</groupId>
@@ -127,6 +130,7 @@
         </exclusion>
       </exclusions>
     </dependency>
+
     <!-- Core Spring Framework -->
     <dependency>
       <groupId>org.springframework</groupId>
@@ -188,6 +192,19 @@
       <scope>compile</scope>
     </dependency>
     -->
+
+    <!-- Spring Boot -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot</artifactId>
+      <version>${spring-boot.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure</artifactId>
+      <version>${spring-boot.version}</version>
+    </dependency>
+
     <!-- Spring Data (Commons, GemFire & JPA) -->
 <!--
     <dependency>
@@ -217,6 +234,7 @@
       <scope>compile</scope>
     </dependency>
 -->
+
     <!-- Spring Shell -->
     <dependency>
       <groupId>org.springframework.shell</groupId>
@@ -234,12 +252,14 @@
         </exclusion>
       </exclusions>
     </dependency>
+
     <!-- Hibernate -->
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
       <version>${hibernate.version}</version>
     </dependency>
+
     <!-- H2 -->
     <dependency>
       <groupId>com.h2database</groupId>
