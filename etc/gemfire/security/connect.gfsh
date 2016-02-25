@@ -1,0 +1,3 @@
+set variable --name=GEMFIRE_SECURITY_HOME --value=/Users/jblum/pivdev/spring-data-gemfire-tests-workspace/spring-data-gemfire-tests/etc/gemfire/security
+connect --locator=localhost[11235] --security-properties-file=${GEMFIRE_SECURITY_HOME}/ssl-gemfire.properties
+list members

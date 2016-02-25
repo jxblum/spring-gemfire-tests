@@ -14,15 +14,16 @@
   <bean class="org.spring.data.gemfire.config.DistributedSystemValidationBeanPostProcessor"/>
 
   <util:properties id="client.properties">
-    <prop key="client.locator.host">localhost</prop>
-    <prop key="client.locator.port">11235</prop>
-    <prop key="client.server.host">localhost</prop>
-    <prop key="client.server.port">12480</prop>
+    <prop key="gemfire.client.server.host">localhost</prop>
+    <prop key="gemfire.client.server.port">12480</prop>
+    <prop key="gemfire.locator.host">localhost</prop>
+    <prop key="gemfire.locator.port">11235</prop>
+    <prop key="gemfire.log.level">config</prop>
     <prop key="gemfire.security.ssl.enabled">true</prop>
     <prop key="gemfire.security.ssl.require-authentication">true</prop>
     <prop key="gemfire.security.ssl.protocols">any</prop>
     <prop key="gemfire.security.ssl.ciphers">any</prop>
-    <prop key="gemfire.security.ssl.keystore.location">/Users/jblum/vmdev/spring-data-gemfire-tests-workspace/spring-data-gemfire-tests/etc/gemfire/security/trusted.keystore</prop>
+    <prop key="gemfire.security.ssl.keystore.location">/Users/jblum/pivdev/spring-data-gemfire-tests-workspace/spring-data-gemfire-tests/etc/gemfire/security/trusted.keystore</prop>
     <prop key="gemfire.security.ssl.keystore.password">s3cr3t</prop>
     <prop key="gemfire.security.ssl.keystore.type">jks</prop>
   </util:properties>
@@ -39,17 +40,15 @@
     <prop key="cluster-ssl-keystore-type">${gemfire.security.ssl.keystore.type}</prop>
     <prop key="cluster-ssl-truststore">${gemfire.security.ssl.keystore.location}</prop>
     <prop key="cluster-ssl-truststore-password">${gemfire.security.ssl.keystore.password}</prop>
-    <prop key="log-level">config</prop>
-    <prop key="mcast-port">0</prop>
+    <prop key="log-level">${gemfire.log.level:config}</prop>
   </util:properties>
 
   <util:properties id="plainGemfireProperties">
-    <prop key="log-level">config</prop>
-    <prop key="mcast-port">0</prop>
+    <prop key="log-level">${gemfire.log.level:config}</prop>
   </util:properties>
 
   <util:properties id="serverSslGemfireProperties">
-    <prop key="log-level">config</prop>
+    <prop key="log-level">${gemfire.log.level:config}</prop>
     <prop key="server-ssl-enabled">${gemfire.security.ssl.enabled}</prop>
     <prop key="server-ssl-require-authentication">${gemfire.security.ssl.require-authentication}</prop>
     <prop key="server-ssl-protocols">${gemfire.security.ssl.protocols}</prop>
@@ -61,15 +60,32 @@
     <prop key="server-ssl-truststore-password">${gemfire.security.ssl.keystore.password}</prop>
   </util:properties>
 
+  <util:properties id="sslGemfireProperties">
+    <prop key="log-level">${gemfire.log.level:config}</prop>
+    <prop key="security-client-auth-init">org.spring.data.gemfire.cache.ClientCacheSecurityTest$TestAuthInitialize.create</prop>
+    <prop key="security-username">jblum</prop>
+    <prop key="security-password">jblum</prop>
+    <prop key="ssl-enabled">${gemfire.security.ssl.enabled}</prop>
+    <prop key="ssl-ciphers">${gemfire.security.ssl.ciphers}</prop>
+    <prop key="ssl-protocols">${gemfire.security.ssl.protocols}</prop>
+    <prop key="ssl-require-authentication">${gemfire.security.ssl.require-authentication}</prop>
+    <prop key="javax.net.ssl.keyStore">${gemfire.security.ssl.keystore.location}</prop>
+    <prop key="javax.net.ssl.keyStorePassword">${gemfire.security.ssl.keystore.password}</prop>
+    <prop key="javax.net.ssl.keyStoreType">${gemfire.security.ssl.keystore.type}</prop>
+    <prop key="javax.net.ssl.trustStore">${gemfire.security.ssl.keystore.location}</prop>
+    <prop key="javax.net.ssl.trustStorePassword">${gemfire.security.ssl.keystore.password}</prop>
+  </util:properties>
+
   <gfe:pool id="gemfireLocatorPool" max-connections="1" min-connections="1">
-    <gfe:locator host="${client.locator.host}" port="${client.locator.port}"/>
+    <gfe:locator host="${gemfire.locator.host}" port="${gemfire.locator.port}"/>
 <!--
-    <gfe:server host="${client.server.host}" port="${client.server.port}"/>
+    <gfe:server host="${gemfire.client.server.host}" port="${gemfire.client.server.port}"/>
 -->
   </gfe:pool>
 
-  <gfe:client-cache properties-ref="serverSslGemfireProperties" pool-name="gemfireLocatorPool"/>
+  <gfe:client-cache properties-ref="sslGemfireProperties" pool-name="gemfireLocatorPool"/>
 
-  <gfe:client-region id="Example" pool-name="gemfireLocatorPool" shortcut="PROXY"/>
+  <gfe:client-region id="Example" pool-name="gemfireLocatorPool" shortcut="PROXY"
+    key-constraint="java.lang.Long" value-constraint="java.lang.Long"/>
 
 </beans>

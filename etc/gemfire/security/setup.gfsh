@@ -1,4 +1,4 @@
-set variable --name=GEMFIRE_SECURITY_HOME --value=/Users/jblum/vmdev/spring-data-gemfire-tests-workspace/spring-data-gemfire-tests/etc/gemfire/security
+set variable --name=GEMFIRE_SECURITY_HOME --value=/Users/jblum/pivdev/spring-data-gemfire-tests-workspace/spring-data-gemfire-tests/etc/gemfire/security
 start locator --name=locatorX --port=11235 --log-level=config --properties-file=${GEMFIRE_SECURITY_HOME}/cluster-ssl-gemfire.properties
 #start locator --name=locatorX --port=11235 --log-level=config
 start server --name=serverA --server-port=12480 --log-level=config  --properties-file=${GEMFIRE_SECURITY_HOME}/cluster-ssl-gemfire.properties
