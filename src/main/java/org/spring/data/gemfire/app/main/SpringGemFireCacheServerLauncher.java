@@ -123,7 +123,7 @@ public class SpringGemFireCacheServerLauncher implements Runnable {
       ProcessUtils.writePid(SERVER_PID_FILE, serverProcessId);
     }
     catch (IOException e) {
-      System.err.printf("Failed to write GemFire Server process ID (%1$s) to file )(%2$s)!%n",
+      System.err.printf("Failed to write GemFire Server process ID (%1$s) to file (%2$s)!%n",
         serverProcessId, SERVER_PID_FILE);
     }
   }

@@ -29,10 +29,10 @@ import org.springframework.data.gemfire.CacheFactoryBean;
 @ConfigurationProperties
 @SpringBootApplication
 @SuppressWarnings("unused")
-public class GemFireRedisServer {
+public class SpringGemFireRedisServer {
 
   public static void main(final String[] args) {
-    SpringApplication.run(GemFireRedisServer.class, args);
+    SpringApplication.run(SpringGemFireRedisServer.class, args);
   }
 
   @Bean
@@ -42,7 +42,7 @@ public class GemFireRedisServer {
   {
     Properties gemfireProperties = new Properties();
 
-    gemfireProperties.setProperty("name", "GemFireRedisServerExample");
+    gemfireProperties.setProperty("name", SpringGemFireRedisServer.class.getSimpleName());
     gemfireProperties.setProperty("mcast-port", "0");
     gemfireProperties.setProperty("log-level", logLevel);
     gemfireProperties.setProperty("redis-bind-address", redisBindAddress);

@@ -68,7 +68,7 @@
     </repository>
     <repository>
       <id>spring-plugins-release</id>
-      <name>Spring Maven plugins-release Repository</name>
+      <name>Spring plugins-release Maven Repository</name>
       <url>https://repo.spring.io/plugins-release</url>
     </repository>
     <repository>
@@ -240,7 +240,7 @@
       <groupId>org.springframework.shell</groupId>
       <artifactId>spring-shell</artifactId>
       <version>${spring-shell.version}</version>
-      <scope>test</scope>
+      <scope>runtime</scope>
       <exclusions>
         <exclusion>
           <groupId>org.springframework</groupId>

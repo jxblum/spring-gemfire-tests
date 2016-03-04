@@ -199,25 +199,24 @@ public abstract class AbstractGemFireIntegrationTest extends AbstractGemFireTest
   }
 
   private static void readProcessStream(final String serverId, final String streamType, final InputStream in) {
-    final BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+    new Thread(() -> {
+      BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
-    new Thread(new Runnable() {
-      @Override public void run() {
-        try {
-          for (String line = "Reading..."; line != null; line = reader.readLine()) {
-            System.out.printf("[%1$s - %2$s]: %3$s%n", serverId, streamType, line);
-            System.out.flush();
-          }
+      try {
+        for (String line = "Reading..."; line != null; line = reader.readLine()) {
+          System.out.printf("[%1$s - %2$s]: %3$s%n", serverId, streamType, line);
+          System.out.flush();
         }
-        catch (IOException ignore) {
-        }
-        finally {
-          FileSystemUtils.close(reader);
-        }
+      }
+      catch (IOException ignore) {
+      }
+      finally {
+        FileSystemUtils.close(reader);
       }
     }).start();
   }
 
+  @SuppressWarnings("all")
   private static void waitOnServer(final long waitTimeout,
                                    final Process serverProcess,
                                    final File serverWorkingDirectory)

@@ -45,7 +45,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 @SuppressWarnings("unused")
-public class ClientCacheUsingOnlyDataSourceTest {
+public class ClientCacheUsingDataSourceTest {
 
   protected static final Object TEST_KEY = "TestKey";
   protected static final Object TEST_VALUE = "TestValue";
