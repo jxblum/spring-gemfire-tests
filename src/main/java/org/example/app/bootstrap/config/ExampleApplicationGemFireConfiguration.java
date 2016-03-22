@@ -59,7 +59,6 @@ public class ExampleApplicationGemFireConfiguration {
   //@Autowired
   public CacheFactoryBean gemfireCache(Properties gemfireProperties) {
     CacheFactoryBean cacheFactoryBean = new CacheFactoryBean();
-    cacheFactoryBean.setLazyInitialize(false);
     cacheFactoryBean.setProperties(gemfireProperties);
     return cacheFactoryBean;
   }

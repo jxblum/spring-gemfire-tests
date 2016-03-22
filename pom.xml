@@ -2,7 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>org.springframework.data</groupId>
   <artifactId>spring-data-gemfire-tests</artifactId>
   <packaging>jar</packaging>
@@ -45,15 +47,14 @@
     <mockito.version>1.10.19</mockito.version>
     <multithreadedtc.version>1.01</multithreadedtc.version>
     <slf4j.version>1.7.12</slf4j.version>
-    <spring.version>4.2.4.RELEASE</spring.version>
-    <spring-boot.version>1.3.2.RELEASE</spring-boot.version>
-    <spring-data-commons.version>1.12.0.M1</spring-data-commons.version>
-    <spring-data-gemfire.version>1.8.0.M1</spring-data-gemfire.version>
+    <spring.version>4.2.5.RELEASE</spring.version>
+    <spring-boot.version>1.3.3.RELEASE</spring-boot.version>
+    <spring-data-gemfire.version>1.8.0.RC1</spring-data-gemfire.version>
     <!--
     <spring-data-gemfire.version>1.7.0.APACHE-GEODE-EA-SNAPSHOT</spring-data-gemfire.version>
     <spring-data-gemfire.version>1.7.0.APACHE-GEODE-EA-M1</spring-data-gemfire.version>
-    <spring-data-jpa.version>1.7.2.RELEASE</spring-data-jpa.version>
     -->
+    <spring-data-jpa.version>1.7.4.RELEASE</spring-data-jpa.version>
     <spring-shell.version>1.0.0.RELEASE</spring-shell.version>
     <sqlfire.version>1.1.2</sqlfire.version>
     <sqlfire-client.version>/Users/jblum/Downloads/Pivotal/GemStone/Products/SQLFire/Pivotal_SQLFire_112_b45732/lib/sqlfireclient.jar</sqlfire-client.version>
@@ -72,7 +73,7 @@
       <url>https://repo.spring.io/plugins-release</url>
     </repository>
     <repository>
-      <id>gemstone-release</id>
+      <id>pivotal-gemstone-release</id>
       <name>GemStone Maven Release Repository</name>
       <!-- <url>http://dist.gemstone.com.s3.amazonaws.com/maven/release</url> -->
       <url>http://dist.gemstone.com/maven/release</url>
@@ -174,12 +175,6 @@
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
-      <version>${spring.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
       <version>${spring.version}</version>
       <scope>compile</scope>
@@ -196,24 +191,17 @@
     <!-- Spring Boot -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot</artifactId>
+      <artifactId>spring-boot-starter</artifactId>
       <version>${spring-boot.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-autoconfigure</artifactId>
-      <version>${spring-boot.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
-    <!-- Spring Data (Commons, GemFire & JPA) -->
-<!--
-    <dependency>
-      <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-commons</artifactId>
-      <version>${spring-data-commons.version}</version>
-      <scope>compile</scope>
-    </dependency>
--->
+    <!-- Spring Data (GemFire & JPA) -->
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-gemfire</artifactId>
@@ -266,12 +254,14 @@
       <artifactId>h2</artifactId>
       <version>${h2.version}</version>
     </dependency>
+
     <!-- HSQLDB -->
     <dependency>
       <groupId>hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <version>${hsqldb.version}</version>
     </dependency>
+
     <!-- Apache Geode -->
     <!--
     <dependency>
@@ -280,25 +270,8 @@
       <version>${geode.version}</version>
       <scope>compile</scope>
     </dependency>
-    <dependency>
-      <groupId>com.gemstone.gemfire</groupId>
-      <artifactId>gemfire-jgroups</artifactId>
-      <version>${geode.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.gemstone.gemfire</groupId>
-      <artifactId>gemfire-joptsimple</artifactId>
-      <version>${geode.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.gemstone.gemfire</groupId>
-      <artifactId>gemfire-json</artifactId>
-      <version>${geode.version}</version>
-      <scope>compile</scope>
-    </dependency>
     -->
+
     <!-- GemFire -->
     <dependency>
       <groupId>com.gemstone.gemfire</groupId>

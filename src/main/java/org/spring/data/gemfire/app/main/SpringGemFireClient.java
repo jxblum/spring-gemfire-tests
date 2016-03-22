@@ -16,11 +16,8 @@
 
 package org.spring.data.gemfire.app.main;
 
-import java.util.Collections;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
-
-import com.gemstone.gemfire.cache.client.Pool;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,14 +63,26 @@ public class SpringGemFireClient {
   }
 
   @Bean
-  PoolFactoryBean gemfirePool(@Qualifier("gemfireProperties") Properties gemfireProperties,
-    @Value("${gemfire.client.server.host:localhost}") String serverHost,
+  ClientCacheFactoryBean gemfireCache(@Qualifier("gemfireProperties") Properties gemfireProperties) {
+    ClientCacheFactoryBean gemfireCache = new ClientCacheFactoryBean();
+
+    gemfireCache.setClose(true);
+    gemfireCache.setKeepAlive(false);
+    gemfireCache.setPoolName("gemfirePool");
+    gemfireCache.setProperties(gemfireProperties);
+    gemfireCache.setReadyForEvents(true);
+    gemfireCache.setUseBeanFactoryLocator(false);
+
+    return gemfireCache;
+  }
+
+  @Bean
+  PoolFactoryBean gemfirePool(@Value("${gemfire.client.server.host:localhost}") String serverHost,
     @Value("${gemfire.client.server.port:40404}") int serverPort,
     @Value("${gemfire.client.server.max-connections:50}") int maxConnections)
   {
     PoolFactoryBean gemfirePool = new PoolFactoryBean();
 
-    gemfirePool.setProperties(gemfireProperties);
     gemfirePool.setFreeConnectionTimeout(intValue(TimeUnit.SECONDS.toMillis(30)));
     gemfirePool.setIdleTimeout(TimeUnit.MINUTES.toMillis(2));
     gemfirePool.setKeepAlive(false);
@@ -84,24 +93,9 @@ public class SpringGemFireClient {
     gemfirePool.setPrSingleHopEnabled(true);
     gemfirePool.setThreadLocalConnections(false);
 
-    gemfirePool.setServerEndpoints(Collections.singleton(new ConnectionEndpoint(serverHost, serverPort)));
+    gemfirePool.addServers(new ConnectionEndpoint(serverHost, serverPort));
 
     return gemfirePool;
-  }
-
-  @Bean
-  ClientCacheFactoryBean gemfireCache(@Qualifier("gemfireProperties") Properties gemfireProperties, Pool gemfirePool) {
-    ClientCacheFactoryBean gemfireCache = new ClientCacheFactoryBean();
-
-    gemfireCache.setClose(true);
-    gemfireCache.setKeepAlive(false);
-    gemfireCache.setLazyInitialize(false);
-    gemfireCache.setPool(gemfirePool);
-    gemfireCache.setProperties(gemfireProperties);
-    gemfireCache.setReadyForEvents(true);
-    gemfireCache.setUseBeanFactoryLocator(false);
-
-    return gemfireCache;
   }
 
 }

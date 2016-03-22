@@ -127,7 +127,7 @@ public class RegionGatewayReceiverStartupSequenceTest {
 
     public MockCacheFactoryBean(final CacheFactoryBean cacheFactoryBean) {
       this.delegate = cacheFactoryBean;
-      this.cache = mockCache();
+      setCache(mockCache());
     }
 
     private Cache mockCache() {

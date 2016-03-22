@@ -55,6 +55,7 @@ import org.springframework.data.gemfire.client.ClientCacheFactoryBean;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.client.PoolFactoryBean;
 import org.springframework.data.gemfire.config.GemfireConstants;
+import org.springframework.data.gemfire.support.ConnectionEndpoint;
 import org.springframework.data.gemfire.support.GemfireCacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
@@ -84,7 +85,7 @@ import org.springframework.util.ObjectUtils;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ApplicationConfiguration.class)
-@SuppressWarnings("unused")
+@SuppressWarnings("all")
 public class LocalClientCachingWithGemFireIntegrationTest {
 
   @Autowired
@@ -216,7 +217,7 @@ public class LocalClientCachingWithGemFireIntegrationTest {
 
       PoolFactoryBean poolFactoryBean = new PoolFactoryBean();
 
-      poolFactoryBean.setLocators(asCollection(new InetSocketAddress(hostname, port)));
+      poolFactoryBean.addLocators(new ConnectionEndpoint(hostname, port));
       poolFactoryBean.setFreeConnectionTimeout(freeConnectionTimeout);
       poolFactoryBean.setIdleTimeout(idleTimeout);
       poolFactoryBean.setMinConnections(minConnections);

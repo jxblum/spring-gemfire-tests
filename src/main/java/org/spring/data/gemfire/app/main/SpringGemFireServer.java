@@ -71,7 +71,8 @@ public class SpringGemFireServer {
     CacheFactoryBean gemfireCache = new CacheFactoryBean();
 
     gemfireCache.setClose(true);
-    gemfireCache.setLazyInitialize(false);
+    gemfireCache.setPdxIgnoreUnreadFields(true);
+    gemfireCache.setPdxReadSerialized(true);
     gemfireCache.setProperties(gemfireProperties);
     gemfireCache.setUseBeanFactoryLocator(false);
 

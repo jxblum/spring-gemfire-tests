@@ -56,7 +56,6 @@ public class SpringGemFireRedisServer {
     CacheFactoryBean gemfireCache = new CacheFactoryBean();
 
     gemfireCache.setClose(true);
-    gemfireCache.setLazyInitialize(true);
     gemfireCache.setProperties(gemfireProperties);
     gemfireCache.setUseBeanFactoryLocator(false);
 

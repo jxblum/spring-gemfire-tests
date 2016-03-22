@@ -1,0 +1,9 @@
+connect
+list members
+describe member --name=SpringGemFireDataServer
+list regions
+describe region --name=/People
+put --region=/People --key=1 --key-class=java.lang.Long --value=('firstName':'Jon','lastName':'Doe') --value-class=org.spring.data.gemfire.app.beans.Person
+describe region --name=/People
+query --query="SELECT * FROM /People WHERE lastName = 'Doe'"
+#get --region=/People --key=1 --key-class=java.lang.Long --value-class=org.spring.data.gemfire.app.beans.Person

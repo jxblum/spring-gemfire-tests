@@ -22,6 +22,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import org.codeprimate.util.ComparatorAccumulator;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.gemfire.mapping.Region;
@@ -38,6 +43,9 @@ import org.springframework.util.ObjectUtils;
  * @since 1.0.0
  */
 @Region("People")
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @SuppressWarnings("unused")
 public class Person implements Comparable<Person>, Serializable {
 
@@ -72,6 +80,7 @@ public class Person implements Comparable<Person>, Serializable {
     return calendar;
   }
 
+  @JsonProperty("id")
   public Long getId() {
     return id;
   }
@@ -80,6 +89,7 @@ public class Person implements Comparable<Person>, Serializable {
     this.id = id;
   }
 
+  @JsonProperty("birthDate")
   public Date getBirthDate() {
     Calendar birthDate = getBirthDateAsCalendar();
     return (birthDate != null ? birthDate.getTime() : null);
@@ -101,6 +111,7 @@ public class Person implements Comparable<Person>, Serializable {
     this.birthDate = birthDate.getTime();
   }
 
+  @JsonProperty("firstName")
   public String getFirstName() {
     return firstName;
   }
@@ -109,6 +120,7 @@ public class Person implements Comparable<Person>, Serializable {
     this.firstName = firstName;
   }
 
+  @JsonProperty("gender")
   public Gender getGender() {
     return gender;
   }
@@ -117,6 +129,7 @@ public class Person implements Comparable<Person>, Serializable {
     this.gender = gender;
   }
 
+  @JsonProperty("lastName")
   public String getLastName() {
     return lastName;
   }
