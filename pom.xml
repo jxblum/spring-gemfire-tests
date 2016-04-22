@@ -49,8 +49,9 @@
     <slf4j.version>1.7.12</slf4j.version>
     <spring.version>4.2.5.RELEASE</spring.version>
     <spring-boot.version>1.3.3.RELEASE</spring-boot.version>
-    <spring-data-gemfire.version>1.8.0.RC1</spring-data-gemfire.version>
+    <spring-data-gemfire.version>1.8.1.RELEASE</spring-data-gemfire.version>
     <!--
+    <spring-data-gemfire.version>1.7.4.RELEASE</spring-data-gemfire.version>
     <spring-data-gemfire.version>1.7.0.APACHE-GEODE-EA-SNAPSHOT</spring-data-gemfire.version>
     <spring-data-gemfire.version>1.7.0.APACHE-GEODE-EA-M1</spring-data-gemfire.version>
     -->
