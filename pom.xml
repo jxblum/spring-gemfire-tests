@@ -52,9 +52,13 @@
     <spring-data-gemfire.version>1.8.1.RELEASE</spring-data-gemfire.version>
     <!--
     <spring-data-gemfire.version>1.7.4.RELEASE</spring-data-gemfire.version>
-    <spring-data-gemfire.version>1.7.0.APACHE-GEODE-EA-SNAPSHOT</spring-data-gemfire.version>
-    <spring-data-gemfire.version>1.7.0.APACHE-GEODE-EA-M1</spring-data-gemfire.version>
     -->
+    <spring-data-geode.version>1.0.0.APACHE-GEODE-INCUBATING-M2</spring-data-geode.version>
+<!--
+    <spring-data-geode.version>1.7.0.APACHE-GEODE-EA-SNAPSHOT</spring-data-gemfire.version>
+    <spring-data-geode.version>1.7.0.APACHE-GEODE-EA-M1</spring-data-gemfire.version>
+    <spring-data-geode.version>1.0.0.APACHE-GEODE-INCUBATING-SNAPSHOT</spring-data-gemfire.version>
+-->
     <spring-data-jpa.version>1.7.4.RELEASE</spring-data-jpa.version>
     <spring-shell.version>1.0.0.RELEASE</spring-shell.version>
     <sqlfire.version>1.1.2</sqlfire.version>
@@ -202,7 +206,7 @@
       </exclusions>
     </dependency>
 
-    <!-- Spring Data (GemFire & JPA) -->
+    <!-- Spring Data GemFire  -->
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-gemfire</artifactId>
@@ -215,6 +219,16 @@
         </exclusion>
       </exclusions>
     </dependency>
+
+    <!-- Spring Data Geode -->
+<!--
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-geode</artifactId>
+      <version>${spring-data-geode.version}</version>
+      <scope>compile</scope>
+    </dependency>
+-->
 <!--
     <dependency>
       <groupId>org.springframework.data</groupId>
@@ -266,14 +280,14 @@
     <!-- Apache Geode -->
     <!--
     <dependency>
-      <groupId>com.gemstone.gemfire</groupId>
-      <artifactId>gemfire-core</artifactId>
+      <groupId>org.apache.geode</groupId>
+      <artifactId>geode-core</artifactId>
       <version>${geode.version}</version>
       <scope>compile</scope>
     </dependency>
     -->
 
-    <!-- GemFire -->
+    <!-- Pivotal GemFire -->
     <dependency>
       <groupId>com.gemstone.gemfire</groupId>
       <artifactId>gemfire</artifactId>
