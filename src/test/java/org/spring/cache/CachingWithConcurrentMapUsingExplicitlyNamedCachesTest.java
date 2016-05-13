@@ -16,10 +16,12 @@
 
 package org.spring.cache;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.junit.Assert.assertThat;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,12 +30,10 @@ import org.junit.runner.RunWith;
 import org.spring.cache.CachingWithConcurrentMapUsingExplicitlyNamedCachesTest.ApplicationConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -65,113 +65,50 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ApplicationConfiguration.class)
 @SuppressWarnings("unused")
-public class CachingWithConcurrentMapUsingExplicitlyNamedCachesTest {
+public class CachingWithConcurrentMapUsingExplicitlyNamedCachesTest
+    extends AbstractSpringCacheAbstractionIntegrationTest {
 
   @Autowired
-  private NumberCategoryService numberCategoryService;
+  private NumberClassificationService numberClassificationService;
 
   @Test
   public void numberCategoryCaching() {
-    assertThat(numberCategoryService.isCacheMiss(), is(false));
+    assertThat(numberClassificationService.wasCacheMiss(), is(false));
 
-    List<NumberCategory> twoCategories = numberCategoryService.classify(2.0);
+    List<NumberClassification> twoCategories = numberClassificationService.classify(2.0);
 
     assertThat(twoCategories, is(notNullValue()));
     assertThat(twoCategories.size(), is(equalTo(3)));
     assertThat(twoCategories.containsAll(Arrays.asList(
-      NumberCategory.EVEN, NumberCategory.POSITIVE, NumberCategory.WHOLE)), is(true));
-    assertThat(numberCategoryService.isCacheMiss(), is(true));
+      NumberClassification.EVEN, NumberClassification.POSITIVE, NumberClassification.WHOLE)), is(true));
+    assertThat(numberClassificationService.wasCacheMiss(), is(true));
 
-    List<NumberCategory> twoCategoriesAgain = numberCategoryService.classify(2.0);
+    List<NumberClassification> twoCategoriesAgain = numberClassificationService.classify(2.0);
 
     assertThat(twoCategoriesAgain, is(sameInstance(twoCategories)));
-    assertThat(numberCategoryService.isCacheMiss(), is(false));
+    assertThat(numberClassificationService.wasCacheMiss(), is(false));
 
-    List<NumberCategory> negativeThreePointFiveCategories = numberCategoryService.classify(-3.5);
+    List<NumberClassification> negativeThreePointFiveCategories = numberClassificationService.classify(-3.5);
 
     assertThat(negativeThreePointFiveCategories, is(notNullValue()));
     assertThat(negativeThreePointFiveCategories.size(), is(equalTo(3)));
     assertThat(negativeThreePointFiveCategories.containsAll(Arrays.asList(
-      NumberCategory.ODD, NumberCategory.NEGATIVE, NumberCategory.FLOATING)), is(true));
-    assertThat(numberCategoryService.isCacheMiss(), is(true));
+      NumberClassification.ODD, NumberClassification.NEGATIVE, NumberClassification.FLOATING)), is(true));
+    assertThat(numberClassificationService.wasCacheMiss(), is(true));
   }
 
   @Configuration
   @EnableCaching
-  public static class ApplicationConfiguration {
+  static class ApplicationConfiguration {
 
     @Bean
-    public CacheManager cacheManager() {
+    CacheManager cacheManager() {
       return new ConcurrentMapCacheManager("Categories");
       //return new ConcurrentMapCacheManager("Temporary");
     }
 
-    @Bean
-    public NumberCategoryService numberCategoryService() {
-      return new NumberCategoryService();
+    @Bean NumberClassificationService numberCategoryService() {
+      return new NumberClassificationService();
     }
   }
-
-  @Service
-  public static class NumberCategoryService {
-
-    private volatile boolean cacheMiss;
-
-    public boolean isCacheMiss() {
-      boolean localCacheMiss = this.cacheMiss;
-      this.cacheMiss = false;
-      return localCacheMiss;
-    }
-
-    protected void setCacheMiss() {
-      this.cacheMiss = true;
-    }
-
-    @Cacheable("Categories")
-    public List<NumberCategory> classify(double number) {
-      setCacheMiss();
-
-      List<NumberCategory> categories = new ArrayList<>(3);
-
-      categories.add(isEven(number) ? NumberCategory.EVEN : NumberCategory.ODD);
-      categories.add(isPositive(number) ? NumberCategory.POSITIVE : NumberCategory.NEGATIVE);
-      categories.add(isWhole(number) ? NumberCategory.WHOLE : NumberCategory.FLOATING);
-
-      return categories;
-    }
-
-    protected boolean isEven(double number) {
-      return (isWhole(number) && Math.abs(number) % 2 == 0);
-    }
-
-    protected boolean isFloating(double number) {
-      return !isWhole(number);
-    }
-
-    protected boolean isNegative(double number) {
-      return (number < 0);
-    }
-
-    protected boolean isOdd(double number) {
-      return !isEven(number);
-    }
-
-    protected boolean isPositive(double number) {
-      return (number > 0);
-    }
-
-    protected boolean isWhole(double number) {
-      return (number == Math.floor(number));
-    }
-  }
-
-  public enum NumberCategory {
-    EVEN,
-    FLOATING,
-    NEGATIVE,
-    ODD,
-    POSITIVE,
-    WHOLE
-  }
-
 }
