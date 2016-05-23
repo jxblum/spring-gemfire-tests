@@ -39,7 +39,7 @@ import org.springframework.data.gemfire.server.CacheServerFactoryBean;
 @SuppressWarnings("unused")
 public class SpringGemFireServer {
 
-  public static void main(final String[] args) {
+  public static void main(String[] args) {
     SpringApplication.run(SpringGemFireServer.class, args);
   }
 
@@ -74,7 +74,6 @@ public class SpringGemFireServer {
     gemfireCache.setPdxIgnoreUnreadFields(true);
     gemfireCache.setPdxReadSerialized(true);
     gemfireCache.setProperties(gemfireProperties);
-    gemfireCache.setUseBeanFactoryLocator(false);
 
     return gemfireCache;
   }

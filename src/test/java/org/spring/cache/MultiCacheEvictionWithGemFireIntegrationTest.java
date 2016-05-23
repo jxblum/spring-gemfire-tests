@@ -63,9 +63,23 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 /**
- * The MultiCacheEvictionWithGemFireIntegrationTest class...
+ * The MultiCacheEvictionWithGemFireIntegrationTest class is a test suite of test cases testing the functionality
+ * of Spring's Cache Abstraction evicting multiple cache entries using Spring's {@link CacheEvict} annotation
+ * on a Repository method.
  *
  * @author John Blum
+ * @see org.junit.Test
+ * @see org.junit.runner.RunWith
+ * @see org.spring.cache.AbstractSpringCacheAbstractionIntegrationTest
+ * @see org.springframework.cache.annotation.Cacheable
+ * @see org.springframework.cache.annotation.CacheEvict
+ * @see org.springframework.cache.annotation.Caching
+ * @see org.springframework.cache.annotation.EnableCaching
+ * @see org.springframework.context.annotation.Bean
+ * @see org.springframework.context.annotation.Configuration
+ * @see org.springframework.data.repository.Repository
+ * @see org.springframework.test.context.ContextConfiguration
+ * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
  * @since 1.0.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -173,6 +187,7 @@ public class MultiCacheEvictionWithGemFireIntegrationTest extends AbstractSpring
     assertThat(userRepository.findByEmail(jonDoe.getEmail()), is(equalTo(jonDoe)));
     assertThat(userRepository.findByName(jonDoe.getName()), is(equalTo(jonDoe)));
     assertThat(isStored(jonDoe), is(false));
+    assertThat(isFullyCached(jonDoe), is(true));
 
     jonDoe.setEmail("jonDoe@xyz.com");
 
@@ -256,7 +271,6 @@ public class MultiCacheEvictionWithGemFireIntegrationTest extends AbstractSpring
       usersRegion.setCache(gemfireCache);
       usersRegion.setCacheLoader(userCacheLoader());
       usersRegion.setClose(false);
-      usersRegion.setName("Users");
       usersRegion.setPersistent(false);
 
       return usersRegion;
@@ -402,11 +416,18 @@ public class MultiCacheEvictionWithGemFireIntegrationTest extends AbstractSpring
     @Cacheable(cacheNames = "Users")
     User findByName(String name);
 
-    @Caching(evict = {
-      @CacheEvict(cacheNames = "Users", key="#a0.name"),
-      @CacheEvict(cacheNames = "Users", key="#a0.email")
-    })
+    @Caching(
+      evict = {
+        @CacheEvict(cacheNames = "Users", key="#a0.name", beforeInvocation = true),
+        @CacheEvict(cacheNames = "Users", key="#a0.email", beforeInvocation = true)
+      }
+      /*
+      , put = {
+        @CachePut(cacheNames = "Users", key="#result.name"),
+        @CachePut(cacheNames = "Users", key="#result.email")
+      }
+      */
+    )
     User save(User user);
   }
-
 }
