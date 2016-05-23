@@ -16,13 +16,16 @@
 
 package org.spring.data.gemfire;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 
 import com.gemstone.gemfire.cache.DataPolicy;
 import com.gemstone.gemfire.cache.Region;
+import com.gemstone.gemfire.cache.RegionAttributes;
 
 import org.springframework.context.ApplicationContext;
 
@@ -50,6 +53,12 @@ public abstract class AbstractGemFireTest {
     return debug;
   }
 
+  protected static void debug(String message, Object... arguments) {
+    if (isDebugging()) {
+      System.err.printf(message, arguments);
+    }
+  }
+
   protected static void disableDebugging() {
     debug = false;
   }
@@ -58,66 +67,64 @@ public abstract class AbstractGemFireTest {
     debug = true;
   }
 
-  protected static void assertRegion(final Region region, final String expectedRegionName) {
-    assertRegion(region, expectedRegionName, toRegionPath(expectedRegionName));
+  protected static void info(String message, Object... arguments) {
+    System.out.printf(message, arguments);
   }
 
-  protected static void assertRegion(final Region region, final String expectedRegionName, final String expectedRegionPath) {
-    assertThat(String.format("The Region with the expected name (%1$s) was null!", expectedRegionName), region, is(notNullValue()));
+  protected static void assertRegion(Region region, String expectedName) {
+    assertRegion(region, expectedName, toRegionPath(expectedName));
+  }
+
+  protected static void assertRegion(Region region, String expectedName, String expectedPath) {
+    assertThat(String.format("Expected Region with name (%1$s); but was null!", expectedName),
+      region, is(notNullValue(Region.class)));
 
     String actualRegionName = region.getName();
     String actualRegionPath = region.getFullPath();
 
-    assertThat(String.format("Expected a Region named (%1$s); but was (%2$s)!", expectedRegionName, actualRegionName),
-      actualRegionName, is(equalTo(expectedRegionName)));
+    assertThat(String.format("Expected a Region named (%1$s); but was (%2$s)!", expectedName, actualRegionName),
+      actualRegionName, is(equalTo(expectedName)));
 
-    assertThat(String.format("Expected a Region path of (%1$s); but was (%2$s)!", expectedRegionName, actualRegionPath),
-      actualRegionPath, is(equalTo(expectedRegionPath)));
+    assertThat(String.format("Expected a Region path of (%1$s); but was (%2$s)!", expectedName, actualRegionPath),
+      actualRegionPath, is(equalTo(expectedPath)));
 
-    if (isDebugging()) {
-      System.out.printf("Region (%1$s) found!%n", actualRegionName);
-    }
+    debug("Region [%1$s] found%n", actualRegionName);
   }
 
-  protected static void assertRegion(final Region region, final String expectedRegionName, final DataPolicy expectedDataPolicy) {
-    assertRegion(region, expectedRegionName, toRegionPath(expectedRegionName), expectedDataPolicy);
+  protected static void assertRegion(Region region, String expectedName, DataPolicy expectedDataPolicy) {
+    assertRegion(region, expectedName, toRegionPath(expectedName), expectedDataPolicy);
   }
 
-  protected static void assertRegion(final Region region,
-                                     final String expectedRegionName,
-                                     final String expectedRegionPath,
-                                     final DataPolicy expectedDataPolicy)
-  {
-    assertRegion(region, expectedRegionName, expectedRegionPath);
-    assertThat(region.getAttributes(), is(notNullValue()));
+  protected static void assertRegion(Region region, String expectedName, String expectedPath, DataPolicy expectedDataPolicy) {
+    assertRegion(region, expectedName, expectedPath);
+    assertThat(region.getAttributes(), is(notNullValue(RegionAttributes.class)));
     assertThat(region.getAttributes().getDataPolicy(), is(equalTo(expectedDataPolicy)));
   }
 
-  protected void printBeanNames(final ApplicationContext applicationContext, final Class<?> beanType) {
+  protected void printBeanNames(ApplicationContext applicationContext, Class<?> beanType) {
     for (String beanName : applicationContext.getBeanNamesForType(beanType)) {
       System.out.printf("%1$s%n", beanName);
     }
   }
 
-  protected static void printRegionHierarchy(final Region<?, ?> region) {
+  protected static void printRegionHierarchy(Region<?, ?> region) {
     if (region != null) {
-      System.out.printf("%1$s%n", region.getFullPath());
+      info("%1$s%n", region.getFullPath());
 
       for (Region subRegion : region.subregions(SUBREGION_RECURSIVE)) {
         printRegionHierarchy(subRegion);
       }
     }
     else {
-      System.out.printf("Region was null!%n");
+      info("Region was null%n");
     }
   }
 
-  protected static String toPathname(final Class<?> type) {
+  protected static String toPathname(Class<?> type) {
     return type.getName().replaceAll("\\.", File.separator);
   }
 
-  protected static String toRegionPath(final String regionName) {
+  protected static String toRegionPath(String regionName) {
     return String.format("%1$s%2$s", REGION_PATH_SEPARATOR, regionName);
   }
-
 }
