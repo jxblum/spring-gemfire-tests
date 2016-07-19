@@ -59,7 +59,7 @@ public class ProgrammerFunctions {
   @Autowired
   private ProgrammerRepository programmerRepository;
 
-  protected static <T> List<T> nullSafeList(final List<T> list) {
+  protected static <T> List<T> nullSafeList(List<T> list) {
     return (list != null ? list : Collections.<T>emptyList());
   }
 
@@ -68,7 +68,7 @@ public class ProgrammerFunctions {
     return programmerRepository;
   }
 
-  protected ProgrammerRepository getProgrammerRepository(final Region<Long, Programmer> programmers) {
+  protected ProgrammerRepository getProgrammerRepository(Region<Long, Programmer> programmers) {
     if (!programmersTemplate.getRegion().equals(programmers)) {
       GemfireRepositoryFactory repositoryFactory = new GemfireRepositoryFactory(
         Collections.<Region<?, ?>>singleton(programmers), new GemfireMappingContext());
@@ -80,10 +80,9 @@ public class ProgrammerFunctions {
   }
 
   @GemfireFunction
-  public List<Programmer> updateReputation(@RegionData final Region<Long, Programmer> filteredProgrammers,
-                                           final String programmingLanguage,
-                                           final int reputationDelta)
-  {
+  public List<Programmer> updateReputation(@RegionData Region<Long, Programmer> filteredProgrammers,
+      String programmingLanguage, int reputationDelta) {
+
     try {
       ProgrammerRepository localProgrammerRepository = getProgrammerRepository(filteredProgrammers);
 
@@ -109,5 +108,4 @@ public class ProgrammerFunctions {
       throw new RuntimeException("?", e);
     }
   }
-
 }

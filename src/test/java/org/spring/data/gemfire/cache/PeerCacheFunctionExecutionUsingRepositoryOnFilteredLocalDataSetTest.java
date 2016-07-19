@@ -16,8 +16,10 @@
 
 package org.spring.data.gemfire.cache;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,15 +43,12 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 /**
- * The PeerCacheFunctionExecutionUsingRepositoryOnFilteredLocalDataSetTest class is a test suite of test cases testing
- * the functionality of creating a Repository based on a local, filtered data set within the context
+ * Test suite of test cases testing the functionality of creating and using a
+ * {@link org.springframework.data.repository.Repository} based on a local, filtered data set within the context
  * of a GemFire Function Execution.
  *
  * @author John Blum
  * @see org.junit.Test
- * @see org.junit.runner.RunWith
- * @see org.springframework.test.context.ContextConfiguration
- * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
  * @since 1.0.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -81,17 +80,17 @@ public class PeerCacheFunctionExecutionUsingRepositoryOnFilteredLocalDataSetTest
   }
 
   protected GemfireTemplate getTemplate() {
-    Assert.state(programmersTemplate != null, "the GemfireTemplate for the '/Programmers' Region was not properly initialized");
+    Assert.state(programmersTemplate != null, "GemfireTemplate for the '/Programmers' Region was not properly initialized");
     return programmersTemplate;
   }
 
-  protected void assertReputation(final Iterable<Programmer> programmers, final int expectedReputation) {
+  protected void assertReputation(Iterable<Programmer> programmers, int expectedReputation) {
     for (Programmer programmer : programmers) {
-      assertEquals(expectedReputation, programmer.getReputation().intValue());
+      assertThat(programmer.getReputation().intValue(), is(equalTo(expectedReputation)));
     }
   }
 
-  protected Programmer createProgrammer(final String firstName, final String lastName, final String programmingLanguage) {
+  protected Programmer newProgrammer(final String firstName, final String lastName, final String programmingLanguage) {
     Programmer programmer = new Programmer(firstName, lastName);
     programmer.setId(ID_SEQUENCE.incrementAndGet());
     programmer.setProgrammingLanguage(programmingLanguage);
@@ -99,41 +98,45 @@ public class PeerCacheFunctionExecutionUsingRepositoryOnFilteredLocalDataSetTest
     return programmer;
   }
 
-  protected Programmer save(final Programmer programmer) {
+  protected Programmer save(Programmer programmer) {
     getTemplate().put(programmer.getId(), programmer);
     return getTemplate().get(programmer.getId());
   }
 
   protected Set<Long> toKeys(Iterable<Programmer> programmers) {
     Set<Long> keys = new HashSet<>();
+
     for (Programmer programmer : programmers) {
       keys.add(programmer.getId());
     }
+
     return keys;
   }
 
   protected List<String> toNames(Iterable<Programmer> programmers) {
     List<String> names = new ArrayList<>();
+
     for (Programmer programmer : programmers) {
       names.add(programmer.getName());
     }
+
     return names;
   }
 
   @Before
   public void setup() {
-    save(createProgrammer("Jon", "Doe", "Java"));
-    save(createProgrammer("Jane", "Doe", "Groovy"));
-    save(createProgrammer("Jack", "Black", "Java"));
-    save(createProgrammer("Cookie", "Doe", "JRuby"));
-    save(createProgrammer("Jack", "Handy", "Java"));
-    save(createProgrammer("Pie", "Doe", "Scala"));
-    save(createProgrammer("Sandy", "Handy", "Java"));
-    save(createProgrammer("Ima", "Pigg", "JavaScript"));
-    save(createProgrammer("Sour", "Doe", "Java"));
-    save(createProgrammer("Agent", "Smith", "Java"));
-    save(createProgrammer("Ada", "Lovelace", "Java"));
-    save(createProgrammer("Jason", "Bourne", "Java"));
+    save(newProgrammer("Jon", "Doe", "Java"));
+    save(newProgrammer("Jane", "Doe", "Groovy"));
+    save(newProgrammer("Jack", "Black", "Java"));
+    save(newProgrammer("Cookie", "Doe", "JRuby"));
+    save(newProgrammer("Jack", "Handy", "Java"));
+    save(newProgrammer("Pie", "Doe", "Scala"));
+    save(newProgrammer("Sandy", "Handy", "Java"));
+    save(newProgrammer("Ima", "Pigg", "JavaScript"));
+    save(newProgrammer("Sour", "Doe", "Java"));
+    save(newProgrammer("Agent", "Smith", "Java"));
+    save(newProgrammer("Ada", "Lovelace", "Java"));
+    save(newProgrammer("Jason", "Bourne", "Java"));
   }
 
   @Test
@@ -149,24 +152,22 @@ public class PeerCacheFunctionExecutionUsingRepositoryOnFilteredLocalDataSetTest
 
     Collections.sort(programmers);
 
-    assertNotNull(programmers);
-    assertFalse(programmers.isEmpty());
-    assertEquals(String.format("Expected ([Jon Doe, Sour Doe]); but was (%1$s)", toNames(programmers)),
-      2, programmers.size());
-    assertTrue(toNames(programmers).containsAll(Arrays.asList("Jon Doe", "Sour Doe")));
+    assertThat(programmers, is(notNullValue(List.class)));
+    assertThat(String.format("Expected ([Jon Doe, Sour Doe]); but was (%1$s)", toNames(programmers)),
+      programmers.size(), is(equalTo(2)));
+    assertThat(toNames(programmers).containsAll(Arrays.asList("Jon Doe", "Sour Doe")), is(true));
     assertReputation(programmers, 15);
   }
 
   @SuppressWarnings("unchecked")
-  private <T> List<T> getFunctionResults(final List<T> results) {
+  private <T> List<T> getFunctionResults(List<T> results) {
     if (!CollectionUtils.isEmpty(results)) {
       if (results.get(0) instanceof List) {
-        assertEquals(1, results.size());
+        assertThat(results.size(), is(equalTo(1)));
         return getFunctionResults((List<T>) results.get(0));
       }
     }
 
     return results;
   }
-
 }
