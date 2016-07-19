@@ -33,6 +33,7 @@
   </developers>
 
   <properties>
+    <assertj.version>3.5.1</assertj.version>
     <codeprimate-api.version>1.2.0.BUILD-SNAPSHOT</codeprimate-api.version>
     <easymock.version>3.3.1</easymock.version>
     <gemfire.version>8.2.0</gemfire.version>
@@ -135,6 +136,13 @@
           <artifactId>spring-core</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+
+    <!-- AssertJ-->
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>${assertj.version}</version>
     </dependency>
 
     <!-- Core Spring Framework -->
