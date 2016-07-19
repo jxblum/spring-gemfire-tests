@@ -107,7 +107,8 @@ public class CachingWithConcurrentMapUsingExplicitlyNamedCachesTest
       //return new ConcurrentMapCacheManager("Temporary");
     }
 
-    @Bean NumberClassificationService numberCategoryService() {
+    @Bean
+    NumberClassificationService numberCategoryService() {
       return new NumberClassificationService();
     }
   }
