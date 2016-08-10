@@ -62,8 +62,8 @@
     <spring-data-jpa.version>1.7.4.RELEASE</spring-data-jpa.version>
     <spring-shell.version>1.0.0.RELEASE</spring-shell.version>
     <sqlfire.version>1.1.2</sqlfire.version>
-    <sqlfire-client.version>/Users/jblum/Downloads/Pivotal/GemStone/Products/SQLFire/Pivotal_SQLFire_112_b45732/lib/sqlfireclient.jar</sqlfire-client.version>
-    <sqlfire-hibernate-dialect.version>/Users/jblum/Downloads/Pivotal/GemStone/Products/SQLFire/sqlfHibernateDialect.jar</sqlfire-hibernate-dialect.version>
+    <sqlfire-client.version>/Users/jblum/Downloads/Pivotal/GemStone/Products/VMWare SQLFire/Pivotal_SQLFire_112_b45732/lib/sqlfireclient.jar</sqlfire-client.version>
+    <sqlfire-hibernate-dialect.version>/Users/jblum/Downloads/Pivotal/GemStone/Products/VMware SQLFire/sqlfHibernateDialect.jar</sqlfire-hibernate-dialect.version>
   </properties>
 
   <repositories>
@@ -79,7 +79,7 @@
     </repository>
     <repository>
       <id>pivotal-gemstone-release</id>
-      <name>GemStone Maven Release Repository</name>
+      <name>GemStone Releases Maven Repository</name>
       <!-- <url>http://dist.gemstone.com.s3.amazonaws.com/maven/release</url> -->
       <url>http://dist.gemstone.com/maven/release</url>
       <snapshots>
@@ -89,7 +89,7 @@
     </repository>
     <repository>
       <id>apache-geode-snapshot</id>
-      <name>Apache Snapshot Repository</name>
+      <name>Apache Snapshots Maven Repository</name>
       <url>https://repository.apache.org/content/repositories/snapshots</url>
       <snapshots>
         <enabled>true</enabled>
@@ -236,6 +236,8 @@
       <scope>compile</scope>
     </dependency>
 -->
+
+    <!-- Spring Data JPA -->
 <!--
     <dependency>
       <groupId>org.springframework.data</groupId>
@@ -254,11 +256,11 @@
       <exclusions>
         <exclusion>
           <groupId>org.springframework</groupId>
-          <artifactId>spring-core</artifactId>
+          <artifactId>spring-context-support</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.springframework</groupId>
-          <artifactId>spring-context-support</artifactId>
+          <artifactId>spring-core</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -304,11 +306,6 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>${jackson.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
       <version>${jackson.version}</version>
     </dependency>
     <dependency>
