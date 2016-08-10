@@ -60,5 +60,4 @@ public class SqlFireTransactionalBatchInsertsTest extends CommonTransactionalBat
     Assert.state(userService != null, "A reference to a UserService object was not properly configured!");
     return userService;
   }
-
 }

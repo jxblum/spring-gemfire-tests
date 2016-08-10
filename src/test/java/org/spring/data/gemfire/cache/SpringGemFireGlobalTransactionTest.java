@@ -58,5 +58,4 @@ public class SpringGemFireGlobalTransactionTest extends GemFireGlobalTransaction
   protected GemstoneService getGemstoneService() {
     return gemstoneService;
   }
-
 }

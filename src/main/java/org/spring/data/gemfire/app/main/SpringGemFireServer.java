@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.gemfire.CacheFactoryBean;
+import org.springframework.data.gemfire.PartitionedRegionFactoryBean;
 import org.springframework.data.gemfire.server.CacheServerFactoryBean;
 
 /**
@@ -97,4 +98,14 @@ public class SpringGemFireServer {
     return gemfireCacheServer;
   }
 
+  @Bean(name = "Example")
+  PartitionedRegionFactoryBean<String, Object> exampleRegion(Cache gemfireCache) {
+    PartitionedRegionFactoryBean<String, Object> exampleRegion = new PartitionedRegionFactoryBean<>();
+
+    exampleRegion.setCache(gemfireCache);
+    exampleRegion.setClose(false);
+    exampleRegion.setPersistent(false);
+
+    return exampleRegion;
+  }
 }
