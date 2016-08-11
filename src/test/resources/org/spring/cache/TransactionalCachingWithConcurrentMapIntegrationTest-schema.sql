@@ -1,0 +1,1 @@
+CREATE TABLE Example (id BIGINT PRIMARY KEY, cached_value VARCHAR(64));
