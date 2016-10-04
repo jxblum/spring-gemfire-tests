@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -29,8 +30,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 /**
- * AbstractSpringCacheAbstractionIntegrationTest is a base class for implementing Spring Cache Abstraction test classes
- * using different caching providers and configurations.
+ * {@link AbstractSpringCacheAbstractionIntegrationTest} is a base class for implementing Spring Cache Abstraction
+ * test classes and cases using different caching providers and configurations.
  *
  * @author John Blum
  * @see java.util.function.Function
@@ -84,14 +85,14 @@ public abstract class AbstractSpringCacheAbstractionIntegrationTest {
 
   protected static abstract class CachingSupport {
 
-    private volatile boolean cacheMiss = false;
+    private final AtomicBoolean cacheMiss = new AtomicBoolean(false);
 
     protected void setCacheMiss() {
-      this.cacheMiss = true;
+      cacheMiss.set(true);
     }
 
     protected void unsetCacheMiss() {
-      this.cacheMiss = false;
+      cacheMiss.set(false);
     }
 
     public boolean wasCacheHit() {
@@ -99,9 +100,7 @@ public abstract class AbstractSpringCacheAbstractionIntegrationTest {
     }
 
     public boolean wasCacheMiss() {
-      boolean localCacheMiss = this.cacheMiss;
-      unsetCacheMiss();
-      return localCacheMiss;
+      return cacheMiss.compareAndSet(true, false);
     }
   }
 
