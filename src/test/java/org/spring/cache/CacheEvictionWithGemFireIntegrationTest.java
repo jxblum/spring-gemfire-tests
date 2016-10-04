@@ -30,7 +30,7 @@ import com.gemstone.gemfire.cache.GemFireCache;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.spring.cache.CacheEvictionWithGemFireIntegrationTest.ApplicationTestConfiguration;
+import org.spring.cache.CacheEvictionWithGemFireIntegrationTest.Sgf539WorkaroundConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -46,6 +46,7 @@ import org.springframework.data.gemfire.LocalRegionFactoryBean;
 import org.springframework.data.gemfire.mapping.GemfireMappingContext;
 import org.springframework.data.gemfire.mapping.Region;
 import org.springframework.data.gemfire.repository.support.GemfireRepositoryFactoryBean;
+import org.springframework.data.gemfire.support.GemfireCache;
 import org.springframework.data.gemfire.support.GemfireCacheManager;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
@@ -58,15 +59,19 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * Integration test testing the functionality and behavior of the Spring Cache Abstraction's
- * {@link CacheEvict} annotation when using Pivotal GemFire as the caching provider.
+ * {@link CachePut} annotation combined with the {@link CacheEvict} annotation on a single
+ * application {@link Service} method when using Pivotal GemFire as the caching provider.
  *
  * @author John Blum
  * @see org.junit.Test
+ * @see org.springframework.cache.annotation.CacheEvict
+ * @see org.springframework.cache.annotation.CachePut
+ * @see org.springframework.cache.annotation.EnableCaching
  * @see <a href="http://stackoverflow.com/questions/39830488/gemfire-entrynotfoundexception-for-cacheevict">Gemfire EntryNotFoundException for @CacheEvict</a>
  * @since 1.0.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = ApplicationTestConfiguration.class)
+@ContextConfiguration(classes = Sgf539WorkaroundConfiguration.class)
 @SuppressWarnings("unused")
 public class CacheEvictionWithGemFireIntegrationTest extends AbstractSpringCacheAbstractionIntegrationTest {
 
@@ -136,6 +141,29 @@ public class CacheEvictionWithGemFireIntegrationTest extends AbstractSpringCache
 
     assertPeopleInDepartment(Department.RESEARCH_DEVELOPMENT, jonDoe);
     assertThat(peopleService.wasCacheMiss()).isTrue();
+  }
+
+  @Configuration
+  @EnableCaching
+  @Import(ApplicationTestConfiguration.class)
+  static class Sgf539WorkaroundConfiguration {
+
+    @Bean
+    GemfireCacheManager cacheManager(GemFireCache gemfireCache) {
+      GemfireCacheManager cacheManager = new GemfireCacheManager() {
+        @Override protected org.springframework.cache.Cache decorateCache(org.springframework.cache.Cache cache) {
+          return new GemfireCache((com.gemstone.gemfire.cache.Region<?, ?>) cache.getNativeCache()) {
+            @Override public void evict(Object key) {
+              getNativeCache().remove(key);
+            }
+          };
+        }
+      };
+
+      cacheManager.setCache((Cache) gemfireCache);
+
+      return cacheManager;
+    }
   }
 
   @Configuration
