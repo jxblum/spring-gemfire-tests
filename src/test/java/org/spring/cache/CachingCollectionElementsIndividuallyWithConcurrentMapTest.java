@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
@@ -240,6 +241,12 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
 
     @Override
     @SuppressWarnings("unchecked")
+    public <T> T get(Object key, Callable<T> valueLoader) {
+      return (T) get(key, Object.class);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
     public void put(final Object key, final Object value) {
       if (key instanceof Iterable) {
         Assert.isInstanceOf(Iterable.class, value, String.format(
@@ -343,5 +350,4 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
       return results;
     }
   }
-
 }

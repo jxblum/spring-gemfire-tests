@@ -16,6 +16,8 @@
 
 package org.spring.data.gemfire.cache.manager;
 
+import java.util.concurrent.Callable;
+
 import com.gemstone.gemfire.cache.Region;
 
 import org.springframework.cache.Cache;
@@ -73,6 +75,12 @@ public class CustomGemFireCacheManager extends GemfireCacheManager {
     @Override
     public <T> T get(final Object key, final Class<T> type) {
       return type.cast(get(key));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T get(Object key, Callable<T> valueLoader) {
+      return (T) get(key, Object.class);
     }
 
     @Override
