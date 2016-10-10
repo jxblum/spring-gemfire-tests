@@ -18,9 +18,6 @@ package org.spring.beans.factory.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.spring.beans.factory.config.SpringInitializationCallbackWithBeanPostProcessorTests.TestConfiguration;
@@ -45,28 +42,19 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @SuppressWarnings("unused")
 public class SpringInitializationCallbackWithBeanPostProcessorTests {
 
-  private static final List<String> CALL_STACK = new ArrayList<>();
-
   @Autowired
   private TestBean bean;
-
-  static void toSystemOut(Iterable<String> iterable) {
-    for (String element : iterable) {
-      System.out.println(element);
-    }
-  }
 
   @Test
   public void beanIsNotNull() {
     assertThat(bean).isNotNull();
-    toSystemOut(CALL_STACK);
   }
 
   static class TestBean implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-      CALL_STACK.add(String.format("%s.afterPropertiesSet()", getClass().getSimpleName()));
+      System.out.printf("%s.afterPropertiesSet()%n", getClass().getSimpleName());
     }
   }
 
@@ -76,14 +64,14 @@ public class SpringInitializationCallbackWithBeanPostProcessorTests {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-      CALL_STACK.add(String.format("%s.afterPropertiesSet()", getClass().getSimpleName()));
+      System.out.printf("%s.afterPropertiesSet()%n", getClass().getSimpleName());
       testBean = new TestBean();
       testBean.afterPropertiesSet();
     }
 
     @Override
     public TestBean getObject() throws Exception {
-      CALL_STACK.add(String.format("%s.getObject()", getClass().getSimpleName()));
+      System.out.printf("%s.getObject()%n", getClass().getSimpleName());
       return testBean;
     }
 
@@ -112,8 +100,8 @@ public class SpringInitializationCallbackWithBeanPostProcessorTests {
         @Override
         public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
           if (beanName.endsWith("testBean")) {
-            CALL_STACK.add(String.format("BeanPostProcessor.postProcessBeforeInitialization(%1$s, %2$s)",
-              bean.getClass().getSimpleName(), beanName));
+            System.out.printf("BeanPostProcessor.postProcessBeforeInitialization(%1$s, %2$s)%n",
+              bean.getClass().getSimpleName(), beanName);
           }
 
           return bean;
@@ -122,8 +110,8 @@ public class SpringInitializationCallbackWithBeanPostProcessorTests {
         @Override
         public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
           if (beanName.endsWith("testBean")) {
-            CALL_STACK.add(String.format("BeanPostProcessor.postProcessAfterInitialization(%1$s, %2$s)",
-              bean.getClass().getSimpleName(), beanName));
+            System.out.printf("BeanPostProcessor.postProcessAfterInitialization(%1$s, %2$s)%n",
+              bean.getClass().getSimpleName(), beanName);
           }
 
           return bean;
