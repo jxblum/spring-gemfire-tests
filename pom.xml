@@ -55,7 +55,7 @@
     <!--
     <spring-data-gemfire.version>1.7.6.RELEASE</spring-data-gemfire.version>
     -->
-    <spring-data-geode.version>1.0.0.APACHE-GEODE-INCUBATING-M2</spring-data-geode.version>
+    <spring-data-geode.version>1.0.0.APACHE-GEODE-INCUBATING-M3</spring-data-geode.version>
 <!--
     <spring-data-geode.version>1.0.0.APACHE-GEODE-INCUBATING-M1</spring-data-geode.version>
     <spring-data-geode.version>1.7.0.APACHE-GEODE-EA-SNAPSHOT</spring-data-gemfire.version>
