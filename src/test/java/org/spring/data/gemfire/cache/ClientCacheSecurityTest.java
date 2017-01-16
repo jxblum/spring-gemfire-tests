@@ -16,8 +16,9 @@
 
 package org.spring.data.gemfire.cache;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.security.Principal;
 import java.util.Properties;
@@ -75,7 +76,7 @@ import org.springframework.util.StringUtils;
  * @since 1.0.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "ClientCacheSecurityTest-context.xml")
+@ContextConfiguration
 @SuppressWarnings("all")
 public class ClientCacheSecurityTest {
 
@@ -113,7 +114,7 @@ public class ClientCacheSecurityTest {
 
     protected Principal validateAuthenticated(String username, String password) {
       if (!username.equals(password)) {
-        throw new AuthenticationFailedException(String.format("user [%1$s] authentication verification failed",
+        throw new AuthenticationFailedException(String.format("user [%s] authentication verification failed",
           username));
       }
 
@@ -124,7 +125,7 @@ public class ClientCacheSecurityTest {
       String propertyValue = securityConfiguration.getProperty(propertyName);
 
       if (!StringUtils.hasText(propertyValue)) {
-        throw new AuthenticationFailedException(String.format("[%1$s] must be specified", propertyName));
+        throw new AuthenticationFailedException(String.format("[%s] must be specified", propertyName));
       }
 
       return propertyValue;
@@ -132,16 +133,15 @@ public class ClientCacheSecurityTest {
   }
 
   public static final class TestAuthInitialize extends AuthenticationAuthorizationSecuritySupport
-    implements AuthInitialize
-  {
+      implements AuthInitialize {
 
     public static TestAuthInitialize create() {
       return new TestAuthInitialize();
     }
 
     public Properties getCredentials(Properties gemfireSecurityProperties, DistributedMember server, boolean isPeer)
-      throws AuthenticationFailedException
-    {
+        throws AuthenticationFailedException {
+
       Properties credentials = new Properties();
 
       set(SECURITY_USERNAME_PROPERTY).of(credentials).with(gemfireSecurityProperties);
@@ -157,22 +157,22 @@ public class ClientCacheSecurityTest {
     }
   }
 
-  public static final class TestAuthenticator extends AuthenticationAuthorizationSecuritySupport implements Authenticator {
+  public static final class TestAuthenticator extends AuthenticationAuthorizationSecuritySupport
+      implements Authenticator {
 
     public static TestAuthenticator create() {
       return new TestAuthenticator();
     }
 
-    public void init(final Properties gemfireSecurityProperties, final LogWriter systemLogger, final LogWriter securityLogger)
-      throws AuthenticationFailedException
-    {
-      securityLogger.info(String.format("The GemFire System security configuration was [%1$s]",
-        gemfireSecurityProperties));
+    public void init(Properties gemfireSecurityProperties, LogWriter systemLogger, LogWriter securityLogger)
+        throws AuthenticationFailedException {
+
+      securityLogger.info(String.format("GemFire system security configuration was [%s]", gemfireSecurityProperties));
     }
 
-    public Principal authenticate(final Properties credentials, final DistributedMember member)
-      throws AuthenticationFailedException
-    {
+    public Principal authenticate(Properties credentials, DistributedMember member)
+        throws AuthenticationFailedException {
+
       String username = validateAuthenticationConfiguration(credentials, SECURITY_USERNAME_PROPERTY);
       String password = validateAuthenticationConfiguration(credentials, SECURITY_PASSWORD_PROPERTY);
 
@@ -241,34 +241,34 @@ public class ClientCacheSecurityTest {
     private String propertyName;
 
     protected String getPropertyName() {
-      Assert.state(StringUtils.hasText(propertyName), "propertyName was not initialized");
-      return propertyName;
+      Assert.state(StringUtils.hasText(this.propertyName), "propertyName was not initialized");
+      return this.propertyName;
     }
 
-    public PropertiesSetter set(final String propertyName) {
-      Assert.hasText(propertyName, String.format("propertyName [%1$s] must be specified", propertyName));
+    public PropertiesSetter set(String propertyName) {
+      Assert.hasText(propertyName, String.format("propertyName [%s] must be specified", propertyName));
       this.propertyName = propertyName;
       return this;
     }
 
     @Override
-    public PropertiesSetter of(final Properties target) {
-      Assert.notNull(target, String.format("The target Properties on which to set property [%1$s] cannot be null",
-        propertyName));
+    public PropertiesSetter of(Properties target) {
+      Assert.notNull(target, String.format(
+        "The target Properties in which to set property [%s] cannot be null", propertyName));
       this.target = target;
       return this;
     }
 
     @Override
-    public PropertiesSetter to(final String propertyValue) {
-      target.setProperty(propertyName, propertyValue);
+    public PropertiesSetter to(String propertyValue) {
+      this.target.setProperty(this.propertyName, propertyValue);
       return this;
     }
 
     @Override
-    public PropertiesSetter with(final Properties source) {
+    public PropertiesSetter with(Properties source) {
       Assert.notNull(source, "source Properties cannot be null");
-      target.setProperty(propertyName, source.getProperty(propertyName));
+      this.target.setProperty(this.propertyName, source.getProperty(this.propertyName));
       return this;
     }
   }
@@ -314,9 +314,13 @@ public class ClientCacheSecurityTest {
     }
 
     @Bean
-    PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer(@Qualifier("serverProperties") Properties serverProperties) {
+    PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer(
+        @Qualifier("serverProperties") Properties serverProperties) {
+
       PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
+
       propertyPlaceholderConfigurer.setProperties(serverProperties);
+
       return propertyPlaceholderConfigurer;
     }
 
@@ -328,8 +332,8 @@ public class ClientCacheSecurityTest {
         @Value("${gemfire.security.ssl.keystore.password}") String keystorePassword,
         @Value("${gemfire.security.ssl.keystore.type}") String keystoreType,
         @Value("${gemfire.security.ssl.truststore}") String truststoreLocation,
-        @Value("${gemfire.security.ssl.truststore.password}") String truststorePassword)
-    {
+        @Value("${gemfire.security.ssl.truststore.password}") String truststorePassword) {
+
       Properties gemfireProperties = new Properties();
 
       gemfireProperties.setProperty("name", SpringGemFireSecureServerApplication.class.getSimpleName());
@@ -340,8 +344,11 @@ public class ClientCacheSecurityTest {
       gemfireProperties.setProperty("jmx-manager-port", jmxManagerPort);
       gemfireProperties.setProperty("jmx-manager-ssl-enabled", "false");
       gemfireProperties.setProperty("jmx-manager-start", "true");
-      gemfireProperties.setProperty("security-client-authenticator", TestAuthenticator.class.getName().concat(".create"));
+      gemfireProperties.setProperty("security-client-authenticator",
+        TestAuthenticator.class.getName().concat(".create"));
+
       configureSslProperties(gemfireProperties);
+
       configureServerSslProperties(gemfireProperties, keystoreLocation, keystorePassword, keystoreType,
         truststoreLocation, truststorePassword);
 
@@ -379,7 +386,6 @@ public class ClientCacheSecurityTest {
 
       gemfireCache.setClose(true);
       gemfireCache.setProperties(gemfireProperties);
-      gemfireCache.setUseBeanFactoryLocator(false);
 
       return gemfireCache;
     }
@@ -389,8 +395,8 @@ public class ClientCacheSecurityTest {
         @Value("${gemfire.cache.server.bind-address:localhost}") String bindAddress,
         @Value("${gemfire.cache.server.hostname-for-clients:localhost}") String hostnameForClients,
         @Value("${gemfire.cache.server.port:12480}") int port,
-        @Value("${gemfire.cache.server.max-connections:50}") int maxConnections)
-    {
+        @Value("${gemfire.cache.server.max-connections:10}") int maxConnections) {
+
       CacheServerFactoryBean gemfireCacheServer = new CacheServerFactoryBean();
 
       gemfireCacheServer.setAutoStartup(true);
@@ -405,8 +411,8 @@ public class ClientCacheSecurityTest {
 
     @Bean(name = "Example")
     ReplicatedRegionFactoryBean<Long, Long> exampleRegion(Cache gemfireCache,
-      RegionAttributes<Long, Long> exampleRegionAttributes)
-    {
+        RegionAttributes<Long, Long> exampleRegionAttributes) {
+
       ReplicatedRegionFactoryBean<Long, Long> exampleRegion = new ReplicatedRegionFactoryBean<>();
 
       exampleRegion.setAttributes(exampleRegionAttributes);
@@ -435,10 +441,10 @@ public class ClientCacheSecurityTest {
         public Long load(final LoaderHelper<Long, Long> helper) throws CacheLoaderException {
           long number = helper.getKey();
 
-          Assert.isTrue(number >= 0, String.format("factorial(%1$d) is invalid", number));
+          Assert.isTrue(number >= 0L, String.format("factorial(%d) is invalid", number));
 
-          if (number < 3l) {
-            return (number < 2l ? 1l : 2l);
+          if (number < 3L) {
+            return (number < 2L ? 1L : 2L);
           }
 
           long result = number;
@@ -455,5 +461,4 @@ public class ClientCacheSecurityTest {
       };
     }
   }
-
 }
