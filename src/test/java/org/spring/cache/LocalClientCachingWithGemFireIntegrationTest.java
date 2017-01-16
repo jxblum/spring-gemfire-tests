@@ -16,8 +16,10 @@
 
 package org.spring.cache;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertThat;
 
 import java.net.InetSocketAddress;
 import java.util.Arrays;
@@ -54,7 +56,7 @@ import org.springframework.data.gemfire.RegionAttributesFactoryBean;
 import org.springframework.data.gemfire.client.ClientCacheFactoryBean;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.client.PoolFactoryBean;
-import org.springframework.data.gemfire.config.GemfireConstants;
+import org.springframework.data.gemfire.config.xml.GemfireConstants;
 import org.springframework.data.gemfire.support.ConnectionEndpoint;
 import org.springframework.data.gemfire.support.GemfireCacheManager;
 import org.springframework.stereotype.Service;
@@ -265,5 +267,4 @@ public class LocalClientCachingWithGemFireIntegrationTest {
       return regionAttributesFactoryBean;
     }
   }
-
 }

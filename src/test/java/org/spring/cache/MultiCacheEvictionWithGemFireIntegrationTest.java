@@ -223,10 +223,9 @@ public class MultiCacheEvictionWithGemFireIntegrationTest extends AbstractSpring
     @Bean
     GemfireRepositoryFactoryBean<UserRepository, User, Long> userRepository() {
       GemfireRepositoryFactoryBean<UserRepository, User, Long> userRepository =
-        new GemfireRepositoryFactoryBean<>();
+        new GemfireRepositoryFactoryBean<>(UserRepository.class);
 
       userRepository.setGemfireMappingContext(new GemfireMappingContext());
-      userRepository.setRepositoryInterface(UserRepository.class);
 
       return userRepository;
     }

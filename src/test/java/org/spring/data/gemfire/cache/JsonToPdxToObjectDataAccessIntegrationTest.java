@@ -16,8 +16,9 @@
 
 package org.spring.data.gemfire.cache;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -317,13 +318,7 @@ public class JsonToPdxToObjectDataAccessIntegrationTest {
 
     @Bean
     public GemfireRepositoryFactoryBean orderRepository() {
-      GemfireRepositoryFactoryBean<OrderRepository, Order, Long> repositoryFactoryBean =
-        new GemfireRepositoryFactoryBean<>();
-
-      repositoryFactoryBean.setRepositoryInterface(OrderRepository.class);
-
-      return repositoryFactoryBean;
+      return new GemfireRepositoryFactoryBean<>(OrderRepository.class);
     }
   }
-
 }
