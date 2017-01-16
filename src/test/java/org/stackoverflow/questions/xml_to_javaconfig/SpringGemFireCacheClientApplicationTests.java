@@ -36,7 +36,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.gemfire.client.ClientCacheFactoryBean;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.client.PoolFactoryBean;
-import org.springframework.data.gemfire.config.GemfireConstants;
+import org.springframework.data.gemfire.config.xml.GemfireConstants;
 import org.springframework.data.gemfire.support.ConnectionEndpoint;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -73,23 +73,23 @@ public class SpringGemFireCacheClientApplicationTests {
   @SuppressWarnings("unused")
   static class GemFireCacheClientApplicationConfiguration {
 
-    int intValue(Long value) {
-      return value.intValue();
-    }
-
-    String logLevel() {
-      return System.getProperty("gemfire.log-level", DEFAULT_GEMFIRE_LOG_LEVEL);
-    }
-
     @Bean
-    PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+    static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
       return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    static int intValue(Number value) {
+      return value.intValue();
     }
 
     Properties gemfireProperties() {
       Properties gemfireProperties = new Properties();
       gemfireProperties.setProperty("log-level", logLevel());
       return gemfireProperties;
+    }
+
+    String logLevel() {
+      return System.getProperty("gemfire.log-level", DEFAULT_GEMFIRE_LOG_LEVEL);
     }
 
     @Bean
