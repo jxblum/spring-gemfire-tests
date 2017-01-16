@@ -44,23 +44,17 @@
     <jackson.version>2.6.4</jackson.version>
     <jmock.version>2.6.0</jmock.version>
     <junit.version>4.12</junit.version>
-    <log4j.version>2.1</log4j.version>
+    <log4j.version>2.6.1</log4j.version>
     <lombok.version>1.16.10</lombok.version>
     <mockito.version>1.10.19</mockito.version>
     <multithreadedtc.version>1.01</multithreadedtc.version>
-    <slf4j.version>1.7.12</slf4j.version>
-    <spring.version>4.3.3.RELEASE</spring.version>
-    <spring-boot.version>1.4.1.RELEASE</spring-boot.version>
-    <spring-data-gemfire.version>1.8.4.RELEASE</spring-data-gemfire.version>
-    <!--
-    <spring-data-gemfire.version>1.7.6.RELEASE</spring-data-gemfire.version>
-    -->
-    <spring-data-geode.version>1.0.0.APACHE-GEODE-INCUBATING-M3</spring-data-geode.version>
-<!--
-    <spring-data-geode.version>1.0.0.APACHE-GEODE-INCUBATING-M1</spring-data-geode.version>
-    <spring-data-geode.version>1.7.0.APACHE-GEODE-EA-SNAPSHOT</spring-data-gemfire.version>
--->
+    <slf4j.version>1.7.22</slf4j.version>
+    <spring.version>4.3.5.RELEASE</spring.version>
+    <spring-boot.version>1.5.0.RC1</spring-boot.version>
+    <spring-data-gemfire.version>1.9.0.RC1</spring-data-gemfire.version>
+    <spring-data-geode.version>1.0.0.INCUBATING-RELEASE</spring-data-geode.version>
     <spring-data-jpa.version>1.10.4.RELEASE</spring-data-jpa.version>
+    <spring-data-redis.version>1.8.0.RC1</spring-data-redis.version>
     <spring-shell.version>1.0.0.RELEASE</spring-shell.version>
     <sqlfire.version>1.1.2</sqlfire.version>
     <sqlfire-client.version>/Users/jblum/Downloads/Pivotal/GemStone/Products/VMWareSQLFire/Pivotal_SQLFire_112_b45732/lib/sqlfireclient.jar</sqlfire-client.version>
@@ -248,6 +242,19 @@
     </dependency>
 -->
 
+    <!-- Spring Data Redis -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
+      <version>${spring-boot.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
     <!-- Spring Shell -->
     <dependency>
       <groupId>org.springframework.shell</groupId>
@@ -315,6 +322,7 @@
       <artifactId>jackson-databind</artifactId>
       <version>${jackson.version}</version>
     </dependency>
+<!--
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
@@ -325,24 +333,7 @@
       <artifactId>log4j-core</artifactId>
       <version>${log4j.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-jcl</artifactId>
-      <version>${log4j.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-jul</artifactId>
-      <version>${log4j.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>${log4j.version}</version>
-      <scope>runtime</scope>
-    </dependency>
+-->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
