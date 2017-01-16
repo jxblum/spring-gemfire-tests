@@ -90,7 +90,7 @@ public class PeerCacheFunctionExecutionUsingRepositoryOnFilteredLocalDataSetTest
     }
   }
 
-  protected Programmer newProgrammer(final String firstName, final String lastName, final String programmingLanguage) {
+  protected Programmer newProgrammer(String firstName, String lastName, String programmingLanguage) {
     Programmer programmer = new Programmer(firstName, lastName);
     programmer.setId(ID_SEQUENCE.incrementAndGet());
     programmer.setProgrammingLanguage(programmingLanguage);
@@ -144,7 +144,6 @@ public class PeerCacheFunctionExecutionUsingRepositoryOnFilteredLocalDataSetTest
     List<Programmer> programmers = getRepository().findDistinctByLastName("Doe");
 
     assertThat(programmers, is(notNullValue()));
-    assertThat(programmers.isEmpty(), is(false));
     assertThat(programmers.size(), is(equalTo(5)));
     assertReputation(programmers, 5);
 
@@ -153,7 +152,7 @@ public class PeerCacheFunctionExecutionUsingRepositoryOnFilteredLocalDataSetTest
     Collections.sort(programmers);
 
     assertThat(programmers, is(notNullValue(List.class)));
-    assertThat(String.format("Expected ([Jon Doe, Sour Doe]); but was (%1$s)", toNames(programmers)),
+    assertThat(String.format("Expected ([Jon Doe, Sour Doe]); but was (%s)", toNames(programmers)),
       programmers.size(), is(equalTo(2)));
     assertThat(toNames(programmers).containsAll(Arrays.asList("Jon Doe", "Sour Doe")), is(true));
     assertReputation(programmers, 15);
