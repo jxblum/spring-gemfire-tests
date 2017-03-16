@@ -16,18 +16,18 @@
 
 package org.spring.data.gemfire.app.context.config;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Properties;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.EvictionAction;
-import com.gemstone.gemfire.cache.EvictionAttributes;
-import com.gemstone.gemfire.cache.ExpirationAction;
-import com.gemstone.gemfire.cache.ExpirationAttributes;
-import com.gemstone.gemfire.cache.PartitionAttributes;
-import com.gemstone.gemfire.cache.RegionAttributes;
-import com.gemstone.gemfire.cache.Scope;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.EvictionAction;
+import org.apache.geode.cache.EvictionAttributes;
+import org.apache.geode.cache.ExpirationAction;
+import org.apache.geode.cache.ExpirationAttributes;
+import org.apache.geode.cache.GemFireCache;
+import org.apache.geode.cache.PartitionAttributes;
+import org.apache.geode.cache.RegionAttributes;
+import org.apache.geode.cache.Scope;
 import org.spring.data.gemfire.app.beans.Customer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,15 +37,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.gemfire.CacheFactoryBean;
 import org.springframework.data.gemfire.DiskStoreFactoryBean;
 import org.springframework.data.gemfire.DiskStoreFactoryBean.DiskDir;
-import org.springframework.data.gemfire.EvictionAttributesFactoryBean;
-import org.springframework.data.gemfire.EvictionPolicyType;
-import org.springframework.data.gemfire.ExpirationAttributesFactoryBean;
 import org.springframework.data.gemfire.IndexFactoryBean;
 import org.springframework.data.gemfire.IndexType;
 import org.springframework.data.gemfire.PartitionAttributesFactoryBean;
 import org.springframework.data.gemfire.PartitionedRegionFactoryBean;
 import org.springframework.data.gemfire.RegionAttributesFactoryBean;
 import org.springframework.data.gemfire.ReplicatedRegionFactoryBean;
+import org.springframework.data.gemfire.eviction.EvictionAttributesFactoryBean;
+import org.springframework.data.gemfire.eviction.EvictionPolicyType;
+import org.springframework.data.gemfire.expiration.ExpirationAttributesFactoryBean;
 
 /**
  * The PeerCacheConfiguration class...
@@ -100,7 +100,7 @@ public class PeerCacheConfiguration {
   }
 
   @Bean(name = "StaticReferenceData")
-  public ReplicatedRegionFactoryBean<?, ?> exampleReplicateRegion(Cache gemfireCache) {
+  public ReplicatedRegionFactoryBean<?, ?> exampleReplicateRegion(GemFireCache gemfireCache) {
     ReplicatedRegionFactoryBean<?, ?> staticReferenceData = new ReplicatedRegionFactoryBean<>();
 
     staticReferenceData.setCache(gemfireCache);
@@ -117,7 +117,7 @@ public class PeerCacheConfiguration {
     customersDiskStore.setCache(gemfireCache);
     customersDiskStore.setBeanName("CustomerDataStore");
     customersDiskStore.setAutoCompact(true);
-    customersDiskStore.setDiskDirs(Arrays.asList(new DiskDir("./gemfire/disk-stores/customers")));
+    customersDiskStore.setDiskDirs(Collections.singletonList(new DiskDir("./gemfire/disk-stores/customers")));
     customersDiskStore.setCompactionThreshold(75);
     customersDiskStore.setMaxOplogSize(10);
     customersDiskStore.setQueueSize(100);
@@ -199,5 +199,4 @@ public class PeerCacheConfiguration {
 
     return customerId;
   }
-
 }

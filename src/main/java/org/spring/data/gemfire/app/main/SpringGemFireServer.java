@@ -18,8 +18,7 @@ package org.spring.data.gemfire.app.main;
 
 import java.util.Properties;
 
-import com.gemstone.gemfire.cache.Cache;
-
+import org.apache.geode.cache.Cache;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;

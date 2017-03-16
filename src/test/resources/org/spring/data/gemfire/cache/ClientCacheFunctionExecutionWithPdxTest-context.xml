@@ -25,7 +25,7 @@
 
   <bean id="domainBasedPdxSerializer" class="org.spring.data.gemfire.cache.ClientCacheFunctionExecutionWithPdxTest$TestDomainClassPdxSerializer"/>
 
-  <bean id="reflectionBasedPdxSerializer" class="com.gemstone.gemfire.pdx.ReflectionBasedAutoSerializer">
+  <bean id="reflectionBasedPdxSerializer" class="org.apache.geode.pdx.ReflectionBasedAutoSerializer">
     <constructor-arg type="boolean" value="true"/>
     <constructor-arg>
       <list>

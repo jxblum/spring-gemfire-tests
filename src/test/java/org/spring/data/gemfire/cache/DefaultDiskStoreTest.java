@@ -16,10 +16,11 @@
 
 package org.spring.data.gemfire.cache;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import com.gemstone.gemfire.cache.DiskStore;
-
+import org.apache.geode.cache.DiskStore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @see org.junit.runner.RunWith
  * @see org.springframework.test.context.ContextConfiguration
  * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
- * @see com.gemstone.gemfire.cache.DiskStore
+ * @see org.apache.geode.cache.DiskStore
  * @since 1.0.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)

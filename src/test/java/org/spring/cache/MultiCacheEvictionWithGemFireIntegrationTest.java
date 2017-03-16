@@ -29,13 +29,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.cache.CacheLoader;
-import com.gemstone.gemfire.cache.CacheLoaderException;
-import com.gemstone.gemfire.cache.GemFireCache;
-import com.gemstone.gemfire.cache.LoaderHelper;
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.query.SelectResults;
-
+import org.apache.geode.cache.CacheLoader;
+import org.apache.geode.cache.CacheLoaderException;
+import org.apache.geode.cache.GemFireCache;
+import org.apache.geode.cache.LoaderHelper;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.query.SelectResults;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -319,7 +318,7 @@ public class MultiCacheEvictionWithGemFireIntegrationTest extends AbstractSpring
     }
   }
 
-  @org.springframework.data.gemfire.mapping.Region("Users")
+  @org.springframework.data.gemfire.mapping.annotation.Region("Users")
   public static class User implements Comparable<User>, Serializable {
 
     protected static final AtomicLong ID_SEQUENCE = new AtomicLong(0);

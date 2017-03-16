@@ -16,12 +16,11 @@
 
 package org.spring.data.gemfire.cache.execute;
 
-import com.gemstone.gemfire.cache.execute.Function;
-import com.gemstone.gemfire.cache.execute.FunctionContext;
-
+import org.apache.geode.cache.execute.Function;
+import org.apache.geode.cache.execute.FunctionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.gemfire.LazyWiringDeclarableSupport;
+import org.springframework.data.gemfire.support.LazyWiringDeclarableSupport;
 
 /**
  * The CalculatorFunction class is a GemFire/Geode Function that performs a general mathematical calculation
@@ -29,8 +28,8 @@ import org.springframework.data.gemfire.LazyWiringDeclarableSupport;
  *
  * @author John Blum
  * @see org.spring.data.gemfire.cache.execute.Calculator
- * @see org.springframework.data.gemfire.LazyWiringDeclarableSupport
- * @see com.gemstone.gemfire.cache.execute.Function
+ * @see org.springframework.data.gemfire.support.LazyWiringDeclarableSupport
+ * @see org.apache.geode.cache.execute.Function
  * @since 1.0.0
  */
 @SuppressWarnings("unused")
@@ -96,5 +95,4 @@ public class CalculatorFunction extends LazyWiringDeclarableSupport implements F
   public boolean optimizeForWrite() {
     return false;
   }
-
 }

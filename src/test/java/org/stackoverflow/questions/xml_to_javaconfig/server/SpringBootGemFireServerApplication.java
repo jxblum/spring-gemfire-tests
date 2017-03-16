@@ -19,11 +19,10 @@ package org.stackoverflow.questions.xml_to_javaconfig.server;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.CacheLoader;
-import com.gemstone.gemfire.cache.CacheLoaderException;
-import com.gemstone.gemfire.cache.LoaderHelper;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.CacheLoader;
+import org.apache.geode.cache.CacheLoaderException;
+import org.apache.geode.cache.LoaderHelper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -40,7 +39,7 @@ import org.springframework.data.gemfire.server.CacheServerFactoryBean;
  * @author John Blum
  * @see org.springframework.boot.SpringApplication
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
- * @see com.gemstone.gemfire.cache.Cache
+ * @see org.apache.geode.cache.Cache
  * @link http://stackoverflow.com/questions/38431885/java-config-for-spring-gemfire-xml
  * @since 1.0.0
  */

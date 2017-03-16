@@ -18,15 +18,15 @@ package org.spring.data.gemfire.cache.asyncqueue;
 
 import java.util.List;
 
-import com.gemstone.gemfire.cache.asyncqueue.AsyncEvent;
-import com.gemstone.gemfire.cache.asyncqueue.AsyncEventListener;
+import org.apache.geode.cache.asyncqueue.AsyncEvent;
+import org.apache.geode.cache.asyncqueue.AsyncEventListener;
 
 /**
  * The NoOpAsyncEventListener class is an implementation of AsyncEventListener that does nothing.
  *
  * @author John Blum
- * @see com.gemstone.gemfire.cache.asyncqueue.AsyncEvent
- * @see com.gemstone.gemfire.cache.asyncqueue.AsyncEventListener
+ * @see org.apache.geode.cache.asyncqueue.AsyncEvent
+ * @see org.apache.geode.cache.asyncqueue.AsyncEventListener
  * @since 1.0.0
  */
 public class NoOpAsyncEventListener implements AsyncEventListener {

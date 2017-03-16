@@ -16,7 +16,9 @@
 
 package org.pivotal.gemfire.cache;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -27,14 +29,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.CacheFactory;
-import com.gemstone.gemfire.cache.DataPolicy;
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.RegionFactory;
-import com.gemstone.gemfire.cache.query.Index;
-import com.gemstone.gemfire.cache.query.QueryService;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.CacheFactory;
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.RegionFactory;
+import org.apache.geode.cache.query.Index;
+import org.apache.geode.cache.query.QueryService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,10 +43,10 @@ import org.junit.Test;
 /**
  * The CacheRegionIndexDefinitionCreationTest class...
  * @author John Blum
- * @see com.gemstone.gemfire.cache.Cache
- * @see com.gemstone.gemfire.cache.Region
- * @see com.gemstone.gemfire.cache.query.Index
- * @see com.gemstone.gemfire.cache.query.QueryService
+ * @see org.apache.geode.cache.Cache
+ * @see org.apache.geode.cache.Region
+ * @see org.apache.geode.cache.query.Index
+ * @see org.apache.geode.cache.query.QueryService
  * @since 1.0.0
  */
 @SuppressWarnings("unused")

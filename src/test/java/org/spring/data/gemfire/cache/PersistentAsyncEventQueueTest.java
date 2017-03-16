@@ -18,8 +18,7 @@ package org.spring.data.gemfire.cache;
 
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.cache.Region;
-
+import org.apache.geode.cache.Region;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.spring.data.gemfire.AbstractGemFireTest;

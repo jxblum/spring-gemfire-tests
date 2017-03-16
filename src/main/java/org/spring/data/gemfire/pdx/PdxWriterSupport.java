@@ -18,14 +18,14 @@ package org.spring.data.gemfire.pdx;
 
 import java.util.Date;
 
-import com.gemstone.gemfire.pdx.PdxUnreadFields;
-import com.gemstone.gemfire.pdx.PdxWriter;
+import org.apache.geode.pdx.PdxUnreadFields;
+import org.apache.geode.pdx.PdxWriter;
 
 /**
  * The PdxWriterSupport class is an Adapter for the GemFire PdxWriter interface for simplifying implementations
  *
  * @author John Blum
- * @see com.gemstone.gemfire.pdx.PdxWriter
+ * @see org.apache.geode.pdx.PdxWriter
  * @since 1.0.0
  */
 @SuppressWarnings("unused")

@@ -21,11 +21,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.DataPolicy;
-import com.gemstone.gemfire.cache.execute.FunctionService;
-import com.gemstone.gemfire.internal.concurrent.ConcurrentHashSet;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.execute.FunctionService;
+import org.apache.geode.internal.concurrent.ConcurrentHashSet;
 import org.spring.data.gemfire.cache.execute.OnMembersCreateRegionFunctionExecution;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -42,9 +41,9 @@ import org.springframework.data.gemfire.function.execution.GemfireOnMembersFunct
  * @see org.springframework.beans.factory.config.BeanPostProcessor
  * @see org.springframework.cache.annotation.Cacheable
  * @see org.springframework.data.gemfire.function.execution.GemfireOnMembersFunctionTemplate
- * @see com.gemstone.gemfire.cache.Cache
- * @see com.gemstone.gemfire.cache.Region
- * @see com.gemstone.gemfire.cache.execute.FunctionService
+ * @see org.apache.geode.cache.Cache
+ * @see org.apache.geode.cache.Region
+ * @see org.apache.geode.cache.execute.FunctionService
  * @since 1.7.0
  */
 @SuppressWarnings("unused")
@@ -56,7 +55,7 @@ public class CacheableAnnotationDynamicRegionCreationBeanPostProcessor implement
 
   static {
     Set<String> ignoredPackageNames = new HashSet<>(2);
-    ignoredPackageNames.add("com.gemstone.gemfire");
+    ignoredPackageNames.add("org.apache.geode");
     ignoredPackageNames.add("org.springframework");
     IGNORED_PACKAGE_NAMES = Collections.unmodifiableSet(ignoredPackageNames);
   }

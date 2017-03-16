@@ -27,9 +27,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.CacheFactory;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.CacheFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,8 +52,8 @@ import org.spring.data.gemfire.app.service.vendor.GemFireGemstoneService;
  * @see org.spring.data.gemfire.app.dao.vendor.GemFireGemstoneDao
  * @see org.spring.data.gemfire.app.service.GemstoneService
  * @see org.spring.data.gemfire.app.service.vendor.GemFireGemstoneService
- * @see com.gemstone.gemfire.cache.Cache
- * @see com.gemstone.gemfire.cache.CacheFactory
+ * @see org.apache.geode.cache.Cache
+ * @see org.apache.geode.cache.CacheFactory
  * @since 1.4.0
  */
 @SuppressWarnings("unused")

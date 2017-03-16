@@ -16,19 +16,16 @@
 
 package org.spring.data.gemfire.cache;
 
-import java.util.Properties;
-
-import com.gemstone.gemfire.cache.Declarable;
-import com.gemstone.gemfire.cache.EntryEvent;
-import com.gemstone.gemfire.cache.util.CacheListenerAdapter;
+import org.apache.geode.cache.EntryEvent;
+import org.apache.geode.cache.util.CacheListenerAdapter;
 
 /**
  * The LoggingCacheListener class is a GemFire CacheListener logging Cache Region Entry Events, such as creates, updates
  * and deletes.
  *
  * @author John Blum
- * @see com.gemstone.gemfire.cache.Declarable
- * @see com.gemstone.gemfire.cache.util.CacheListenerAdapter
+ * @see org.apache.geode.cache.Declarable
+ * @see org.apache.geode.cache.util.CacheListenerAdapter
  * @since 1.0.0
  */
 @SuppressWarnings("unused")

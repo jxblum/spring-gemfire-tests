@@ -16,22 +16,22 @@
 
 package org.pivotal.gemfire.cache.client;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-import com.gemstone.gemfire.cache.DataPolicy;
-import com.gemstone.gemfire.cache.InterestPolicy;
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.RegionAttributes;
-import com.gemstone.gemfire.cache.SubscriptionAttributes;
-import com.gemstone.gemfire.cache.client.ClientCache;
-import com.gemstone.gemfire.cache.client.ClientCacheFactory;
-import com.gemstone.gemfire.distributed.ServerLauncher;
-import com.gemstone.gemfire.distributed.internal.DistributionConfig;
-
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.InterestPolicy;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.RegionAttributes;
+import org.apache.geode.cache.SubscriptionAttributes;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientCacheFactory;
+import org.apache.geode.distributed.ServerLauncher;
+import org.apache.geode.distributed.internal.DistributionConfig;
 import org.codeprimate.io.FileSystemUtils;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -46,12 +46,12 @@ import org.spring.data.gemfire.AbstractGemFireIntegrationTest;
  * @author John Blum
  * @see org.junit.Test
  * @see org.spring.data.gemfire.AbstractGemFireIntegrationTest
- * @see com.gemstone.gemfire.cache.InterestPolicy
- * @see com.gemstone.gemfire.cache.Region
- * @see com.gemstone.gemfire.cache.RegionAttributes
- * @see com.gemstone.gemfire.cache.SubscriptionAttributes
- * @see com.gemstone.gemfire.cache.client.ClientCache
- * @see com.gemstone.gemfire.distributed.ServerLauncher
+ * @see org.apache.geode.cache.InterestPolicy
+ * @see org.apache.geode.cache.Region
+ * @see org.apache.geode.cache.RegionAttributes
+ * @see org.apache.geode.cache.SubscriptionAttributes
+ * @see org.apache.geode.cache.client.ClientCache
+ * @see org.apache.geode.distributed.ServerLauncher
  * @since 1.0.0
  */
 @SuppressWarnings("unused")

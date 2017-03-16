@@ -19,13 +19,13 @@ package org.spring.data.gemfire.support;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gemstone.gemfire.cache.Region;
+import org.apache.geode.cache.Region;
 
 /**
  * The RegionUtils class is a utility class for working with GemFire Cache Regions.
  *
  * @author John Blum
- * @see com.gemstone.gemfire.cache.Region
+ * @see org.apache.geode.cache.Region
  * @since 1.4.0
  */
 @SuppressWarnings("unused")

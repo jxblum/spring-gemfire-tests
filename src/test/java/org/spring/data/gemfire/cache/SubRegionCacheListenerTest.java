@@ -16,15 +16,18 @@
 
 package org.spring.data.gemfire.cache;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Stack;
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.cache.EntryEvent;
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.util.CacheListenerAdapter;
-
+import org.apache.geode.cache.EntryEvent;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.util.CacheListenerAdapter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -39,8 +42,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @see org.junit.runner.RunWith
  * @see org.springframework.test.context.ContextConfiguration
  * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
- * @see com.gemstone.gemfire.cache.CacheListener
- * @see com.gemstone.gemfire.cache.Region
+ * @see org.apache.geode.cache.CacheListener
+ * @see org.apache.geode.cache.Region
  * @since 1.5.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)

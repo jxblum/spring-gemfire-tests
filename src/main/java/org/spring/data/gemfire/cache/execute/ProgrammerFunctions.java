@@ -19,8 +19,7 @@ package org.spring.data.gemfire.cache.execute;
 import java.util.Collections;
 import java.util.List;
 
-import com.gemstone.gemfire.cache.Region;
-
+import org.apache.geode.cache.Region;
 import org.spring.data.gemfire.app.beans.Programmer;
 import org.spring.data.gemfire.app.dao.repo.ProgrammerRepository;
 import org.spring.data.gemfire.app.dao.repo.support.ProgrammerRepositoryImpl;
@@ -44,9 +43,9 @@ import org.springframework.util.CollectionUtils;
  * @see org.springframework.data.gemfire.function.annotation.GemfireFunction
  * @see org.springframework.data.gemfire.repository.support.GemfireRepositoryFactory
  * @see org.springframework.stereotype.Component
- * @see com.gemstone.gemfire.cache.Region
- * @see com.gemstone.gemfire.cache.execute.FunctionContext
- * @see com.gemstone.gemfire.cache.execute.RegionFunctionContext
+ * @see org.apache.geode.cache.Region
+ * @see org.apache.geode.cache.execute.FunctionContext
+ * @see org.apache.geode.cache.execute.RegionFunctionContext
  * @since 1.0.0
  */
 @Component

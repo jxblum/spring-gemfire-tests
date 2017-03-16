@@ -16,9 +16,11 @@
 
 package org.pivotal.gemfire.cache.client;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assume.assumeThat;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,22 +33,21 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.CacheFactory;
-import com.gemstone.gemfire.cache.DataPolicy;
-import com.gemstone.gemfire.cache.Declarable;
-import com.gemstone.gemfire.cache.EntryEvent;
-import com.gemstone.gemfire.cache.InterestResultPolicy;
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.RegionEvent;
-import com.gemstone.gemfire.cache.client.ClientCache;
-import com.gemstone.gemfire.cache.client.ClientCacheFactory;
-import com.gemstone.gemfire.cache.client.ClientRegionFactory;
-import com.gemstone.gemfire.cache.client.ClientRegionShortcut;
-import com.gemstone.gemfire.cache.util.CacheListenerAdapter;
-import com.gemstone.gemfire.distributed.ServerLauncher;
-import com.gemstone.gemfire.distributed.internal.DistributionConfig;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.CacheFactory;
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.Declarable;
+import org.apache.geode.cache.EntryEvent;
+import org.apache.geode.cache.InterestResultPolicy;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.RegionEvent;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientCacheFactory;
+import org.apache.geode.cache.client.ClientRegionFactory;
+import org.apache.geode.cache.client.ClientRegionShortcut;
+import org.apache.geode.cache.util.CacheListenerAdapter;
+import org.apache.geode.distributed.ServerLauncher;
+import org.apache.geode.distributed.internal.DistributionConfig;
 import org.codeprimate.lang.concurrent.ThreadUtils;
 import org.codeprimate.lang.concurrent.ThreadUtils.CompletableTask;
 import org.junit.After;
@@ -63,12 +64,12 @@ import org.spring.data.gemfire.AbstractGemFireIntegrationTest;
  * @author John Blum
  * @see org.junit.Test
  * @see org.spring.data.gemfire.AbstractGemFireIntegrationTest
- * @see com.gemstone.gemfire.cache.Cache
- * @see com.gemstone.gemfire.cache.Declarable
- * @see com.gemstone.gemfire.cache.Region
- * @see com.gemstone.gemfire.cache.client.ClientCache
- * @see com.gemstone.gemfire.cache.util.CacheListenerAdapter
- * @see com.gemstone.gemfire.distributed.ServerLauncher
+ * @see org.apache.geode.cache.Cache
+ * @see org.apache.geode.cache.Declarable
+ * @see org.apache.geode.cache.Region
+ * @see org.apache.geode.cache.client.ClientCache
+ * @see org.apache.geode.cache.util.CacheListenerAdapter
+ * @see org.apache.geode.distributed.ServerLauncher
  * @since 1.0.0
  */
 public class DurableClientCacheIntegrationTest extends AbstractGemFireIntegrationTest {

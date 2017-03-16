@@ -16,7 +16,7 @@
 
 package org.spring.data.gemfire.app.beans;
 
-import org.springframework.data.gemfire.mapping.Region;
+import org.springframework.data.gemfire.mapping.annotation.Region;
 
 /**
  * The Customer class is an abstract data type and model for a customer.
@@ -34,16 +34,15 @@ public class Customer extends Person {
   public Customer() {
   }
 
-  public Customer(final Long id) {
+  public Customer(Long id) {
     super(id);
   }
 
-  public Customer(final String firstName, final String lastName) {
+  public Customer(String firstName, String lastName) {
     super(firstName, lastName);
   }
 
   public boolean isNew() {
     return (getId() == null);
   }
-
 }

@@ -16,14 +16,14 @@
 
 package org.spring.data.gemfire.cache;
 
-import com.gemstone.gemfire.cache.EntryEvent;
-import com.gemstone.gemfire.cache.util.CacheListenerAdapter;
+import org.apache.geode.cache.EntryEvent;
+import org.apache.geode.cache.util.CacheListenerAdapter;
 
 /**
  * The TestCacheListener class...
  *
  * @author John Blum
- * @see com.gemstone.gemfire.cache.CacheListener
+ * @see org.apache.geode.cache.CacheListener
  * @since 1.3.3
  */
 @SuppressWarnings("unused")

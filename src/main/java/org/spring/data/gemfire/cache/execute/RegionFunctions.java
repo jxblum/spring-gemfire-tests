@@ -16,14 +16,13 @@
 
 package org.spring.data.gemfire.cache.execute;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.CacheFactory;
-import com.gemstone.gemfire.cache.DataPolicy;
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.RegionFactory;
-import com.gemstone.gemfire.cache.execute.FunctionContext;
-import com.gemstone.gemfire.cache.execute.RegionFunctionContext;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.CacheFactory;
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.RegionFactory;
+import org.apache.geode.cache.execute.FunctionContext;
+import org.apache.geode.cache.execute.RegionFunctionContext;
 import org.spring.data.gemfire.config.CacheableAnnotationDynamicRegionCreationBeanPostProcessor;
 import org.spring.data.gemfire.support.RegionNotFoundException;
 import org.springframework.data.gemfire.function.annotation.GemfireFunction;
@@ -34,9 +33,9 @@ import org.springframework.util.StringUtils;
  *
  * @author John Blum
  * @see org.springframework.data.gemfire.function.annotation.GemfireFunction
- * @see com.gemstone.gemfire.cache.Region
- * @see com.gemstone.gemfire.cache.execute.FunctionContext
- * @see com.gemstone.gemfire.cache.execute.RegionFunctionContext
+ * @see org.apache.geode.cache.Region
+ * @see org.apache.geode.cache.execute.FunctionContext
+ * @see org.apache.geode.cache.execute.RegionFunctionContext
  * @since 1.0.0
  */
 @SuppressWarnings("unused")

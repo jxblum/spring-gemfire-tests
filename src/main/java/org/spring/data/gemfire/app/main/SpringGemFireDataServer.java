@@ -16,9 +16,8 @@
 
 package org.spring.data.gemfire.app.main;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.RegionAttributes;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.RegionAttributes;
 import org.spring.data.gemfire.app.beans.Person;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.Bean;

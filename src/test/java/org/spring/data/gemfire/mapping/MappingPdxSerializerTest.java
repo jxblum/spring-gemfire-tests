@@ -1,14 +1,15 @@
 package org.spring.data.gemfire.mapping;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
 import java.util.Map;
 
-import com.gemstone.gemfire.pdx.PdxReader;
-import com.gemstone.gemfire.pdx.PdxSerializer;
-import com.gemstone.gemfire.pdx.PdxWriter;
-
+import org.apache.geode.pdx.PdxReader;
+import org.apache.geode.pdx.PdxSerializer;
+import org.apache.geode.pdx.PdxWriter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.spring.data.gemfire.mapping.MappingPdxSerializerTest.MappingPdxSerializerTestConfiguration;
@@ -27,7 +28,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @see org.springframework.data.gemfire.mapping.MappingPdxSerializer
  * @see org.springframework.test.context.ContextConfiguration
  * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
- * @see com.gemstone.gemfire.pdx.PdxSerializer
+ * @see org.apache.geode.pdx.PdxSerializer
  * @since 1.7.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)

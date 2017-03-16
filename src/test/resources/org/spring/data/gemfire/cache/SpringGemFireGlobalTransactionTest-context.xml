@@ -39,7 +39,7 @@
   </util:properties>
 
   <util:properties id="jndiConfigurationSettings">
-    <prop key="#{T(javax.naming.Context).INITIAL_CONTEXT_FACTORY}">com.gemstone.gemfire.internal.jndi.InitialContextFactoryImpl</prop>
+    <prop key="#{T(javax.naming.Context).INITIAL_CONTEXT_FACTORY}">org.apache.geode.internal.jndi.InitialContextFactoryImpl</prop>
   </util:properties>
 
   <context:annotation-config/>

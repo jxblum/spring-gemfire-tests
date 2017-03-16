@@ -24,18 +24,17 @@ import java.security.Principal;
 import java.util.Properties;
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.LogWriter;
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.CacheLoader;
-import com.gemstone.gemfire.cache.CacheLoaderException;
-import com.gemstone.gemfire.cache.LoaderHelper;
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.RegionAttributes;
-import com.gemstone.gemfire.distributed.DistributedMember;
-import com.gemstone.gemfire.security.AuthInitialize;
-import com.gemstone.gemfire.security.AuthenticationFailedException;
-import com.gemstone.gemfire.security.Authenticator;
-
+import org.apache.geode.LogWriter;
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.CacheLoader;
+import org.apache.geode.cache.CacheLoaderException;
+import org.apache.geode.cache.LoaderHelper;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.RegionAttributes;
+import org.apache.geode.distributed.DistributedMember;
+import org.apache.geode.security.AuthInitialize;
+import org.apache.geode.security.AuthenticationFailedException;
+import org.apache.geode.security.Authenticator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -67,12 +66,12 @@ import org.springframework.util.StringUtils;
  * @see org.springframework.data.gemfire.server.CacheServerFactoryBean
  * @see org.springframework.test.context.ContextConfiguration
  * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
- * @see com.gemstone.gemfire.cache.Cache
- * @see com.gemstone.gemfire.cache.Region
- * @see com.gemstone.gemfire.distributed.DistributedMember
- * @see com.gemstone.gemfire.distributed.DistributedSystem
- * @see com.gemstone.gemfire.security.AuthInitialize
- * @see com.gemstone.gemfire.security.Authenticator
+ * @see org.apache.geode.cache.Cache
+ * @see org.apache.geode.cache.Region
+ * @see org.apache.geode.distributed.DistributedMember
+ * @see org.apache.geode.distributed.DistributedSystem
+ * @see org.apache.geode.security.AuthInitialize
+ * @see org.apache.geode.security.Authenticator
  * @since 1.0.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)

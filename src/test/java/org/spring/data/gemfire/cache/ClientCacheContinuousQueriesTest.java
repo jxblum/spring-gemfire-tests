@@ -16,15 +16,14 @@
 
 package org.spring.data.gemfire.cache;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.query.CqEvent;
-
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.query.CqEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.spring.data.gemfire.app.beans.Address;
@@ -43,8 +42,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @see org.springframework.data.gemfire.listener.ContinuousQueryListener
  * @see org.springframework.test.context.ContextConfiguration
  * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
- * @see com.gemstone.gemfire.cache.Cache
- * @see com.gemstone.gemfire.cache.Region
+ * @see org.apache.geode.cache.Cache
+ * @see org.apache.geode.cache.Region
  * @since 1.0.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)

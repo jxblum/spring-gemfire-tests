@@ -16,13 +16,13 @@
 
 package org.pivotal.gemfire.app.main;
 
-import com.gemstone.gemfire.cache.CacheFactory;
+import org.apache.geode.cache.CacheFactory;
 
 /**
  * The SimpleNativePeerCacheApp class...
  *
  * @author John Blum
- * @see com.gemstone.gemfire.cache.CacheFactory
+ * @see org.apache.geode.cache.CacheFactory
  * @since 1.0.0
  */
 public class SimpleNativePeerCacheApp {

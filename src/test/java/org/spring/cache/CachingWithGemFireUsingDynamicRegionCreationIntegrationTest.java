@@ -16,14 +16,13 @@
 
 package org.spring.cache;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
 import java.util.List;
 
-import com.gemstone.gemfire.cache.Cache;
-
+import org.apache.geode.cache.Cache;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.spring.data.gemfire.support.RegionUtils;

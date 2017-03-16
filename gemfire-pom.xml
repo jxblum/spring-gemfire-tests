@@ -19,7 +19,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.gemstone.gemfire</groupId>
+  <groupId>org.apache.geode</groupId>
   <artifactId>gemfire</artifactId>
   <packaging>jar</packaging>
   <version>__MAVEN_GEMFIRE_VERSION__</version>
@@ -103,7 +103,7 @@
   <dependencies>
     <!-- GemFire -->
     <dependency>
-      <groupId>com.gemstone.gemfire</groupId>
+      <groupId>org.apache.geode</groupId>
       <artifactId>gemfire</artifactId>
       <version>${gemfire.version}</version>
       <scope>compile</scope>

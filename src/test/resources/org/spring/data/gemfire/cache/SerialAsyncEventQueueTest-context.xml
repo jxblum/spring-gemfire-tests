@@ -62,6 +62,6 @@
   </gfe:partitioned-region>
 
   <gfe:partitioned-region id="EventsRegion" persistent="false" key-constraint="java.lang.String"
-                          value-constraint="com.gemstone.gemfire.cache.asyncqueue.AsyncEvent"/>
+                          value-constraint="org.apache.geode.cache.asyncqueue.AsyncEvent"/>
 
 </beans>

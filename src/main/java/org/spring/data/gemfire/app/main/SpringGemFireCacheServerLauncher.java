@@ -20,8 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.gemstone.gemfire.cache.Cache;
-
+import org.apache.geode.cache.Cache;
 import org.codeprimate.process.support.ProcessUtils;
 import org.spring.data.gemfire.support.CacheUtils;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -35,7 +34,7 @@ import org.springframework.util.Assert;
  * @author John Blum
  * @see org.springframework.context.ConfigurableApplicationContext
  * @see org.springframework.context.support.ClassPathXmlApplicationContext
- * @see com.gemstone.gemfire.cache.Cache
+ * @see org.apache.geode.cache.Cache
  * @since 1.0.0
  * @since 7.0.1 (GemFire)
  */

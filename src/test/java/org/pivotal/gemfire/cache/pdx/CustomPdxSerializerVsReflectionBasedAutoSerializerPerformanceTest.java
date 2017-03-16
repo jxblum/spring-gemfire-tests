@@ -16,20 +16,19 @@
 
 package org.pivotal.gemfire.cache.pdx;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.number.OrderingComparisons.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.number.OrderingComparisons.lessThanOrEqualTo;
 
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.gemstone.gemfire.internal.lang.ObjectUtils;
-import com.gemstone.gemfire.pdx.PdxReader;
-import com.gemstone.gemfire.pdx.PdxSerializer;
-import com.gemstone.gemfire.pdx.PdxWriter;
-import com.gemstone.gemfire.pdx.ReflectionBasedAutoSerializer;
-
+import org.apache.geode.internal.lang.ObjectUtils;
+import org.apache.geode.pdx.PdxReader;
+import org.apache.geode.pdx.PdxSerializer;
+import org.apache.geode.pdx.PdxWriter;
+import org.apache.geode.pdx.ReflectionBasedAutoSerializer;
 import org.codeprimate.lang.Assert;
 import org.junit.AfterClass;
 import org.junit.Before;

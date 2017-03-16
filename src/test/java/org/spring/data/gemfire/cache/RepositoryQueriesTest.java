@@ -16,15 +16,17 @@
 
 package org.spring.data.gemfire.cache;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.cache.Region;
-
+import org.apache.geode.cache.Region;
 import org.codeprimate.lang.NumberUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +49,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @see org.spring.data.gemfire.app.dao.repo.UserRepository
  * @see org.springframework.test.context.ContextConfiguration
  * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
- * @see com.gemstone.gemfire.cache.Region
+ * @see org.apache.geode.cache.Region
  * @since 1.3.3 (Spring Data GemFire)
  * @since 7.0.1 (GemFire)
  */

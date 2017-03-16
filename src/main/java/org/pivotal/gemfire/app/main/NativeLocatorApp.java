@@ -18,8 +18,8 @@ package org.pivotal.gemfire.app.main;
 
 import java.io.File;
 
-import com.gemstone.gemfire.distributed.LocatorLauncher;
-import com.gemstone.gemfire.distributed.LocatorLauncher.Builder;
+import org.apache.geode.distributed.LocatorLauncher;
+import org.apache.geode.distributed.LocatorLauncher.Builder;
 
 /**
  * The LocatorApp class...

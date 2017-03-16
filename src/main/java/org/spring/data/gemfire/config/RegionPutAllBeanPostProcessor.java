@@ -19,8 +19,7 @@ package org.spring.data.gemfire.config;
 import java.util.Collections;
 import java.util.Map;
 
-import com.gemstone.gemfire.cache.Region;
-
+import org.apache.geode.cache.Region;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.util.Assert;
@@ -32,7 +31,7 @@ import org.springframework.util.StringUtils;
  *
  * @author John Blum
  * @see java.util.Map
- * @see com.gemstone.gemfire.cache.Region
+ * @see org.apache.geode.cache.Region
  * @see org.springframework.beans.factory.config.BeanPostProcessor
  * @since 1.3.3 (Spring Data GemFire)
  * @since 7.0.1 (GemFire)

@@ -22,11 +22,10 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.client.ClientCache;
-import com.gemstone.gemfire.cache.client.ClientRegionShortcut;
-import com.gemstone.gemfire.cache.client.Pool;
-
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientRegionShortcut;
+import org.apache.geode.cache.client.Pool;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,8 +47,8 @@ import org.stackoverflow.questions.xml_to_javaconfig.SpringGemFireCacheClientApp
  *
  * @author John Blum
  * @see org.junit.Test
- * @see com.gemstone.gemfire.cache.client.ClientCache
- * @see com.gemstone.gemfire.cache.client.Pool
+ * @see org.apache.geode.cache.client.ClientCache
+ * @see org.apache.geode.cache.client.Pool
  * @link http://stackoverflow.com/questions/38431885/java-config-for-spring-gemfire-xml
  * @since 1.0.0
  */

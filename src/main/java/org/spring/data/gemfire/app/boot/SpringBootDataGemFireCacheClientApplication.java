@@ -25,7 +25,7 @@ import org.springframework.context.annotation.ImportResource;
 
 /**
  * The SpringBootDataGemFireCacheClientApplication class is a Spring Boot application that configures and bootstraps
- * a GemFire {@link com.gemstone.gemfire.cache.client.ClientCache} instance.
+ * a GemFire {@link org.apache.geode.cache.client.ClientCache} instance.
  *
  * @author John Blum
  * @see org.springframework.boot.CommandLineRunner

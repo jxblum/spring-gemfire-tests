@@ -18,25 +18,24 @@ package org.spring.data.gemfire.config;
 
 import java.util.Properties;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.EvictionAction;
-import com.gemstone.gemfire.cache.EvictionAttributes;
-import com.gemstone.gemfire.cache.PartitionAttributes;
-import com.gemstone.gemfire.cache.RegionAttributes;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.EvictionAction;
+import org.apache.geode.cache.EvictionAttributes;
+import org.apache.geode.cache.PartitionAttributes;
+import org.apache.geode.cache.RegionAttributes;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.gemfire.CacheFactoryBean;
-import org.springframework.data.gemfire.EvictionAttributesFactoryBean;
-import org.springframework.data.gemfire.EvictionPolicyType;
 import org.springframework.data.gemfire.GemfireTemplate;
 import org.springframework.data.gemfire.LocalRegionFactoryBean;
 import org.springframework.data.gemfire.PartitionAttributesFactoryBean;
 import org.springframework.data.gemfire.PartitionedRegionFactoryBean;
 import org.springframework.data.gemfire.RegionAttributesFactoryBean;
+import org.springframework.data.gemfire.eviction.EvictionAttributesFactoryBean;
+import org.springframework.data.gemfire.eviction.EvictionPolicyType;
 
 /**
  * The GemFireConfiguration class is a Spring context configuration meta-data class (using Spring Container,
@@ -124,17 +123,17 @@ public class GemFireConfiguration {
   @Bean(name = "ExamplePartition")
   /*
   NOTE need to qualify the RegionAttributes bean definition reference since GemFire's
-  com.gemstone.gemfire.internal.cache.AbstractRegion class "implements" RegionAttributes (face-palm),
+  org.apache.geode.internal.cache.AbstractRegion class "implements" RegionAttributes (face-palm),
   which led Spring to the following Exception...
 
   java.lang.IllegalStateException: Failed to load ApplicationContext ...
   Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException:
   Error creating bean with name 'ExamplePartition' defined in class org.spring.data.gemfire.config.GemFireConfiguration:
-  Unsatisfied dependency expressed through constructor argument with index 1 of type [com.gemstone.gemfire.cache.RegionAttributes]:
-  No qualifying bean of type [com.gemstone.gemfire.cache.RegionAttributes] is defined:
+  Unsatisfied dependency expressed through constructor argument with index 1 of type [org.apache.geode.cache.RegionAttributes]:
+  No qualifying bean of type [org.apache.geode.cache.RegionAttributes] is defined:
   expected single matching bean but found 2: ExampleLocal,defaultRegionAttributes;
   nested exception is org.springframework.beans.factory.NoUniqueBeanDefinitionException:
-  No qualifying bean of type [com.gemstone.gemfire.cache.RegionAttributes] is defined:
+  No qualifying bean of type [org.apache.geode.cache.RegionAttributes] is defined:
   expected single matching bean but found 2: ExampleLocal,defaultRegionAttributes
   */
   public PartitionedRegionFactoryBean<Object, Object> examplePartitionRegion(Cache gemfireCache,

@@ -15,7 +15,7 @@
     <prop key="mcast-port">0</prop>
   </util:properties>
 
-  <bean id="reflectionBasedAutoSerializer" class="com.gemstone.gemfire.pdx.ReflectionBasedAutoSerializer">
+  <bean id="reflectionBasedAutoSerializer" class="org.apache.geode.pdx.ReflectionBasedAutoSerializer">
     <constructor-arg type="boolean" value="true"/>
     <constructor-arg>
       <list>

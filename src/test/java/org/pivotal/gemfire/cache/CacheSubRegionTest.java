@@ -16,12 +16,14 @@
 
 package org.pivotal.gemfire.cache;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.CacheFactory;
-import com.gemstone.gemfire.cache.Region;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.CacheFactory;
+import org.apache.geode.cache.Region;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,9 +35,9 @@ import org.spring.data.gemfire.support.CacheUtils;
  *
  * @author John Blum
  * @see org.junit.Test
- * @see com.gemstone.gemfire.cache.Cache
- * @see com.gemstone.gemfire.cache.CacheFactory
- * @see com.gemstone.gemfire.cache.Region
+ * @see org.apache.geode.cache.Cache
+ * @see org.apache.geode.cache.CacheFactory
+ * @see org.apache.geode.cache.Region
  * @since 7.0.1
  */
 public class CacheSubRegionTest {

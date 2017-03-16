@@ -19,7 +19,7 @@
     <prop key="log-level">config</prop>
   </util:properties>
 
-  <bean id="autoPdxSerializer" class="com.gemstone.gemfire.pdx.ReflectionBasedAutoSerializer">
+  <bean id="autoPdxSerializer" class="org.apache.geode.pdx.ReflectionBasedAutoSerializer">
     <constructor-arg type="boolean" value="true"/>
     <constructor-arg>
       <list>

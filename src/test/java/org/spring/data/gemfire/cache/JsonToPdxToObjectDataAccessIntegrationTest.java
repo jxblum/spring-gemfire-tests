@@ -28,14 +28,14 @@ import javax.annotation.Resource;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.pdx.JSONFormatter;
-import com.gemstone.gemfire.pdx.PdxInstance;
-import com.gemstone.gemfire.pdx.PdxReader;
-import com.gemstone.gemfire.pdx.PdxSerializable;
-import com.gemstone.gemfire.pdx.PdxSerializer;
-import com.gemstone.gemfire.pdx.PdxWriter;
 
+import org.apache.geode.cache.Cache;
+import org.apache.geode.pdx.JSONFormatter;
+import org.apache.geode.pdx.PdxInstance;
+import org.apache.geode.pdx.PdxReader;
+import org.apache.geode.pdx.PdxSerializable;
+import org.apache.geode.pdx.PdxSerializer;
+import org.apache.geode.pdx.PdxWriter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,7 +46,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.gemfire.CacheFactoryBean;
 import org.springframework.data.gemfire.PartitionedRegionFactoryBean;
-import org.springframework.data.gemfire.mapping.Region;
+import org.springframework.data.gemfire.mapping.annotation.Region;
 import org.springframework.data.gemfire.repository.GemfireRepository;
 import org.springframework.data.gemfire.repository.support.GemfireRepositoryFactoryBean;
 import org.springframework.test.context.ContextConfiguration;
@@ -69,11 +69,11 @@ import org.springframework.util.ObjectUtils;
  * @see org.springframework.test.context.ContextConfiguration
  * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
  * @see com.fasterxml.jackson.databind.ObjectMapper
- * @see com.gemstone.gemfire.cache.Cache
- * @see com.gemstone.gemfire.pdx.JSONFormatter
- * @see com.gemstone.gemfire.pdx.PdxInstance
- * @see com.gemstone.gemfire.pdx.PdxSerializable
- * @see com.gemstone.gemfire.pdx.PdxSerializer
+ * @see org.apache.geode.cache.Cache
+ * @see org.apache.geode.pdx.JSONFormatter
+ * @see org.apache.geode.pdx.PdxInstance
+ * @see org.apache.geode.pdx.PdxSerializable
+ * @see org.apache.geode.pdx.PdxSerializer
  * @since 1.0.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -92,7 +92,7 @@ public class JsonToPdxToObjectDataAccessIntegrationTest {
   private OrderRepository orderRepository;
 
   @Resource(name = "Orders")
-  private com.gemstone.gemfire.cache.Region<Long, Object> orders;
+  private org.apache.geode.cache.Region<Long, Object> orders;
 
   protected Order createOrder(String name) {
     return createOrder(ID_SEQUENCE.incrementAndGet(), name);

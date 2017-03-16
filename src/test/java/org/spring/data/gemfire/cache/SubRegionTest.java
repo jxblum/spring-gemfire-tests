@@ -24,9 +24,8 @@ import static org.junit.Assume.assumeNotNull;
 
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.Region;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.Region;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

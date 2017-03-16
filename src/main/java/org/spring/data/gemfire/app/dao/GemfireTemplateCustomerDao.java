@@ -19,8 +19,7 @@ package org.spring.data.gemfire.app.dao;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.gemstone.gemfire.cache.Region;
-
+import org.apache.geode.cache.Region;
 import org.spring.data.gemfire.app.beans.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.gemfire.GemfireTemplate;
@@ -78,5 +77,4 @@ public class GemfireTemplateCustomerDao extends GemfireRegionCustomerDao {
     customersTemplate.putAll(toMap(customers));
     return customers;
   }
-
 }

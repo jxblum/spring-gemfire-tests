@@ -18,10 +18,9 @@ package org.spring.data.gemfire.cache.manager;
 
 import java.util.concurrent.Callable;
 
-import com.gemstone.gemfire.cache.Region;
-
+import org.apache.geode.cache.Region;
 import org.springframework.cache.Cache;
-import org.springframework.data.gemfire.support.GemfireCacheManager;
+import org.springframework.data.gemfire.cache.GemfireCacheManager;
 import org.springframework.util.Assert;
 
 /**
@@ -36,7 +35,7 @@ import org.springframework.util.Assert;
 public class CustomGemFireCacheManager extends GemfireCacheManager {
 
   @Override
-  protected Cache decorateCache(final Cache cache) {
+  protected Cache decorateCache(Cache cache) {
     return new CustomDelegatingGemFireCache(cache);
   }
 
@@ -110,5 +109,4 @@ public class CustomGemFireCacheManager extends GemfireCacheManager {
       cache.clear();
     }
   }
-
 }

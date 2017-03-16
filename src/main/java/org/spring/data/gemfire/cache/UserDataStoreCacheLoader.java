@@ -22,15 +22,14 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.CacheLoader;
-import com.gemstone.gemfire.cache.CacheLoaderException;
-import com.gemstone.gemfire.cache.LoaderHelper;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.CacheLoader;
+import org.apache.geode.cache.CacheLoaderException;
+import org.apache.geode.cache.LoaderHelper;
 import org.codeprimate.sql.DataSourceAdapter;
 import org.spring.data.gemfire.app.beans.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.gemfire.LazyWiringDeclarableSupport;
+import org.springframework.data.gemfire.support.LazyWiringDeclarableSupport;
 import org.springframework.util.Assert;
 
 /**
@@ -40,7 +39,7 @@ import org.springframework.util.Assert;
  * @author John Blum
  * @see org.spring.data.gemfire.app.beans.User
  * @see org.springframework.data.gemfire.LazyWiringDeclarableSupport
- * @see com.gemstone.gemfire.cache.CacheLoader
+ * @see org.apache.geode.cache.CacheLoader
  * @since 1.3.4 (Spring Data GemFire)
  * @since 7.0.1 (GemFire)
  */
@@ -64,17 +63,11 @@ public class UserDataStoreCacheLoader extends LazyWiringDeclarableSupport implem
   @Autowired
   private DataSource userDataSource;
 
-  protected static Calendar createCalendar(final int year, final int month, final int dayOfMonth) {
+  protected static Calendar createCalendar(int year, int month, int dayOfMonth) {
     return createCalendar(year, month, dayOfMonth, 0, 0, 0);
   }
 
-  protected static Calendar createCalendar(final int year,
-                                           final int month,
-                                           final int dayOfMonth,
-                                           final int hourOfDay,
-                                           final int minute,
-                                           final int second)
-  {
+  protected static Calendar createCalendar(int year, int month, int dayOfMonth, int hourOfDay, int minute, int second) {
     Calendar dateTime = Calendar.getInstance();
 
     dateTime.clear();
@@ -88,23 +81,19 @@ public class UserDataStoreCacheLoader extends LazyWiringDeclarableSupport implem
     return dateTime;
   }
 
-  protected static User createUser(final String username) {
+  protected static User createUser(String username) {
     return createUser(username, String.format("%1$s@xcompay.com", username), true, Calendar.getInstance());
   }
 
-  protected static User createUser(final String username, final Calendar since) {
+  protected static User createUser(String username, Calendar since) {
     return createUser(username, String.format("%1$s@xcompay.com", username), true, since);
   }
 
-  protected static User createUser(final String username, final Boolean active, final Calendar since) {
+  protected static User createUser(String username, Boolean active, Calendar since) {
     return createUser(username, String.format("%1$s@xcompay.com", username), active, since);
   }
 
-  protected static User createUser(final String username,
-                                   final String email,
-                                   final Boolean active,
-                                   final Calendar since)
-  {
+  protected static User createUser(String username, String email, Boolean active, Calendar since) {
     User user = new User(username);
     user.setActive(active);
     user.setEmail(email);
@@ -124,7 +113,7 @@ public class UserDataStoreCacheLoader extends LazyWiringDeclarableSupport implem
   }
 
   @Override
-  public User load(final LoaderHelper<String, User> helper) throws CacheLoaderException {
+  public User load(LoaderHelper<String, User> helper) throws CacheLoaderException {
     System.out.printf("Reading value for key (%1$s) in Regin (%2$s)...%n",
       helper.getKey(), helper.getRegion().getName());
 
@@ -143,5 +132,4 @@ public class UserDataStoreCacheLoader extends LazyWiringDeclarableSupport implem
 
   public static final class TestDataSource extends DataSourceAdapter {
   }
-
 }

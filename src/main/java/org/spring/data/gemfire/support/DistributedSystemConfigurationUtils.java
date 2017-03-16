@@ -16,14 +16,14 @@
 
 package org.spring.data.gemfire.support;
 
-import com.gemstone.gemfire.distributed.internal.DistributionConfig;
+import org.apache.geode.distributed.internal.DistributionConfig;
 
 /**
  * The DistributedSystemConfigurationUtils class is a utility class for configuring GemFire' Distributed System
  * (cluster) properties.
  *
  * @author John Blum
- * @see com.gemstone.gemfire.distributed.internal.DistributionConfig
+ * @see org.apache.geode.distributed.internal.DistributionConfig
  * @since 1.0.0
  */
 @SuppressWarnings("unused")

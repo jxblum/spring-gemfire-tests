@@ -17,7 +17,7 @@
 package org.spring.data.gemfire.app.beans;
 
 import org.codeprimate.lang.ObjectUtils;
-import org.springframework.data.gemfire.mapping.Region;
+import org.springframework.data.gemfire.mapping.annotation.Region;
 import org.springframework.util.StringUtils;
 
 /**
@@ -72,5 +72,4 @@ public class Programmer extends Person {
   public String toString() {
     return String.format("%1$s programs in '%2$s.", getName(), getProgrammingLanguage());
   }
-
 }

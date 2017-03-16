@@ -22,8 +22,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.cache.Region;
-
+import org.apache.geode.cache.Region;
 import org.spring.data.gemfire.app.beans.Gemstone;
 import org.spring.data.gemfire.app.dao.GemstoneDao;
 import org.spring.data.gemfire.app.dao.support.DaoSupportAdapter;
@@ -46,7 +45,7 @@ import org.springframework.util.Assert;
  * @see org.spring.data.gemfire.app.dao.support.DaoSupportAdapter
  * @see org.springframework.data.gemfire.GemfireTemplate
  * @see org.springframework.stereotype.Repository
- * @see com.gemstone.gemfire.cache.Region
+ * @see org.apache.geode.cache.Region
  * @since 1.0.0
  */
 @Repository("gemfireGemstoneDao")
@@ -62,7 +61,7 @@ public class GemFireGemstoneDao extends DaoSupportAdapter<Gemstone, Long> implem
   public GemFireGemstoneDao() {
   }
 
-  public GemFireGemstoneDao(final Region<Long, String> gemstones) {
+  public GemFireGemstoneDao(Region<Long, String> gemstones) {
     Assert.notNull(gemstones, "The 'Gemstones' Region reference must not be null!");
     this.gemstones = gemstones;
   }
@@ -80,8 +79,8 @@ public class GemFireGemstoneDao extends DaoSupportAdapter<Gemstone, Long> implem
     return gemstonesTemplate;
   }
 
-  protected Iterable<Gemstone> mapEntries(final Map<Long, String> entries) {
-    List<Gemstone> gemstones = new ArrayList<Gemstone>(entries.size());
+  protected Iterable<Gemstone> mapEntries(Map<Long, String> entries) {
+    List<Gemstone> gemstones = new ArrayList<>(entries.size());
 
     for (Map.Entry<Long, String> entry : entries.entrySet()) {
       gemstones.add(new Gemstone(entry.getKey(), entry.getValue()));
@@ -105,7 +104,7 @@ public class GemFireGemstoneDao extends DaoSupportAdapter<Gemstone, Long> implem
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-  public Gemstone findBy(final Long key) {
+  public Gemstone findBy(Long key) {
     return (getGemstonesRegion().containsKey(key) ? new Gemstone(key, getGemstonesRegion().get(key)) : null);
   }
 
@@ -114,12 +113,12 @@ public class GemFireGemstoneDao extends DaoSupportAdapter<Gemstone, Long> implem
   @Override
   //@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
   public Iterable<Gemstone> findAll() {
-    return mapEntries(getGemstonesTemplate().<Long, String>getAll(getGemstonesRegion().keySet()));
+    return mapEntries(getGemstonesTemplate().getAll(getGemstonesRegion().keySet()));
   }
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-  public Gemstone save(final Gemstone gemstone) {
+  public Gemstone save(Gemstone gemstone) {
     getGemstonesTemplate().put(gemstone.getId(), gemstone.getName());
     return gemstone;
   }

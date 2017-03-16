@@ -16,7 +16,10 @@
 
 package org.pivotal.gemfire.cache.client;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,21 +27,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
-import com.gemstone.gemfire.cache.Declarable;
-import com.gemstone.gemfire.cache.client.ClientCache;
-import com.gemstone.gemfire.cache.client.ClientCacheFactory;
-import com.gemstone.gemfire.cache.execute.FunctionAdapter;
-import com.gemstone.gemfire.cache.execute.FunctionContext;
-import com.gemstone.gemfire.cache.execute.FunctionService;
-import com.gemstone.gemfire.cache.execute.ResultCollector;
-import com.gemstone.gemfire.distributed.ServerLauncher;
-import com.gemstone.gemfire.distributed.internal.DistributionConfig;
-import com.gemstone.gemfire.pdx.PdxInstance;
-import com.gemstone.gemfire.pdx.PdxReader;
-import com.gemstone.gemfire.pdx.PdxSerializer;
-import com.gemstone.gemfire.pdx.PdxWriter;
-import com.gemstone.gemfire.pdx.ReflectionBasedAutoSerializer;
-
+import org.apache.geode.cache.Declarable;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientCacheFactory;
+import org.apache.geode.cache.execute.FunctionAdapter;
+import org.apache.geode.cache.execute.FunctionContext;
+import org.apache.geode.cache.execute.FunctionService;
+import org.apache.geode.cache.execute.ResultCollector;
+import org.apache.geode.distributed.ServerLauncher;
+import org.apache.geode.distributed.internal.DistributionConfig;
+import org.apache.geode.pdx.PdxInstance;
+import org.apache.geode.pdx.PdxReader;
+import org.apache.geode.pdx.PdxSerializer;
+import org.apache.geode.pdx.PdxWriter;
+import org.apache.geode.pdx.ReflectionBasedAutoSerializer;
 import org.codeprimate.io.FileSystemUtils;
 import org.codeprimate.lang.ClassUtils;
 import org.junit.After;
@@ -100,7 +102,7 @@ public class ClientCacheFunctionExecutionWithPdxTest extends AbstractGemFireInte
   <pdx>
     <pdx-serializer>
       <class-name>
-        com.gemstone.gemfire.pdx.ReflectionBasedAutoSerializer
+        org.apache.geode.pdx.ReflectionBasedAutoSerializer
       </class-name>
       <parameter name="classes">
         <string>org\.pivotal\.gemfire\.cache\.client\.ClientCacheFunctionExecutionWithPdxTest\$Test.+</string>

@@ -16,7 +16,11 @@
 
 package org.spring.data.gemfire.rest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,15 +39,15 @@ import javax.annotation.Resource;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.CacheFactory;
-import com.gemstone.gemfire.cache.DataPolicy;
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.RegionFactory;
-import com.gemstone.gemfire.cache.RegionService;
-import com.gemstone.gemfire.pdx.PdxInstance;
-import com.gemstone.gemfire.pdx.ReflectionBasedAutoSerializer;
 
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.CacheFactory;
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.RegionFactory;
+import org.apache.geode.cache.RegionService;
+import org.apache.geode.pdx.PdxInstance;
+import org.apache.geode.pdx.ReflectionBasedAutoSerializer;
 import org.codeprimate.io.FileSystemUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -75,10 +79,10 @@ import org.springframework.web.client.RestTemplate;
  * @see org.springframework.test.context.ContextConfiguration
  * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
  * @see org.springframework.web.client.RestTemplate
- * @see com.gemstone.gemfire.cache.Cache
- * @see com.gemstone.gemfire.cache.Region
- * @see com.gemstone.gemfire.pdx.PdxInstance
- * @see com.gemstone.gemfire.pdx.ReflectionBasedAutoSerializer
+ * @see org.apache.geode.cache.Cache
+ * @see org.apache.geode.cache.Region
+ * @see org.apache.geode.pdx.PdxInstance
+ * @see org.apache.geode.pdx.ReflectionBasedAutoSerializer
  * @since 1.0.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)

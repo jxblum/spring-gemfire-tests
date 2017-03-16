@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import org.codeprimate.util.ComparatorAccumulator;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.gemfire.mapping.Region;
+import org.springframework.data.gemfire.mapping.annotation.Region;
 import org.springframework.util.ObjectUtils;
 
 /**
@@ -181,5 +181,4 @@ public class Person implements Comparable<Person>, Serializable {
   public String toString() {
     return getName();
   }
-
 }

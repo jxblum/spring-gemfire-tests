@@ -16,20 +16,21 @@
 
 package org.pivotal.gemfire.cache.wan;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.CacheFactory;
-import com.gemstone.gemfire.cache.DataPolicy;
-import com.gemstone.gemfire.cache.DiskStore;
-import com.gemstone.gemfire.cache.DiskStoreFactory;
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.RegionFactory;
-import com.gemstone.gemfire.cache.wan.GatewaySender;
-import com.gemstone.gemfire.cache.wan.GatewaySenderFactory;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.CacheFactory;
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.DiskStore;
+import org.apache.geode.cache.DiskStoreFactory;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.RegionFactory;
+import org.apache.geode.cache.wan.GatewaySender;
+import org.apache.geode.cache.wan.GatewaySenderFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,10 +46,10 @@ import org.junit.Test;
  *
  * @author John Blum
  * @see org.junit.Test
- * @see com.gemstone.gemfire.cache.Cache
- * @see com.gemstone.gemfire.cache.DiskStore
- * @see com.gemstone.gemfire.cache.Region
- * @see com.gemstone.gemfire.cache.wan.GatewaySender
+ * @see org.apache.geode.cache.Cache
+ * @see org.apache.geode.cache.DiskStore
+ * @see org.apache.geode.cache.Region
+ * @see org.apache.geode.cache.wan.GatewaySender
  * @link https://jira.springsource.org/browse/SGF-200
  * @since GemFire 7.0.1
  * @since Spring Data GemFire 1.3.3.BUILD-SNAPSHOT

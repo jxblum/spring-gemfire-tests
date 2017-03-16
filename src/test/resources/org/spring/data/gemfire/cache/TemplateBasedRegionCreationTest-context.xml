@@ -18,9 +18,9 @@
   <gfe:cache properties-ref="gemfireProperties"/>
 
   <!--
-  <bean id="commonExpirationAttributes" class="com.gemstone.gemfire.cache.ExpirationAttributes">
+  <bean id="commonExpirationAttributes" class="org.apache.geode.cache.ExpirationAttributes">
     <constructor-arg index="0" value="600"/>
-    <constructor-arg index="1" value="#{T(com.gemstone.gemfire.cache.ExpirationAction).LOCAL_INVALIDATE}"/>
+    <constructor-arg index="1" value="#{T(org.apache.geode.cache.ExpirationAction).LOCAL_INVALIDATE}"/>
   </bean>
   -->
 

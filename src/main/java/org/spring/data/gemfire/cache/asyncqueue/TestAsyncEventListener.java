@@ -19,11 +19,10 @@ package org.spring.data.gemfire.cache.asyncqueue;
 import java.util.List;
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.asyncqueue.AsyncEvent;
-import com.gemstone.gemfire.cache.asyncqueue.AsyncEventListener;
-import com.gemstone.gemfire.cache.asyncqueue.AsyncEventQueue;
-
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.asyncqueue.AsyncEvent;
+import org.apache.geode.cache.asyncqueue.AsyncEventListener;
+import org.apache.geode.cache.asyncqueue.AsyncEventQueue;
 import org.spring.data.gemfire.app.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,10 +31,10 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author John Blum
  * @see org.spring.data.gemfire.app.service.CustomerService
- * @see com.gemstone.gemfire.cache.Region
- * @see com.gemstone.gemfire.cache.asyncqueue.AsyncEvent
- * @see com.gemstone.gemfire.cache.asyncqueue.AsyncEventListener
- * @see com.gemstone.gemfire.cache.asyncqueue.AsyncEventQueue
+ * @see org.apache.geode.cache.Region
+ * @see org.apache.geode.cache.asyncqueue.AsyncEvent
+ * @see org.apache.geode.cache.asyncqueue.AsyncEventListener
+ * @see org.apache.geode.cache.asyncqueue.AsyncEventQueue
  * @since 1.0.0
  */
 @SuppressWarnings("unused")

@@ -16,13 +16,14 @@
 
 package org.spring.data.gemfire.cache;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Properties;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.distributed.DistributedSystem;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.distributed.DistributedSystem;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
@@ -46,7 +47,7 @@ import org.springframework.util.ObjectUtils;
  * @see org.junit.runner.RunWith
  * @see org.springframework.test.context.ContextConfiguration
  * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
- * @see com.gemstone.gemfire.cache.Cache
+ * @see org.apache.geode.cache.Cache
  * @since 1.3.3 (Spring Data GemFire)
  * @since 7.0.1 (GemFire)
  */

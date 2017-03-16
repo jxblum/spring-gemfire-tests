@@ -18,14 +18,14 @@ package org.spring.data.gemfire.pdx;
 
 import java.util.Date;
 
-import com.gemstone.gemfire.pdx.PdxReader;
-import com.gemstone.gemfire.pdx.PdxUnreadFields;
+import org.apache.geode.pdx.PdxReader;
+import org.apache.geode.pdx.PdxUnreadFields;
 
 /**
  * The PdxReaderSupport class is an Adapter for the GemFire PdxReader interface for simplifying implementations.
  *
  * @author John Blum
- * @see com.gemstone.gemfire.pdx.PdxReader
+ * @see org.apache.geode.pdx.PdxReader
  * @since 1.0.0
  */
 @SuppressWarnings("unused")

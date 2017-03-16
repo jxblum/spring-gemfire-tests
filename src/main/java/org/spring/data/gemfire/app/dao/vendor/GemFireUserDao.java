@@ -20,8 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.cache.Region;
-
+import org.apache.geode.cache.Region;
 import org.spring.data.gemfire.app.beans.User;
 import org.spring.data.gemfire.app.dao.UserDao;
 import org.springframework.stereotype.Repository;

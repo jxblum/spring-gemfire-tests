@@ -18,10 +18,9 @@ package org.spring.data.gemfire.cache;
 
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.asyncqueue.AsyncEvent;
-import com.gemstone.gemfire.cache.asyncqueue.AsyncEventQueue;
-
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.asyncqueue.AsyncEvent;
+import org.apache.geode.cache.asyncqueue.AsyncEventQueue;
 import org.junit.runner.RunWith;
 import org.pivotal.gemfire.cache.GemFireBasedSerialAsyncEventQueueTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +34,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @see org.junit.Test
  * @see org.springframework.test.context.ContextConfiguration
  * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
- * @see com.gemstone.gemfire.cache.Region
- * @see com.gemstone.gemfire.cache.asyncqueue.AsyncEventQueue
+ * @see org.apache.geode.cache.Region
+ * @see org.apache.geode.cache.asyncqueue.AsyncEventQueue
  * @since 1.0.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)

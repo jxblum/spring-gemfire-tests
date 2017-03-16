@@ -19,10 +19,9 @@ package org.spring.data.gemfire.cache.asyncqueue;
 import java.util.List;
 import javax.annotation.PostConstruct;
 
-import com.gemstone.gemfire.cache.asyncqueue.AsyncEvent;
-import com.gemstone.gemfire.cache.asyncqueue.AsyncEventListener;
-import com.gemstone.gemfire.cache.asyncqueue.AsyncEventQueue;
-
+import org.apache.geode.cache.asyncqueue.AsyncEvent;
+import org.apache.geode.cache.asyncqueue.AsyncEventListener;
+import org.apache.geode.cache.asyncqueue.AsyncEventQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
@@ -31,9 +30,9 @@ import org.springframework.util.Assert;
  * to the AsyncEventQueue upon which it is registered.
  *
  * @author John Blum
- * @see com.gemstone.gemfire.cache.asyncqueue.AsyncEvent
- * @see com.gemstone.gemfire.cache.asyncqueue.AsyncEventListener
- * @see com.gemstone.gemfire.cache.asyncqueue.AsyncEventQueue
+ * @see org.apache.geode.cache.asyncqueue.AsyncEvent
+ * @see org.apache.geode.cache.asyncqueue.AsyncEventListener
+ * @see org.apache.geode.cache.asyncqueue.AsyncEventQueue
  * @since 1.0.0
  */
 @SuppressWarnings("unused")

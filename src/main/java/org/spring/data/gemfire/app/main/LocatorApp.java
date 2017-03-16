@@ -16,8 +16,7 @@
 
 package org.spring.data.gemfire.app.main;
 
-import com.gemstone.gemfire.distributed.LocatorLauncher;
-
+import org.apache.geode.distributed.LocatorLauncher;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -27,7 +26,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  * @author John Blum
  * @see org.springframework.context.ConfigurableApplicationContext
- * @see com.gemstone.gemfire.distributed.LocatorLauncher
+ * @see org.apache.geode.distributed.LocatorLauncher
  * @since 1.0.0
  * @since 7.0.1 (GemFire)
  */

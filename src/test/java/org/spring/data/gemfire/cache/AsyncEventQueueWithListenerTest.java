@@ -16,12 +16,15 @@
 
 package org.spring.data.gemfire.cache;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.cache.asyncqueue.AsyncEventQueue;
-
+import org.apache.geode.cache.asyncqueue.AsyncEventQueue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.spring.beans.TestBean;
@@ -42,7 +45,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @see org.spring.data.gemfire.cache.asyncqueue.QueueAsyncEventListener
  * @see org.springframework.test.context.ContextConfiguration
  * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
- * @see com.gemstone.gemfire.cache.asyncqueue.AsyncEventQueue
+ * @see org.apache.geode.cache.asyncqueue.AsyncEventQueue
  * @since 1.0.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)

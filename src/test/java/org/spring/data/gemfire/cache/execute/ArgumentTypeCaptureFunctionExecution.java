@@ -17,8 +17,6 @@
 package org.spring.data.gemfire.cache.execute;
 
 
-import com.gemstone.gemfire.pdx.PdxInstance;
-
 import org.spring.data.gemfire.cache.ClientCacheFunctionExecutionWithPdxTest.TestDomainClass;
 import org.spring.data.gemfire.cache.ClientCacheFunctionExecutionWithPdxTest.TestEnum;
 import org.springframework.data.gemfire.function.annotation.OnServer;

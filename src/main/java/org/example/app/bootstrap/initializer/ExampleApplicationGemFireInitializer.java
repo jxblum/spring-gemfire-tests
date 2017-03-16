@@ -16,8 +16,7 @@
 
 package org.example.app.bootstrap.initializer;
 
-import com.gemstone.gemfire.internal.ClassPathLoader;
-
+import org.apache.geode.internal.ClassPathLoader;
 import org.springframework.data.gemfire.support.SpringContextBootstrappingInitializer;
 
 /**
@@ -28,7 +27,7 @@ import org.springframework.data.gemfire.support.SpringContextBootstrappingInitia
  * @author John Blum
  * @see org.example.app.bootstrap.config.ExampleApplicationGemFireConfiguration
  * @see org.springframework.data.gemfire.support.SpringContextBootstrappingInitializer
- * @see com.gemstone.gemfire.internal.ClassPathLoader
+ * @see org.apache.geode.internal.ClassPathLoader
  * @since 1.0.0
  */
 @SuppressWarnings("unused")

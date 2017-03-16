@@ -16,32 +16,31 @@
 
 package org.pivotal.gemfire.cache;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.CacheClosedException;
-import com.gemstone.gemfire.cache.CacheFactory;
-import com.gemstone.gemfire.cache.asyncqueue.AsyncEvent;
-import com.gemstone.gemfire.cache.asyncqueue.AsyncEventListener;
-import com.gemstone.gemfire.cache.asyncqueue.AsyncEventQueue;
-import com.gemstone.gemfire.cache.asyncqueue.AsyncEventQueueFactory;
-import com.gemstone.gemfire.cache.util.Gateway.OrderPolicy;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.CacheClosedException;
+import org.apache.geode.cache.CacheFactory;
+import org.apache.geode.cache.asyncqueue.AsyncEvent;
+import org.apache.geode.cache.asyncqueue.AsyncEventListener;
+import org.apache.geode.cache.asyncqueue.AsyncEventQueue;
+import org.apache.geode.cache.asyncqueue.AsyncEventQueueFactory;
+import org.apache.geode.cache.wan.GatewaySender.OrderPolicy;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.util.Assert;
 
-//import com.gemstone.gemfire.cache.wan.GatewaySender.OrderPolicy;
-
 /**
  * The GemFireBasedParallelAsyncEventQueueTest class is a test suite of test cases testing the contract
  *
  * @author John Blum
- * @see com.gemstone.gemfire.cache.Cache
- * @see com.gemstone.gemfire.cache.asyncqueue.AsyncEventQueue
+ * @see org.apache.geode.cache.Cache
+ * @see org.apache.geode.cache.asyncqueue.AsyncEventQueue
  * @since 1.7.0
  */
 public class GemFireBasedParallelAsyncEventQueueTest {
@@ -125,5 +124,4 @@ public class GemFireBasedParallelAsyncEventQueueTest {
     public void close() {
     }
   }
-
 }

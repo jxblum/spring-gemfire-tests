@@ -16,13 +16,14 @@
 
 package org.spring.data.gemfire.cache;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.cache.server.CacheServer;
-
+import org.apache.geode.cache.server.CacheServer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

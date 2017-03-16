@@ -19,8 +19,7 @@ package org.spring.data.gemfire.app.service.vendor;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
-import com.gemstone.gemfire.cache.Cache;
-
+import org.apache.geode.cache.Cache;
 import org.spring.data.gemfire.app.beans.Gemstone;
 import org.spring.data.gemfire.app.dao.GemstoneDao;
 import org.spring.data.gemfire.app.service.GemstoneService;

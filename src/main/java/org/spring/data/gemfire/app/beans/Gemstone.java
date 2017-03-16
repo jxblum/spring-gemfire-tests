@@ -18,7 +18,7 @@ package org.spring.data.gemfire.app.beans;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.gemfire.mapping.Region;
+import org.springframework.data.gemfire.mapping.annotation.Region;
 import org.springframework.util.ObjectUtils;
 
 /**
@@ -109,5 +109,4 @@ public class Gemstone {
     return String.format("{ @type = %1$s, id = %2$d, name = %3$s, type = %4$s }", getClass().getName(), getId(),
       getName(), getType());
   }
-
 }

@@ -18,13 +18,13 @@ package org.spring.data.gemfire.support;
 
 import java.util.Properties;
 
-import com.gemstone.gemfire.cache.Declarable;
+import org.apache.geode.cache.Declarable;
 
 /**
  * The DeclarableSupport class is a abstract base implementation of GemFire's Declarable interface.
  *
  * @author John Blum
- * @see com.gemstone.gemfire.cache.Declarable
+ * @see org.apache.geode.cache.Declarable
  * @since 1.0.0
  */
 @SuppressWarnings("unused")
@@ -36,7 +36,7 @@ public abstract class DeclarableSupport implements Declarable {
    *
    * @param parameters the Properties object containing the parameters used to initialize this POJO.
    * @see java.util.Properties
-   * @see com.gemstone.gemfire.cache.Declarable#init(java.util.Properties)
+   * @see org.apache.geode.cache.Declarable#init(java.util.Properties)
    */
   @Override
   public void init(final Properties parameters) {

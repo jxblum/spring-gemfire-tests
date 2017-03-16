@@ -16,17 +16,19 @@
 
 package org.pivotal.gemfire.cache;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.CacheFactory;
-import com.gemstone.gemfire.cache.CacheTransactionManager;
-import com.gemstone.gemfire.cache.DataPolicy;
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.RegionFactory;
-import com.gemstone.gemfire.cache.Scope;
-import com.gemstone.gemfire.distributed.internal.DistributionConfig;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.CacheFactory;
+import org.apache.geode.cache.CacheTransactionManager;
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.RegionFactory;
+import org.apache.geode.cache.Scope;
+import org.apache.geode.distributed.internal.DistributionConfig;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -36,12 +38,12 @@ import org.junit.Test;
  * in the context of a GemFire Cache Transaction.
  *
  * @author John Blum
- * @see com.gemstone.gemfire.cache.Cache
- * @see com.gemstone.gemfire.cache.CacheTransactionManager
- * @see com.gemstone.gemfire.cache.DataPolicy
- * @see com.gemstone.gemfire.cache.Region
- * @see com.gemstone.gemfire.cache.Scope
- * @see com.gemstone.gemfire.distributed.internal.DistributionConfig
+ * @see org.apache.geode.cache.Cache
+ * @see org.apache.geode.cache.CacheTransactionManager
+ * @see org.apache.geode.cache.DataPolicy
+ * @see org.apache.geode.cache.Region
+ * @see org.apache.geode.cache.Scope
+ * @see org.apache.geode.distributed.internal.DistributionConfig
  * @since 1.0.0
  * @link http://gemfire.docs.pivotal.io/latest/userguide/index.html#developing/transactions/run_a_cache_transaction.html
  */

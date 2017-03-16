@@ -16,26 +16,26 @@
 
 package org.pivotal.gemfire.cache.client;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-import com.gemstone.gemfire.cache.GemFireCache;
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.client.ClientCache;
-import com.gemstone.gemfire.cache.client.ClientCacheFactory;
-import com.gemstone.gemfire.cache.client.ClientRegionFactory;
-import com.gemstone.gemfire.cache.client.ClientRegionShortcut;
-import com.gemstone.gemfire.cache.client.Pool;
-import com.gemstone.gemfire.cache.client.PoolFactory;
-import com.gemstone.gemfire.cache.client.PoolManager;
-import com.gemstone.gemfire.cache.query.Index;
-import com.gemstone.gemfire.cache.query.QueryService;
-import com.gemstone.gemfire.distributed.ServerLauncher;
-import com.gemstone.gemfire.distributed.internal.DistributionConfig;
-
+import org.apache.geode.cache.GemFireCache;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientCacheFactory;
+import org.apache.geode.cache.client.ClientRegionFactory;
+import org.apache.geode.cache.client.ClientRegionShortcut;
+import org.apache.geode.cache.client.Pool;
+import org.apache.geode.cache.client.PoolFactory;
+import org.apache.geode.cache.client.PoolManager;
+import org.apache.geode.cache.query.Index;
+import org.apache.geode.cache.query.QueryService;
+import org.apache.geode.distributed.ServerLauncher;
+import org.apache.geode.distributed.internal.DistributionConfig;
 import org.codeprimate.io.FileSystemUtils;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -49,13 +49,13 @@ import org.spring.data.gemfire.AbstractGemFireIntegrationTest;
  * on client Regions of a GemFire ClientCache using the GemFire API exclusively (i.e. no Spring Data GemFire).
  *
  * @author John Blum
- * @see com.gemstone.gemfire.cache.GemFireCache
- * @see com.gemstone.gemfire.cache.Region
- * @see com.gemstone.gemfire.cache.client.ClientCache
- * @see com.gemstone.gemfire.cache.client.Pool
- * @see com.gemstone.gemfire.cache.query.Index
- * @see com.gemstone.gemfire.cache.query.QueryService
- * @see com.gemstone.gemfire.distributed.ServerLauncher
+ * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.Region
+ * @see org.apache.geode.cache.client.ClientCache
+ * @see org.apache.geode.cache.client.Pool
+ * @see org.apache.geode.cache.query.Index
+ * @see org.apache.geode.cache.query.QueryService
+ * @see org.apache.geode.distributed.ServerLauncher
  * @see org.spring.data.gemfire.AbstractGemFireIntegrationTest
  * @since 1.0.0
  */
@@ -146,8 +146,8 @@ public class ClientCacheIndexingTest extends AbstractGemFireIntegrationTest {
    * Throws the following UnsupportedOperationException on queryService.createIndex(..)...
    *
    * java.lang.UnsupportedOperationException: Index creation on the server is not supported from the client.
-   *   at com.gemstone.gemfire.cache.query.internal.DefaultQueryService.createIndex(DefaultQueryService.java:177)
-   *   at com.gemstone.gemfire.cache.query.internal.DefaultQueryService.createIndex(DefaultQueryService.java:143)
+   *   at org.apache.geode.cache.query.internal.DefaultQueryService.createIndex(DefaultQueryService.java:177)
+   *   at org.apache.geode.cache.query.internal.DefaultQueryService.createIndex(DefaultQueryService.java:143)
    *   at org.pivotal.gemfire.cache.client.ClientCacheIndexingTest.configureIndexWithServerApi(ClientCacheIndexingTest.java:140)
    *   at org.pivotal.gemfire.cache.client.ClientCacheIndexingTest.configureGemFireClientCacheWithApi(ClientCacheIndexingTest.java:117)
    *   at org.pivotal.gemfire.cache.client.ClientCacheIndexingTest.setupGemFireClient(ClientCacheIndexingTest.java:90)

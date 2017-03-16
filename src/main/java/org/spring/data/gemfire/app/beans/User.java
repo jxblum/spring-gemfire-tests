@@ -23,7 +23,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.gemfire.mapping.Region;
+import org.springframework.data.gemfire.mapping.annotation.Region;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
@@ -66,7 +66,7 @@ public class User implements Comparable<User> {
   public User() {
   }
 
-  public User(final String username) {
+  public User(String username) {
     Assert.hasText(username, "Username is required!");
     this.username = username;
   }
@@ -152,5 +152,4 @@ public class User implements Comparable<User> {
   public String toString() {
     return getUsername();
   }
-
 }

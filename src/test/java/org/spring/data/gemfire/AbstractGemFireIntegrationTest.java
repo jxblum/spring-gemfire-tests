@@ -31,10 +31,9 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-import com.gemstone.gemfire.distributed.ServerLauncher;
-import com.gemstone.gemfire.distributed.ServerLauncher.ServerState;
-import com.gemstone.gemfire.distributed.internal.DistributionConfig;
-
+import org.apache.geode.distributed.ServerLauncher;
+import org.apache.geode.distributed.ServerLauncher.ServerState;
+import org.apache.geode.distributed.internal.DistributionConfig;
 import org.codeprimate.io.FileSystemUtils;
 import org.codeprimate.lang.StringUtils;
 import org.codeprimate.process.support.ProcessUtils;
@@ -49,8 +48,8 @@ import org.springframework.util.Assert;
  * @author John Blum
  * @see org.spring.data.gemfire.AbstractGemFireTest
  * @see org.spring.data.gemfire.app.main.SpringGemFireCacheServerLauncher
- * @see com.gemstone.gemfire.distributed.ServerLauncher
- * @see com.gemstone.gemfire.distributed.internal.DistributionConfig
+ * @see org.apache.geode.distributed.ServerLauncher
+ * @see org.apache.geode.distributed.internal.DistributionConfig
  * @since 1.0.0
  */
 @SuppressWarnings("unused")

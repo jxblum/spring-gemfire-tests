@@ -19,14 +19,14 @@ package org.spring.data.gemfire.support;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.Region;
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.Region;
 
 /**
  * The CacheUtils class is a utility class for operating on GemFire Cache instances.
  *
  * @author John Blum
- * @see com.gemstone.gemfire.cache.Cache
+ * @see org.apache.geode.cache.Cache
  * @since 1.0.0
  */
 @SuppressWarnings("unused")

@@ -16,15 +16,18 @@
 
 package org.pivotal.gemfire.cache.wan;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.TimeUnit;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.CacheFactory;
-import com.gemstone.gemfire.cache.wan.GatewayReceiver;
-import com.gemstone.gemfire.cache.wan.GatewayReceiverFactory;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.CacheFactory;
+import org.apache.geode.cache.wan.GatewayReceiver;
+import org.apache.geode.cache.wan.GatewayReceiverFactory;
 import org.junit.After;
 import org.junit.Test;
 
@@ -33,10 +36,10 @@ import org.junit.Test;
  * of GemFire's WAN GatewayReceiver startup behavior and functionality.
  * @author John Blum
  * @see org.junit.Test
- * @see com.gemstone.gemfire.cache.Cache
- * @see com.gemstone.gemfire.cache.CacheFactory
- * @see com.gemstone.gemfire.cache.wan.GatewayReceiver
- * @see com.gemstone.gemfire.cache.wan.GatewayReceiverFactory
+ * @see org.apache.geode.cache.Cache
+ * @see org.apache.geode.cache.CacheFactory
+ * @see org.apache.geode.cache.wan.GatewayReceiver
+ * @see org.apache.geode.cache.wan.GatewayReceiverFactory
  * @since 1.0.0
  */
 public class GemFireWanGatewayReceiverStateTests {

@@ -16,8 +16,7 @@
 
 package org.spring.data.gemfire.cache.execute;
 
-import com.gemstone.gemfire.cache.DataPolicy;
-
+import org.apache.geode.cache.DataPolicy;
 import org.springframework.data.gemfire.function.annotation.OnMembers;
 
 /**
@@ -26,8 +25,8 @@ import org.springframework.data.gemfire.function.annotation.OnMembers;
  *
  * @author John Blum
  * @see org.springframework.data.gemfire.function.annotation.OnMembers
- * @see com.gemstone.gemfire.cache.Region
- * @see com.gemstone.gemfire.cache.DataPolicy
+ * @see org.apache.geode.cache.Region
+ * @see org.apache.geode.cache.DataPolicy
  * @since 1.0.0
  */
 @OnMembers

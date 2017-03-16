@@ -24,9 +24,8 @@ import java.util.Properties;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.GemFireCache;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.GemFireCache;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,11 +42,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.gemfire.CacheFactoryBean;
 import org.springframework.data.gemfire.LocalRegionFactoryBean;
+import org.springframework.data.gemfire.cache.GemfireCache;
+import org.springframework.data.gemfire.cache.GemfireCacheManager;
 import org.springframework.data.gemfire.mapping.GemfireMappingContext;
-import org.springframework.data.gemfire.mapping.Region;
+import org.springframework.data.gemfire.mapping.annotation.Region;
 import org.springframework.data.gemfire.repository.support.GemfireRepositoryFactoryBean;
-import org.springframework.data.gemfire.support.GemfireCache;
-import org.springframework.data.gemfire.support.GemfireCacheManager;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
@@ -84,7 +83,7 @@ public class CacheEvictionWithGemFireIntegrationTest extends AbstractSpringCache
   private PeopleService peopleService;
 
   @Resource(name = "People")
-  private com.gemstone.gemfire.cache.Region<Long, Person> peopleRegion;
+  private org.apache.geode.cache.Region<Long, Person> peopleRegion;
 
   protected void assertNoPeopleInDepartment(Department department) {
     assertPeopleInDepartment(department);
@@ -152,7 +151,7 @@ public class CacheEvictionWithGemFireIntegrationTest extends AbstractSpringCache
     GemfireCacheManager cacheManager(GemFireCache gemfireCache) {
       GemfireCacheManager cacheManager = new GemfireCacheManager() {
         @Override protected org.springframework.cache.Cache decorateCache(org.springframework.cache.Cache cache) {
-          return new GemfireCache((com.gemstone.gemfire.cache.Region<?, ?>) cache.getNativeCache()) {
+          return new GemfireCache((org.apache.geode.cache.Region<?, ?>) cache.getNativeCache()) {
             @Override public void evict(Object key) {
               getNativeCache().remove(key);
             }

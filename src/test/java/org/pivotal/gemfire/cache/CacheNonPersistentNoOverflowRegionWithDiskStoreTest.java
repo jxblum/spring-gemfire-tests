@@ -16,11 +16,10 @@
 
 package org.pivotal.gemfire.cache;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.CacheFactory;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.CacheFactory;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -18,16 +18,15 @@ package org.spring.data.gemfire.cache.partition;
 
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.partition.PartitionListenerAdapter;
-
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.partition.PartitionListenerAdapter;
 import org.spring.data.gemfire.support.RegionUtils;
 
 /**
  * The TestPartitionListener class is an implementation of the PartitionListenerAdapter.
  *
  * @author John Blum
- * @see com.gemstone.gemfire.cache.partition.PartitionListenerAdapter
+ * @see org.apache.geode.cache.partition.PartitionListenerAdapter
  * @since 1.3.3
  */
 @SuppressWarnings("unused")

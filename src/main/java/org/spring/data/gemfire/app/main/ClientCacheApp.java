@@ -21,8 +21,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.client.ClientCache;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
 
 /**
  * The ClientCacheApp class is an Spring-based Java application running as a GemFire Cache client.

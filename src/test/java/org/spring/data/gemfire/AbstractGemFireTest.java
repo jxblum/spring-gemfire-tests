@@ -23,10 +23,9 @@ import static org.junit.Assert.assertThat;
 
 import java.io.File;
 
-import com.gemstone.gemfire.cache.DataPolicy;
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.RegionAttributes;
-
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.RegionAttributes;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -36,8 +35,8 @@ import org.springframework.context.ApplicationContext;
  * @author John Blum
  * @see org.junit.Assert
  * @see org.springframework.context.ApplicationContext
- * @see com.gemstone.gemfire.cache.Cache
- * @see com.gemstone.gemfire.cache.Region
+ * @see org.apache.geode.cache.Cache
+ * @see org.apache.geode.cache.Region
  * @since 1.0.0
  */
 @SuppressWarnings("unused")

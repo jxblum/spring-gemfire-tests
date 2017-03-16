@@ -207,7 +207,7 @@
     </dependency>
     <!-- GemFire -->
     <dependency>
-      <groupId>com.gemstone.gemfire</groupId>
+      <groupId>org.apache.geode</groupId>
       <artifactId>gemfire</artifactId>
       <version>${gemfire.version}</version>
       <scope>compile</scope>

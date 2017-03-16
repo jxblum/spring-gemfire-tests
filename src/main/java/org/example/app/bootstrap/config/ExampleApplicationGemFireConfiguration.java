@@ -18,8 +18,7 @@ package org.example.app.bootstrap.config;
 
 import java.util.Properties;
 
-import com.gemstone.gemfire.cache.Cache;
-
+import org.apache.geode.cache.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,7 +35,7 @@ import org.springframework.data.gemfire.PartitionedRegionFactoryBean;
  * @see org.springframework.context.annotation.Bean
  * @see org.springframework.context.annotation.Configuration
  * @see org.springframework.context.annotation.ImportResource
- * @see com.gemstone.gemfire.cache.Cache
+ * @see org.apache.geode.cache.Cache
  * @since 1.0.0
  */
 @Configuration
@@ -74,5 +73,4 @@ public class ExampleApplicationGemFireConfiguration {
     partitionedRegionFactoryBean.setRegionName(REGION_NAME);
     return partitionedRegionFactoryBean;
   }
-
 }

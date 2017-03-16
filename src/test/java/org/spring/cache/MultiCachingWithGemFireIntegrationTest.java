@@ -16,18 +16,21 @@
 
 package org.spring.cache;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.annotation.Resource;
-
-import com.gemstone.gemfire.internal.concurrent.ConcurrentHashSet;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,7 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.gemfire.mapping.Region;
+import org.springframework.data.gemfire.mapping.annotation.Region;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -54,7 +57,7 @@ import org.springframework.util.Assert;
  * @see org.springframework.cache.annotation.Cacheable
  * @see org.springframework.test.context.ContextConfiguration
  * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
- * @see com.gemstone.gemfire.cache.Region
+ * @see org.apache.geode.cache.Region
  * @since 1.0.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -67,9 +70,9 @@ public class MultiCachingWithGemFireIntegrationTest {
 
   @Resource(name = "Books")
   @SuppressWarnings("all")
-  private com.gemstone.gemfire.cache.Region<Object, Book> books;
+  private org.apache.geode.cache.Region<Object, Book> books;
 
-  protected Object getKey(final Book book) {
+  protected Object getKey(Book book) {
     assertFalse(books.containsKey(book.getIsbn()));
 
     return (books.containsKey(book.getIsbn().getTenDigitNumber()) ? book.getIsbn().getTenDigitNumber()
@@ -78,7 +81,7 @@ public class MultiCachingWithGemFireIntegrationTest {
       : null)));
   }
 
-  protected void assertBooks(final Book... books) {
+  protected void assertBooks(Book... books) {
     assertEquals(books.length, this.books.size());
 
     Book previousBook = null;
@@ -146,7 +149,7 @@ public class MultiCachingWithGemFireIntegrationTest {
     private IsbnToUpcConverter converter;
 
     @Autowired
-    public final void setBookRepository(final BookRepository bookRepository) {
+    public final void setBookRepository(BookRepository bookRepository) {
       Assert.notNull(bookRepository, "The 'BookRepository' must not be null!");
       this.bookRepository = bookRepository;
     }
@@ -158,7 +161,7 @@ public class MultiCachingWithGemFireIntegrationTest {
     }
 
     @Autowired
-    public final void setConverter(final IsbnToUpcConverter converter) {
+    public final void setConverter(IsbnToUpcConverter converter) {
       Assert.notNull(converter, "The ISBN to UPC Converter must not be null!");
       this.converter = converter;
     }
@@ -169,19 +172,19 @@ public class MultiCachingWithGemFireIntegrationTest {
     }
 
     @Cacheable(value = "Books", key = "#isbn.tenDigitNumber")
-    public Book findByTenDigit(final ISBN isbn) {
+    public Book findByTenDigit(ISBN isbn) {
       return getBookRepository().load(isbn);
     }
 
     @Cacheable(value = "Books", key = "#isbn.thirteenDigitNumber")
-    public Book findByThirteenDigit(final ISBN isbn) {
+    public Book findByThirteenDigit(ISBN isbn) {
       return getBookRepository().load(isbn);
     }
 
     //@Cacheable(value = "Books", key = "@isbnToUpcConverter.convert(#isbn)")
     @Cacheable(value = "Books",
       key = "T(org.spring.cache.MultiCachingWithGemFireIntegrationTest$IsbnToUpcConverter).getInstance().convert(#isbn)")
-    public Book findByUpcFor(final ISBN isbn) {
+    public Book findByUpcFor(ISBN isbn) {
       return getBookRepository().load(isbn);
     }
 
@@ -189,7 +192,7 @@ public class MultiCachingWithGemFireIntegrationTest {
       return getBookRepository().generateIsbn();
     }
 
-    public UPC toUpc(final ISBN isbn) {
+    public UPC toUpc(ISBN isbn) {
       return getConverter().convert(isbn);
     }
 
@@ -207,19 +210,19 @@ public class MultiCachingWithGemFireIntegrationTest {
 
     private static final Random ISBN_NUMBER_GENERATOR = new Random(System.currentTimeMillis());
 
-    private static final Set<ISBN> ISBN_CACHE = new ConcurrentHashSet<>();
+    private static final Set<ISBN> ISBN_CACHE = new ConcurrentSkipListSet<>();
 
     private static final String BOOK_TITLE_FORMAT = "Title %1$d";
 
-    protected Book newBook(final ISBN isbn) {
+    protected Book newBook(ISBN isbn) {
       return newBook(isbn, generateTitle());
     }
 
-    protected Book newBook(final String title) {
+    protected Book newBook(String title) {
       return newBook(generateIsbn(), title);
     }
 
-    protected Book newBook(final ISBN isbn, final String title) {
+    protected Book newBook(ISBN isbn, String title) {
       return new Book(isbn, title);
     }
 
@@ -264,7 +267,7 @@ public class MultiCachingWithGemFireIntegrationTest {
 
     private final String title;
 
-    public Book(final ISBN isbn, final String title) {
+    public Book(ISBN isbn, String title) {
       Assert.notNull(isbn, "The Book ISBN must not be null!");
       Assert.hasText(title, "The Book Title must be specified!");
       this.isbn = isbn;
@@ -280,7 +283,7 @@ public class MultiCachingWithGemFireIntegrationTest {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
       if (obj == this) {
         return true;
       }
@@ -315,13 +318,13 @@ public class MultiCachingWithGemFireIntegrationTest {
 
     private final String isbn;
 
-    public ISBN(final String isbn) {
+    public ISBN(String isbn) {
       String isbnNumber = getDigitsOnly(isbn);
       Assert.isTrue(isbnNumber.length() == 13, "The ISBN number must be 13 digits");
       this.isbn = isbnNumber;
     }
 
-    protected static String getDigitsOnly(final String isbn) {
+    protected static String getDigitsOnly(String isbn) {
       StringBuilder buffer = new StringBuilder();
 
       if (isbn != null) {
@@ -335,7 +338,7 @@ public class MultiCachingWithGemFireIntegrationTest {
       return buffer.toString();
     }
 
-    public static String[] toStringArray(final String value) {
+    public static String[] toStringArray(String value) {
       List<String> stringArray = new ArrayList<>(value.length());
 
       for (char chr : value.toCharArray()) {
@@ -345,7 +348,7 @@ public class MultiCachingWithGemFireIntegrationTest {
       return stringArray.toArray(new String[stringArray.size()]);
     }
 
-    public static ISBN valueOf(final String isbn) {
+    public static ISBN valueOf(String isbn) {
       return new ISBN(isbn);
     }
 
@@ -362,7 +365,7 @@ public class MultiCachingWithGemFireIntegrationTest {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
       if (obj == this) {
         return true;
       }
@@ -393,7 +396,7 @@ public class MultiCachingWithGemFireIntegrationTest {
 
     private final String number;
 
-    public UPC(final String number) {
+    public UPC(String number) {
       Assert.hasText(number, "The UPC number must be specified!");
       this.number = number;
     }
@@ -403,7 +406,7 @@ public class MultiCachingWithGemFireIntegrationTest {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
       if (obj == this) {
         return true;
       }
@@ -446,7 +449,7 @@ public class MultiCachingWithGemFireIntegrationTest {
     }
 
     @Override
-    public UPC convert(final ISBN isbn) {
+    public UPC convert(ISBN isbn) {
       int sum = 0;
 
       for (char digit : isbn.getTenDigitNumber().toCharArray()) {
@@ -458,5 +461,4 @@ public class MultiCachingWithGemFireIntegrationTest {
       return new UPC(isbn.getThirteenDigitNumber() + sum);
     }
   }
-
 }

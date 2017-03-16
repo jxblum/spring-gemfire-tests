@@ -19,11 +19,10 @@ package org.spring.data.gemfire.cache;
 import java.util.Map;
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.cache.CacheLoader;
-import com.gemstone.gemfire.cache.CacheLoaderException;
-import com.gemstone.gemfire.cache.LoaderHelper;
-
-import org.springframework.data.gemfire.LazyWiringDeclarableSupport;
+import org.apache.geode.cache.CacheLoader;
+import org.apache.geode.cache.CacheLoaderException;
+import org.apache.geode.cache.LoaderHelper;
+import org.springframework.data.gemfire.support.LazyWiringDeclarableSupport;
 import org.springframework.util.Assert;
 
 /**
@@ -32,8 +31,8 @@ import org.springframework.util.Assert;
  *
  * @author John Blum
  * @see org.springframework.data.gemfire.LazyWiringDeclarableSupport
- * @see com.gemstone.gemfire.cache.CacheLoader
- * @see com.gemstone.gemfire.cache.LoaderHelper
+ * @see org.apache.geode.cache.CacheLoader
+ * @see org.apache.geode.cache.LoaderHelper
  * @since 1.0.0
  */
 @SuppressWarnings("unused")
@@ -42,7 +41,7 @@ public class NamedNumbersCacheLoader extends LazyWiringDeclarableSupport impleme
   private Map<String, Integer> namedNumbers;
 
   @Resource(name = "NamedNumbers")
-  public final void setNamedNumbers(final Map<String, Integer> namedNumbers) {
+  public final void setNamedNumbers(Map<String, Integer> namedNumbers) {
     Assert.notNull(namedNumbers, "The reference to the 'NamedNumbers' Map must not be null!");
     this.namedNumbers = namedNumbers;
   }
@@ -53,12 +52,11 @@ public class NamedNumbersCacheLoader extends LazyWiringDeclarableSupport impleme
   }
 
   @Override
-  public Integer load(final LoaderHelper<String, Integer> helper) throws CacheLoaderException {
+  public Integer load(LoaderHelper<String, Integer> helper) throws CacheLoaderException {
     return getNamedNumbers().get(helper.getKey());
   }
 
   @Override
   public void close() {
   }
-
 }

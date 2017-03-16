@@ -16,13 +16,13 @@
 
 package org.spring.data.gemfire.cache;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.cache.CacheListener;
-import com.gemstone.gemfire.cache.Region;
-
+import org.apache.geode.cache.CacheListener;
+import org.apache.geode.cache.Region;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.spring.data.gemfire.AbstractGemFireTest;

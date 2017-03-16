@@ -16,8 +16,10 @@
 
 package org.spring.cache;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,6 +68,8 @@ import org.springframework.util.ObjectUtils;
  * @see org.springframework.test.context.ContextConfiguration
  * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
  * @link http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/#cache
+ * @link http://stackoverflow.com/questions/33657881/what-strategies-exist-for-using-spring-cache-on-methods-that-take-an-array-or-co
+ * @link http://stackoverflow.com/questions/41966690/putting-all-returned-elements-into-a-spring-boot-cache-using-annotations
  * @since 1.0.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -321,19 +325,19 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
     // WARNING this implementation is purely for example purposes; a properly implemented factorial algorithm
     // should use BigInteger!
     @Cacheable("Factorials")
-    public long factorial(long value) {
-      Assert.isTrue(value >= 0, String.format("value (%1$d) must be greater than equal to 0", value));
+    public long factorial(long number) {
+      Assert.isTrue(number >= 0, String.format("Number [%d] must be greater than equal to 0", number));
 
       setCacheMiss(true);
 
-      if (value <= 2) {
-        return (value == 2 ? 2 : 1);
+      if (number <= 2L) {
+        return (number == 2L ? 2L : 1L);
       }
 
-      long result = value;
+      long result = number;
 
-      while (--value > 0) {
-        result *= value;
+      while (--number > 0L) {
+        result *= number;
       }
 
       return result;

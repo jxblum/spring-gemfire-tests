@@ -16,15 +16,15 @@
 
 package org.spring.data.gemfire.cache.partition;
 
-import com.gemstone.gemfire.cache.partition.PartitionListenerAdapter;
+import org.apache.geode.cache.partition.PartitionListenerAdapter;
 
 /**
  * The NoOpPartitionListener class is an implementation of the PartitionListener interface extending the
  * PartitionListenerAdapter class performing no operations.
  *
  * @author John Blum
- * @see com.gemstone.gemfire.cache.partition.PartitionListener
- * @see com.gemstone.gemfire.cache.partition.PartitionListenerAdapter
+ * @see org.apache.geode.cache.partition.PartitionListener
+ * @see org.apache.geode.cache.partition.PartitionListenerAdapter
  * @since 7.0.1 (GemFire)
  * @since 1.3.3 (Spring Data GemFire)
  */

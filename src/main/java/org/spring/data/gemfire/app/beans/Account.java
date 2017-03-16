@@ -19,7 +19,7 @@ package org.spring.data.gemfire.app.beans;
 import java.io.Serializable;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.gemfire.mapping.Region;
+import org.springframework.data.gemfire.mapping.annotation.Region;
 import org.springframework.util.Assert;
 
 /**
@@ -44,21 +44,21 @@ public class Account implements Serializable {
   public Account() {
   }
 
-  public Account(final Long customerId) {
+  public Account(Long customerId) {
     Assert.notNull(customerId, "The Customer ID to which this Account belongs cannot be null!");
     this.customerId = customerId;
   }
 
-  public Account(final Customer customer) {
+  public Account(Customer customer) {
     this(customer.getId());
   }
 
-  public Account(final Long customerId, final String number) {
+  public Account(Long customerId, String number) {
     this(customerId);
     this.number = number;
   }
 
-  public Account(final Customer customer, final String number) {
+  public Account(Customer customer, String number) {
     this(customer);
     this.number = number;
   }
@@ -67,7 +67,7 @@ public class Account implements Serializable {
     return id;
   }
 
-  public void setId(final Long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -75,7 +75,7 @@ public class Account implements Serializable {
     return customerId;
   }
 
-  public void setCustomerId(final Long customerId) {
+  public void setCustomerId(Long customerId) {
     this.customerId = customerId;
   }
 
@@ -83,7 +83,7 @@ public class Account implements Serializable {
     return number;
   }
 
-  public void setNumber(final String number) {
+  public void setNumber(String number) {
     this.number = number;
   }
 
@@ -92,5 +92,4 @@ public class Account implements Serializable {
     return String.format("{ @type = %1$s, id = %2$d, customerId = %3$d, number = %4$s }",
       getClass().getName(), getId(), getCustomerId(), getNumber());
   }
-
 }

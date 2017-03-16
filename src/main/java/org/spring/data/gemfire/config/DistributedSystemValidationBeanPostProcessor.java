@@ -20,16 +20,15 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.gemstone.gemfire.cache.client.Pool;
-import com.gemstone.gemfire.distributed.internal.InternalDistributedSystem;
-import com.gemstone.gemfire.management.internal.cli.util.spring.StringUtils;
-
+import org.apache.geode.cache.client.Pool;
+import org.apache.geode.distributed.internal.InternalDistributedSystem;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.data.gemfire.client.ClientCacheFactoryBean;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 /**
  * The DistributedSystemValidationBeanPostProcessor class is a Spring BeanPostProcessor used to compare and validate
@@ -41,8 +40,8 @@ import org.springframework.util.Assert;
  * @see org.springframework.beans.factory.BeanFactoryAware
  * @see org.springframework.beans.factory.config.BeanPostProcessor
  * @see org.springframework.data.gemfire.client.ClientCacheFactoryBean
- * @see com.gemstone.gemfire.cache.client.Pool
- * @see com.gemstone.gemfire.distributed.internal.InternalDistributedSystem
+ * @see org.apache.geode.cache.client.Pool
+ * @see org.apache.geode.distributed.internal.InternalDistributedSystem
  * @since 1.0.0
  */
 @SuppressWarnings("unused")
@@ -114,5 +113,4 @@ public class DistributedSystemValidationBeanPostProcessor implements BeanFactory
 
     return bean;
   }
-
 }

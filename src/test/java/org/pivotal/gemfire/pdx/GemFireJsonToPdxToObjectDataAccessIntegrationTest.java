@@ -16,8 +16,11 @@
 
 package org.pivotal.gemfire.pdx;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,20 +29,20 @@ import java.util.concurrent.atomic.AtomicLong;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.CacheFactory;
-import com.gemstone.gemfire.cache.DataPolicy;
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.RegionFactory;
-import com.gemstone.gemfire.cache.query.SelectResults;
-import com.gemstone.gemfire.pdx.JSONFormatter;
-import com.gemstone.gemfire.pdx.PdxInstance;
-import com.gemstone.gemfire.pdx.PdxInstanceFactory;
-import com.gemstone.gemfire.pdx.PdxReader;
-import com.gemstone.gemfire.pdx.PdxSerializable;
-import com.gemstone.gemfire.pdx.PdxSerializer;
-import com.gemstone.gemfire.pdx.PdxWriter;
 
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.CacheFactory;
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.RegionFactory;
+import org.apache.geode.cache.query.SelectResults;
+import org.apache.geode.pdx.JSONFormatter;
+import org.apache.geode.pdx.PdxInstance;
+import org.apache.geode.pdx.PdxInstanceFactory;
+import org.apache.geode.pdx.PdxReader;
+import org.apache.geode.pdx.PdxSerializable;
+import org.apache.geode.pdx.PdxSerializer;
+import org.apache.geode.pdx.PdxWriter;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -57,11 +60,11 @@ import org.junit.runners.MethodSorters;
  * @author John Blum
  * @see org.junit.Test
  * @see com.fasterxml.jackson.databind.ObjectMapper
- * @see com.gemstone.gemfire.cache.Cache
- * @see com.gemstone.gemfire.pdx.JSONFormatter
- * @see com.gemstone.gemfire.pdx.PdxInstance
- * @see com.gemstone.gemfire.pdx.PdxSerializable
- * @see com.gemstone.gemfire.pdx.PdxSerializer
+ * @see org.apache.geode.cache.Cache
+ * @see org.apache.geode.pdx.JSONFormatter
+ * @see org.apache.geode.pdx.PdxInstance
+ * @see org.apache.geode.pdx.PdxSerializable
+ * @see org.apache.geode.pdx.PdxSerializer
  * @since 1.0.0
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -206,7 +209,7 @@ public class GemFireJsonToPdxToObjectDataAccessIntegrationTest {
     expectedException.expect(ClassCastException.class);
     expectedException.expectCause(is(nullValue(Throwable.class)));
     expectedException.expectMessage(String.format(
-      "com.gemstone.gemfire.pdx.internal.PdxInstanceImpl cannot be cast to %1$s", Customer.class.getName()));
+      "org.apache.geode.pdx.internal.PdxInstanceImpl cannot be cast to %1$s", Customer.class.getName()));
 
     assertThat((Customer) GemFireJsonToPdxToObjectDataAccessIntegrationTest.customers.get(jonDoe.getId()),
       is(equalTo(jonDoe)));

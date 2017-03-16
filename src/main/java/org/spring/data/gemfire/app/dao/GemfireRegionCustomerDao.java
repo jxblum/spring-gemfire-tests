@@ -22,14 +22,13 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.GemFireException;
-import com.gemstone.gemfire.cache.CacheWriterException;
-import com.gemstone.gemfire.cache.LowMemoryException;
-import com.gemstone.gemfire.cache.PartitionedRegionStorageException;
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.TimeoutException;
-import com.gemstone.gemfire.distributed.LeaseExpiredException;
-
+import org.apache.geode.GemFireException;
+import org.apache.geode.cache.CacheWriterException;
+import org.apache.geode.cache.LowMemoryException;
+import org.apache.geode.cache.PartitionedRegionStorageException;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.TimeoutException;
+import org.apache.geode.distributed.LeaseExpiredException;
 import org.spring.data.gemfire.app.beans.Customer;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.dao.DeadlockLoserDataAccessException;
@@ -43,7 +42,7 @@ import org.springframework.util.Assert;
  *
  * @author John Blum
  * @see org.springframework.stereotype.Repository
- * @see com.gemstone.gemfire.cache.Region
+ * @see org.apache.geode.cache.Region
  * @since 1.0.0
  */
 @Repository
@@ -140,5 +139,4 @@ public class GemfireRegionCustomerDao {
   public String toString() {
     return getClass().getSimpleName();
   }
-
 }

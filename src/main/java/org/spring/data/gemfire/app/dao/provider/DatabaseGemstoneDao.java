@@ -23,8 +23,7 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import com.gemstone.gemfire.cache.Cache;
-
+import org.apache.geode.cache.Cache;
 import org.codeprimate.lang.InitializationException;
 import org.spring.data.gemfire.app.beans.Gemstone;
 import org.spring.data.gemfire.app.dao.GemstoneDao;
@@ -51,7 +50,7 @@ import org.springframework.util.ObjectUtils;
  * @see org.springframework.jdbc.core.JdbcTemplate
  * @see org.springframework.stereotype.Repository
  * @see org.springframework.transaction.annotation.Transactional
- * @see com.gemstone.gemfire.cache.Cache
+ * @see org.apache.geode.cache.Cache
  * @since 1.0.0
  */
 @Repository("databaseGemstoneDao")

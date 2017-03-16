@@ -20,7 +20,7 @@
     <prop key="start-dev-rest-api">true</prop>
   </util:properties>
 
-  <bean id="pdxSerializer" class="com.gemstone.gemfire.pdx.ReflectionBasedAutoSerializer">
+  <bean id="pdxSerializer" class="org.apache.geode.pdx.ReflectionBasedAutoSerializer">
     <constructor-arg type="boolean" value="true"/>
     <constructor-arg>
       <list>

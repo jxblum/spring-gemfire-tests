@@ -18,9 +18,8 @@ package org.spring.data.gemfire.config;
 
 import java.util.Properties;
 
-import com.gemstone.gemfire.distributed.LocatorLauncher;
-import com.gemstone.gemfire.distributed.internal.DistributionConfig;
-
+import org.apache.geode.distributed.LocatorLauncher;
+import org.apache.geode.distributed.internal.DistributionConfig;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
@@ -31,7 +30,7 @@ import org.springframework.util.StringUtils;
  * GemFire Locator.
  *
  * @author John Blum
- * @see com.gemstone.gemfire.distributed.LocatorLauncher
+ * @see org.apache.geode.distributed.LocatorLauncher
  * @see org.springframework.beans.factory.FactoryBean
  * @see org.springframework.beans.factory.InitializingBean
  * @since 7.0.1
