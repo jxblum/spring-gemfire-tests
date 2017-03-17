@@ -29,7 +29,7 @@ import org.spring.data.gemfire.app.beans.User;
 import org.spring.data.gemfire.app.dao.UserDao;
 import org.spring.data.gemfire.app.dao.support.BatchingDaoSupportAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 

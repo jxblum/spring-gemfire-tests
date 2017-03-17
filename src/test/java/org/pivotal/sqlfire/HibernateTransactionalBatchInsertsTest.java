@@ -31,7 +31,7 @@ import org.junit.Before;
 import org.spring.data.gemfire.app.beans.User;
 import org.spring.data.gemfire.app.dao.provider.HibernateUserDao;
 import org.spring.data.gemfire.app.service.UserService;
-import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.util.Assert;
 
 /**
