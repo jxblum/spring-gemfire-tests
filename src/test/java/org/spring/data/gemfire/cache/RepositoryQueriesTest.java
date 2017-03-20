@@ -16,18 +16,20 @@
 
 package org.spring.data.gemfire.cache;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.geode.cache.Region;
-import org.codeprimate.lang.NumberUtils;
+import org.apache.geode.cache.query.FunctionDomainException;
+import org.apache.geode.cache.query.NameResolutionException;
+import org.apache.geode.cache.query.Query;
+import org.apache.geode.cache.query.QueryInvocationTargetException;
+import org.apache.geode.cache.query.QueryService;
+import org.apache.geode.cache.query.SelectResults;
+import org.apache.geode.cache.query.TypeMismatchException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,11 +38,10 @@ import org.spring.data.gemfire.app.beans.User;
 import org.spring.data.gemfire.app.dao.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * The RepositoryQueriesTest class is a test suite of test cases testing the GemFire Query capability of Spring Data
- * GemFire Repositories.
+ * Integration tests testing the GemFire Query capability of Spring Data GemFire Repositories.
  *
  * @author John Blum
  * @see org.junit.Test
@@ -48,12 +49,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @see org.spring.data.gemfire.app.beans.User
  * @see org.spring.data.gemfire.app.dao.repo.UserRepository
  * @see org.springframework.test.context.ContextConfiguration
- * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
+ * @see org.springframework.test.context.junit4.SpringRunner
  * @see org.apache.geode.cache.Region
- * @since 1.3.3 (Spring Data GemFire)
- * @since 7.0.1 (GemFire)
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @ContextConfiguration
 @SuppressWarnings("unused")
 public class RepositoryQueriesTest extends AbstractUserDomainTestSuite {
@@ -64,8 +63,12 @@ public class RepositoryQueriesTest extends AbstractUserDomainTestSuite {
   @Autowired
   private UserRepository userRepository;
 
-  protected static void assertQueryResults(final Iterable<User> actualUsers, final String... expectedUsernames) {
-    assertNotNull("The query did not return any results!", actualUsers);
+  private static <T> T[] asArray(T... array) {
+    return array;
+  }
+
+  private static void assertQueryResults(Iterable<User> actualUsers, String... expectedUsernames) {
+    assertThat(actualUsers).describedAs("The query did not return any results!").isNotNull();
 
     List<String> actualUsernames = new ArrayList<>(expectedUsernames.length);
 
@@ -73,13 +76,14 @@ public class RepositoryQueriesTest extends AbstractUserDomainTestSuite {
       actualUsernames.add(actualUser.getUsername());
     }
 
-    assertEquals(expectedUsernames.length, actualUsernames.size());
-    assertTrue(actualUsernames.containsAll(Arrays.asList(expectedUsernames)));
+    assertThat(actualUsernames.size()).isEqualTo(expectedUsernames.length);
+    assertThat(actualUsernames).contains(expectedUsernames);
   }
 
   @Before
+  @SuppressWarnings("unchecked")
   public void setup() {
-    assertNotNull("The Users Region cannot be null!", users);
+    assertThat(users).describedAs("The Users Region cannot be null!").isNotNull();
 
     if (users.isEmpty()) {
       userRepository.save(createUser("blumj", true));
@@ -92,13 +96,13 @@ public class RepositoryQueriesTest extends AbstractUserDomainTestSuite {
       userRepository.save(createUser("doep", false));
       userRepository.save(createUser("doec", false));
 
-      assertFalse(users.isEmpty());
-      assertEquals(9, users.size());
+      assertThat(users).isNotEmpty();
+      assertThat(users).hasSize(9);
     }
   }
 
   @Test
-  public void testQueries() {
+  public void queriesAreCorrect() {
     List<User> activeUsers = userRepository.findDistinctByActiveTrue();
 
     assertQueryResults(activeUsers, "blumj", "blums", "handyj", "doej");
@@ -109,7 +113,7 @@ public class RepositoryQueriesTest extends AbstractUserDomainTestSuite {
 
     Integer count = userRepository.countUsersByUsernameLike("blum%");
 
-    assertEquals(3, NumberUtils.intValue(count));
+    assertThat(count).isEqualTo(3);
 
     List<User> blumUsers = userRepository.findDistinctByUsernameLike("blum%");
 
@@ -122,4 +126,25 @@ public class RepositoryQueriesTest extends AbstractUserDomainTestSuite {
     */
   }
 
+  @Test
+  @SuppressWarnings("unchecked")
+  public void gemfireWilcardQueryDoesNotWork() throws Exception {
+    QueryService queryService = users.getRegionService().getQueryService();
+    Query query = queryService.newQuery("SELECT count(*) FROM /Users WHERE username LIKE '%$1%'");
+    Object results = query.execute(asArray("b"));
+
+    assertThat(results).isInstanceOf(SelectResults.class);
+    assertThat(((SelectResults<Integer>) results).asList().get(0)).isEqualTo(0);
+  }
+
+  @Test
+  @SuppressWarnings("unchecked")
+  public void gemfireQueryWithWildcardArgumentWorks() throws Exception {
+    QueryService queryService = users.getRegionService().getQueryService();
+    Query query = queryService.newQuery("SELECT count(*) FROM /Users WHERE username LIKE $1");
+    Object results = query.execute(asArray("%b%"));
+
+    assertThat(results).isInstanceOf(SelectResults.class);
+    assertThat(((SelectResults<Integer>) results).asList().get(0)).isEqualTo(4);
+  }
 }
