@@ -23,13 +23,9 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.geode.cache.Region;
-import org.apache.geode.cache.query.FunctionDomainException;
-import org.apache.geode.cache.query.NameResolutionException;
 import org.apache.geode.cache.query.Query;
-import org.apache.geode.cache.query.QueryInvocationTargetException;
 import org.apache.geode.cache.query.QueryService;
 import org.apache.geode.cache.query.SelectResults;
-import org.apache.geode.cache.query.TypeMismatchException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
