@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.spring.data.gemfire.app.main;
+package org.spring.data.gemfire.app.main.server;
 
 import org.apache.geode.cache.Cache;
 import org.apache.geode.cache.RegionAttributes;
@@ -37,15 +37,15 @@ import org.springframework.data.gemfire.RegionAttributesFactoryBean;
 @SuppressWarnings("unused")
 public class SpringGemFireDataServer {
 
-  public static void main(final String[] args) {
+  public static void main(String[] args) {
     System.setProperty("gemfire.name", SpringGemFireDataServer.class.getSimpleName());
     SpringApplication.run(SpringGemFireDataServer.class, args);
   }
 
   @Bean
   PartitionedRegionFactoryBean<Long, Person> peopleRegion(Cache gemfireCache,
-    RegionAttributes<Long, Person> peopleRegionAttributes)
-  {
+      RegionAttributes<Long, Person> peopleRegionAttributes) {
+
     PartitionedRegionFactoryBean<Long, Person> peopleRegion = new PartitionedRegionFactoryBean<>();
 
     peopleRegion.setAttributes(peopleRegionAttributes);
@@ -67,5 +67,4 @@ public class SpringGemFireDataServer {
 
     return peopleRegionAttributes;
   }
-
 }

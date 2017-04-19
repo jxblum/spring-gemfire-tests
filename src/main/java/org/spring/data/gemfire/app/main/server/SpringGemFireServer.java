@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.spring.data.gemfire.app.main;
+package org.spring.data.gemfire.app.main.server;
 
 import java.util.Properties;
 
@@ -50,9 +50,9 @@ public class SpringGemFireServer {
 
   @Bean
   Properties gemfireProperties(@Value("${gemfire.log.level:config}") String logLevel,
-    @Value("${gemfire.locator.host-port:localhost[10334]}") String locatorHostPort,
-    @Value("${gemfire.manager.port:1099}") String managerPort)
-  {
+      @Value("${gemfire.locator.host-port:localhost[10334]}") String locatorHostPort,
+      @Value("${gemfire.manager.port:1099}") String managerPort) {
+
     Properties gemfireProperties = new Properties();
 
     gemfireProperties.setProperty("name", SpringGemFireServer.class.getSimpleName());
@@ -80,11 +80,11 @@ public class SpringGemFireServer {
 
   @Bean
   CacheServerFactoryBean gemfireCacheServer(Cache gemfireCache,
-    @Value("${gemfire.cache.server.bind-address:localhost}") String bindAddress,
-    @Value("${gemfire.cache.server.hostname-for-clients:localhost}") String hostnameForClients,
-    @Value("${gemfire.cache.server.port:40404}") int port,
-    @Value("${gemfire.cache.server.max-connections:50}") int maxConnections)
-  {
+      @Value("${gemfire.cache.server.bind-address:localhost}") String bindAddress,
+      @Value("${gemfire.cache.server.hostname-for-clients:localhost}") String hostnameForClients,
+      @Value("${gemfire.cache.server.port:40404}") int port,
+      @Value("${gemfire.cache.server.max-connections:50}") int maxConnections) {
+
     CacheServerFactoryBean gemfireCacheServer = new CacheServerFactoryBean();
 
     gemfireCacheServer.setCache(gemfireCache);

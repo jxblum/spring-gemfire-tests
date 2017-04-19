@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.spring.data.gemfire.app.main;
+package org.spring.data.gemfire.app.main.client;
 
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;

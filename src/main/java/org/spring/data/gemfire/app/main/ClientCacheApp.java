@@ -37,7 +37,11 @@ public class ClientCacheApp extends AbstractApp {
 
   protected static final String DEFAULT_CLIENT_CONFIGURATION_FILE = "clientCache.xml";
 
-  public ClientCacheApp(final String... args) {
+  public static void main(String... args) {
+    new ClientCacheApp(args).run();
+  }
+
+  public ClientCacheApp(String... args) {
     super(args);
   }
 
@@ -48,7 +52,7 @@ public class ClientCacheApp extends AbstractApp {
 
   @Override
   public void run() {
-    final ClientCache clientCache = getBean(DEFAULT_GEMFIRE_CACHE_BEAN_NAME, ClientCache.class);
+    ClientCache clientCache = getBean(DEFAULT_GEMFIRE_CACHE_BEAN_NAME, ClientCache.class);
 
     assert clientCache != null : String.format(
       "The GemFire ClientCache was not properly configured and initialized in the Spring context!");
@@ -80,9 +84,4 @@ public class ClientCacheApp extends AbstractApp {
 
     super.run();
   }
-
-  public static void main(final String... args) {
-    new ClientCacheApp(args).run();
-  }
-
 }

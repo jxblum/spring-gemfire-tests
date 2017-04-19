@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.spring.data.gemfire.app.main;
+package org.spring.data.gemfire.app.main.client;
 
 import javax.annotation.Resource;
 
@@ -43,7 +43,7 @@ import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 @SuppressWarnings("all")
 public class SpringGemFireDataClient implements CommandLineRunner {
 
-  public static void main(final String[] args) {
+  public static void main(String[] args) {
     System.setProperty("gemfire.name", SpringGemFireDataClient.class.getSimpleName());
     SpringApplication.run(SpringGemFireDataClient.class, args);
   }
@@ -51,14 +51,14 @@ public class SpringGemFireDataClient implements CommandLineRunner {
   @Resource(name = "People")
   private Region<Long, Person> people;
 
-  public void run(final String... args) throws Exception {
+  public void run(String... args) throws Exception {
     System.err.printf("Person is [%1$s]%n", people.get(1l));
   }
 
   @Bean(name = "People")
   ClientRegionFactoryBean<Long, Person> peopleRegion(GemFireCache clientCache, Pool gemfirePool,
-    RegionAttributes<Long, Person> peopleRegionAttributes)
-  {
+      RegionAttributes<Long, Person> peopleRegionAttributes) {
+
     ClientRegionFactoryBean<Long, Person> peopleRegion = new ClientRegionFactoryBean<>();
 
     peopleRegion.setAttributes(peopleRegionAttributes);
@@ -80,5 +80,4 @@ public class SpringGemFireDataClient implements CommandLineRunner {
 
     return peopleRegionAttributes;
   }
-
 }

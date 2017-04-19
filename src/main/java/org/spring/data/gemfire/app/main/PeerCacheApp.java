@@ -29,7 +29,11 @@ public class PeerCacheApp extends AbstractApp {
 
   public static final String DEFAULT_SERVER_CONFIGURATION_FILE = "peerCache.xml";
 
-  public PeerCacheApp(final String... args) {
+  public static void main(String[] args) {
+    new PeerCacheApp(args).run();
+  }
+
+  public PeerCacheApp(String... args) {
     super(args);
   }
 
@@ -37,9 +41,4 @@ public class PeerCacheApp extends AbstractApp {
   protected String[] getDefaultConfigurationFile() {
     return new String[] { DEFAULT_SERVER_CONFIGURATION_FILE };
   }
-
-  public static void main(final String... args) {
-    new PeerCacheApp(args).run();
-  }
-
 }

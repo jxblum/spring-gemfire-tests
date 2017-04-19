@@ -43,7 +43,7 @@ public class SpringGemFireCacheServerLauncher implements Runnable {
 
   public static final String SERVER_PID_FILE_NAME = "server.pid";
 
-  private static final long WAIT_TIMEOUT = 500l;
+  private static final long WAIT_TIMEOUT = 500L;
 
   private static final File SERVER_PID_FILE = new File(System.getProperty("user.dir"), SERVER_PID_FILE_NAME);
 
@@ -55,7 +55,16 @@ public class SpringGemFireCacheServerLauncher implements Runnable {
 
   private final String[] configLocations;
 
-  public SpringGemFireCacheServerLauncher(final String[] configLocations) {
+  public static void main(String... args) {
+    if (args.length == 0) {
+      System.err.printf("$java org.spring.data.gemfire.app.main.SpringGemFireCacheServerLauncher <path-to-spring-xml-file>%n");
+      System.exit(-1);
+    }
+
+    new SpringGemFireCacheServerLauncher(args).run();
+  }
+
+  public SpringGemFireCacheServerLauncher(String[] configLocations) {
     Assert.notEmpty(configLocations,
       "At least 1 location to a Spring GemFire ApplicationContext configuration file must be provided!");
     this.configLocations = configLocations;
@@ -93,13 +102,10 @@ public class SpringGemFireCacheServerLauncher implements Runnable {
   }
 
   // NOTE this may be redundant with ConfigurableApplicationContext.registerShutdownHook()
-  private void registerShutdownHook(final Cache cache) {
-    Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-      @Override
-      public void run() {
-        CacheUtils.close(cache);
-        running.set(false);
-      }
+  private void registerShutdownHook(Cache cache) {
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+      CacheUtils.close(cache);
+      running.set(false);
     }));
   }
 
@@ -140,14 +146,4 @@ public class SpringGemFireCacheServerLauncher implements Runnable {
   public void stop() {
     running.set(false);
   }
-
-  public static void main(final String... args) {
-    if (args.length == 0) {
-      System.err.printf("$java org.spring.data.gemfire.app.main.SpringGemFireCacheServerLauncher <path-to-spring-xml-file>%n");
-      System.exit(-1);
-    }
-
-    new SpringGemFireCacheServerLauncher(args).run();
-  }
-
 }

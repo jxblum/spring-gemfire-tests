@@ -35,7 +35,11 @@ public class InitializerPeerCacheApp extends AbstractApp {
 
   public static final String DEFAULT_CONTEXT_CONFIGURATION_FILE = "spring-gemfire-context-with-clusterconfig-and-cachexml-example.xml";
 
-  public InitializerPeerCacheApp(final String... args) {
+  public static void main(final String... args) {
+    new InitializerPeerCacheApp(args).run();
+  }
+
+  public InitializerPeerCacheApp(String... args) {
     super(args);
   }
 
@@ -52,9 +56,4 @@ public class InitializerPeerCacheApp extends AbstractApp {
 
     return SpringContextBootstrappingInitializer.getApplicationContext();
   }
-
-  public static void main(final String... args) {
-    new InitializerPeerCacheApp(args).run();
-  }
-
 }

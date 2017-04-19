@@ -34,7 +34,7 @@ public class LocatorApp {
 
   public static final String LOCATOR_CONFIGURATION_FILE = "locator.xml";
 
-  public static void main(final String... args) {
+  public static void main(String... args) {
     ConfigurableApplicationContext applicationContext = new ClassPathXmlApplicationContext(LOCATOR_CONFIGURATION_FILE);
 
     applicationContext.registerShutdownHook();
@@ -49,5 +49,4 @@ public class LocatorApp {
 
     System.out.printf("Locator stopping...");
   }
-
 }
