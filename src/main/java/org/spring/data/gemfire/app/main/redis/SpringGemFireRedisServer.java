@@ -23,11 +23,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.gemfire.config.annotation.EnableManager;
 import org.springframework.data.gemfire.config.annotation.EnableRedisServer;
 import org.springframework.data.gemfire.config.annotation.PeerCacheApplication;
 
 @SpringBootApplication
 @PeerCacheApplication
+@EnableManager(start = true)
 @EnableRedisServer(bindAddress = "localhost")
 @SuppressWarnings("unused")
 public class SpringGemFireRedisServer implements CommandLineRunner {
