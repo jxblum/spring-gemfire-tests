@@ -37,7 +37,7 @@ import org.springframework.data.gemfire.repository.query.annotation.Trace;
 public interface CustomerRepository extends GemfireRepository<Customer, Long> {
 
   //SELECT * FROM /Customers WHERE id = $1
-  Customer findById(Long id);
+  Customer findCustomerById(Long id);
 
   //SELECT * FROM /Customers WHERE lastName = $1
   List<Customer> findByLastName(String lastName);
