@@ -40,30 +40,32 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.gemfire.ReplicatedRegionFactoryBean;
+import org.springframework.data.gemfire.client.ClientCacheFactoryBean;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.client.Interest;
 import org.springframework.data.gemfire.client.PoolFactoryBean;
 import org.springframework.data.gemfire.client.RegexInterest;
 import org.springframework.data.gemfire.config.annotation.CacheServerApplication;
-import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
 import org.springframework.data.gemfire.support.ConnectionEndpoint;
+import org.springframework.data.gemfire.util.PropertiesBuilder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.Assert;
 
 /**
- * The ClientCacheRegisterInterests class...
+ * Integration tests with GemFire's {@link ClientCache} Register Interests using both the GemFire API
+ * and Spring Data GemFire configuration to demonstrate the key differences.
  *
  * @author John Blum
  * @since 1.0.0
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration
-@ActiveProfiles("gemfire-api")
-//@ActiveProfiles("spring-data-gemfire")
+//@ActiveProfiles("gemfire-api")
+@ActiveProfiles("spring-data-gemfire")
 @SuppressWarnings("unused")
-public class ClientCacheRegisterInterests {
+public class ClientCacheRegisterInterestsTests {
 
   private static final int GEMFIRE_CACHE_SERVER_PORT = 40404;
 
@@ -90,7 +92,7 @@ public class ClientCacheRegisterInterests {
     ClientCache gemfireCache() {
 
       return new ClientCacheFactory()
-        .set("name", "GemFireApiCacheClient")
+        .set("name", "GemFireApiCacheClientApp")
         .set("log-level", GEMFIRE_LOG_LEVEL)
         .create();
     }
@@ -103,11 +105,11 @@ public class ClientCacheRegisterInterests {
 
       factorialsRegionFactory.setPoolName("factorialsPool");
 
-      Region<Object, Object> example = factorialsRegionFactory.create("Factorials");
+      Region<Object, Object> factorialsRegion = factorialsRegionFactory.create("Factorials");
 
-      example.registerInterestRegex(".*");
+      factorialsRegion.registerInterestRegex(".*");
 
-      return example;
+      return factorialsRegion;
     }
 
     @Bean
@@ -126,9 +128,23 @@ public class ClientCacheRegisterInterests {
     }
   }
 
+  @Configuration
   @Profile("spring-data-gemfire")
-  @ClientCacheApplication(name = "SpringDataGemFireCacheClient", logLevel = GEMFIRE_LOG_LEVEL)
   static class SpringDataGemFireCacheClientConfiguration {
+
+    @Bean
+    ClientCacheFactoryBean gemfireCache() {
+
+      ClientCacheFactoryBean clientCache = new ClientCacheFactoryBean();
+
+      clientCache.setClose(true);
+      clientCache.setProperties(PropertiesBuilder.create()
+        .setProperty("name", "SpringDataGemFireCacheClientApp")
+        .setProperty("log-level", GEMFIRE_LOG_LEVEL)
+        .build());
+
+      return clientCache;
+    }
 
     @Bean(name = "Factorials")
     @SuppressWarnings("unchecked")
