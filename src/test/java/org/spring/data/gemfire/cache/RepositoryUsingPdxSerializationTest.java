@@ -33,7 +33,7 @@ import org.spring.data.gemfire.app.beans.GemstoneType;
 import org.spring.data.gemfire.app.dao.repo.GemstoneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * The RepositoryUsingPdxSerializationTest class is a test suite of test cases testing the use of Spring Data GemFire's
@@ -46,7 +46,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
  * @since 1.0.0
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @ContextConfiguration
 @SuppressWarnings("unused")
 public class RepositoryUsingPdxSerializationTest {
@@ -103,7 +103,7 @@ public class RepositoryUsingPdxSerializationTest {
     assertEquals(expectedRuby, actualRuby);
     */
 
-    Object actualRuby = gemstoneRepo.findOne(expectedRuby.getId());
+    Object actualRuby = gemstoneRepo.findById(expectedRuby.getId()).orElse(null);
     //Gemstone actualRuby = gemstoneRepo.findOne(expectedRuby.getId());
 
     System.out.printf("Type (%1$s) after Repo.findOne(..)%n", ClassUtils.getClassName(actualRuby));
@@ -115,5 +115,4 @@ public class RepositoryUsingPdxSerializationTest {
     assertTrue(actualRuby instanceof Gemstone);
     assertEquals(expectedRuby, actualRuby);
   }
-
 }

@@ -68,6 +68,7 @@ public class ProgrammerFunctions {
   }
 
   protected ProgrammerRepository getProgrammerRepository(Region<Long, Programmer> programmers) {
+
     if (!programmersTemplate.getRegion().equals(programmers)) {
       GemfireRepositoryFactory repositoryFactory = new GemfireRepositoryFactory(
         Collections.singleton(programmers), new GemfireMappingContext());
@@ -85,8 +86,10 @@ public class ProgrammerFunctions {
     try {
       ProgrammerRepository localProgrammerRepository = getProgrammerRepository(filteredProgrammers);
 
-      //List<Programmer> programmers = nullSafeList(
-      //  localProgrammerRepository.findDistinctByProgrammingLanguageOrderByNameAsc(programmingLanguage));
+      /*
+      List<Programmer> programmers =
+        nullSafeList(localProgrammerRepository.findDistinctByProgrammingLanguageOrderByNameAsc(programmingLanguage));
+      */
 
       List<Programmer> programmers = nullSafeList(filteredProgrammers.<Programmer>query(
         String.format("programmingLanguage = '%s'", programmingLanguage))
@@ -97,7 +100,7 @@ public class ProgrammerFunctions {
           programmer.setReputation(programmer.getReputation() + reputationDelta);
         }
 
-        localProgrammerRepository.save(programmers);
+        localProgrammerRepository.saveAll(programmers);
       }
 
       return programmers;

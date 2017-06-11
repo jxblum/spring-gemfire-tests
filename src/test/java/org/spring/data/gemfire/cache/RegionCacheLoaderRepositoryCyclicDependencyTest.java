@@ -29,7 +29,7 @@ import org.spring.data.gemfire.app.beans.User;
 import org.spring.data.gemfire.app.dao.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * The RegionCacheLoaderRepositoryCyclicDependencyTest class...
@@ -39,7 +39,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @see
  * @since 7.x
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @ContextConfiguration
 @SuppressWarnings("unused")
 public class RegionCacheLoaderRepositoryCyclicDependencyTest extends AbstractGemFireIntegrationTest {
@@ -59,12 +59,11 @@ public class RegionCacheLoaderRepositoryCyclicDependencyTest extends AbstractGem
 
 		@Override
 		public Object load(final LoaderHelper helper) throws CacheLoaderException {
-			return userRepository.findOne(String.valueOf(helper.getKey()));
+			return userRepository.findById(String.valueOf(helper.getKey())).orElse(null);
 		}
 
 		@Override
 		public void close() {
 		}
 	}
-
 }

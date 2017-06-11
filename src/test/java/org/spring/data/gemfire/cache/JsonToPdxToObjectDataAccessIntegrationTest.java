@@ -50,7 +50,7 @@ import org.springframework.data.gemfire.mapping.annotation.Region;
 import org.springframework.data.gemfire.repository.GemfireRepository;
 import org.springframework.data.gemfire.repository.support.GemfireRepositoryFactoryBean;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ObjectUtils;
 
 /**
@@ -76,7 +76,7 @@ import org.springframework.util.ObjectUtils;
  * @see org.apache.geode.pdx.PdxSerializer
  * @since 1.0.0
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @ContextConfiguration(classes = GemFireConfiguration.class)
 @SuppressWarnings("unused")
 public class JsonToPdxToObjectDataAccessIntegrationTest {
@@ -152,12 +152,6 @@ public class JsonToPdxToObjectDataAccessIntegrationTest {
   @Test
   public void regionGet() {
     assertThat((Order) orders.get(amazon.getTransactionId()), is(equalTo(amazon)));
-  }
-
-  @Test
-  public void repositoryFindOneMethod() {
-    log(orderRepository.findOne(target.getTransactionId()));
-    assertThat(orderRepository.findOne(target.getTransactionId()), is(equalTo(target)));
   }
 
   @Test
