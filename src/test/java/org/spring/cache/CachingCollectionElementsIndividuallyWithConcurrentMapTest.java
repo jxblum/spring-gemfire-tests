@@ -16,6 +16,7 @@
 
 package org.spring.cache;
 
+import static java.util.stream.StreamSupport.stream;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -44,7 +45,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
@@ -67,12 +68,13 @@ import org.springframework.util.ObjectUtils;
  * @see org.springframework.context.annotation.Configuration
  * @see org.springframework.test.context.ContextConfiguration
  * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
- * @link http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/#cache
- * @link http://stackoverflow.com/questions/33657881/what-strategies-exist-for-using-spring-cache-on-methods-that-take-an-array-or-co
- * @link http://stackoverflow.com/questions/41966690/putting-all-returned-elements-into-a-spring-boot-cache-using-annotations
+ * @see <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/#cache">Cache Abstraction</a>
+ * @see <a href="http://stackoverflow.com/questions/33657881/what-strategies-exist-for-using-spring-cache-on-methods-that-take-an-array-or-co">What strategies exist for using Spring Cache on methods that take an array or collection parameter</a>
+ * @see <a href="http://stackoverflow.com/questions/41966690/putting-all-returned-elements-into-a-spring-boot-cache-using-annotations">Putting all returned elements into a Spring-Boot cache using annotations</a>
+ * @see <a href="https://stackoverflow.com/questions/44529029/spring-cache-with-collection-of-items-entities">Spring Cache with collection of items/entities</a>
  * @since 1.0.0
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @ContextConfiguration(classes = CachingApplicationConfiguration.class)
 @SuppressWarnings("unused")
@@ -82,6 +84,7 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
   private CalculatorService calculatorService;
 
   protected void assertFactorials(List<Long> actualValues, long... expectedValues) {
+
     assertThat(actualValues, is(notNullValue()));
     assertThat(expectedValues, is(notNullValue()));
     assertThat(actualValues.size(), is(equalTo(expectedValues.length)));
@@ -95,19 +98,20 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
 
   @Test
   public void cacheHitsAndMisses() {
+
     assertThat(calculatorService.isCacheMiss(), is(false));
 
-    List<Long> results = calculatorService.factorials(Arrays.asList(1l, 2l, 3l, 4l, 5l));
+    List<Long> results = calculatorService.factorials(Arrays.asList(1L, 2L, 3L, 4L, 5L));
 
     assertThat(calculatorService.isCacheMiss(), is(true));
     assertFactorials(results, 1, 2, 6, 24, 120);
 
-    results = calculatorService.factorials(Arrays.asList(1l, 2l, 3l, 4l, 5l));
+    results = calculatorService.factorials(Arrays.asList(1L, 2L, 3L, 4L, 5L));
 
     assertThat(calculatorService.isCacheMiss(), is(false));
     assertFactorials(results, 1, 2, 6, 24, 120);
 
-    results = calculatorService.factorials(Arrays.asList(6l, 7l, 8l, 9l));
+    results = calculatorService.factorials(Arrays.asList(6L, 7L, 8L, 9L));
 
     assertThat(calculatorService.isCacheMiss(), is(true));
     assertFactorials(results, 720, 5040, 40320, 362880);
@@ -115,11 +119,12 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
 
   @Test
   public void partialMissesAreConsideredACompleteCacheMiss() {
-    List<Long> results = calculatorService.factorials(Arrays.asList(2l, 4l, 8l, 16l));
+
+    List<Long> results = calculatorService.factorials(Arrays.asList(2L, 4L, 8L, 16L));
 
     // in fact, the 16! == null, because it is not in the cache!!!
     assertThat(calculatorService.isCacheMiss(), is(true));
-    assertFactorials(results, 2, 24, 40320, 20922789888000l);
+    assertFactorials(results, 2, 24, 40320, 20922789888000L);
   }
 
   @Configuration
@@ -148,7 +153,8 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
     }
 
     @Override
-    protected boolean areAllKeysPresentInCache(final Iterable<?> keys) {
+    protected boolean areAllKeysPresentInCache(Iterable<?> keys) {
+
       ConcurrentMap nativeCache = (ConcurrentMap) getNativeCache();
 
       boolean result = true;
@@ -165,8 +171,10 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
 
     private final Cache cache;
 
-    protected CollectionHandlingDecoratedCache(final Cache cache) {
+    protected CollectionHandlingDecoratedCache(Cache cache) {
+
       Assert.notNull(cache, "Cache must not be null");
+
       this.cache = cache;
     }
 
@@ -188,28 +196,17 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
 
     @SuppressWarnings("unused")
     protected int sizeOf(Iterable<?> iterable) {
-      int size = 0;
-
-      for (Object element : iterable) {
-        size++;
-      }
-
-      return size;
+      return Long.valueOf(stream(iterable.spliterator(), false).count()).intValue();
     }
 
     protected <T> List<T> toList(Iterable<T> iterable) {
-      List<T> list = new ArrayList<>();
-
-      for (T element : iterable) {
-        list.add(element);
-      }
-
-      return list;
+      return stream(iterable.spliterator(), false).collect(Collectors.toList());
     }
 
     @Override
     @SuppressWarnings("all")
     public ValueWrapper get(final Object key) {
+
       if (key instanceof Iterable) {
         Iterable<?> keys = (Iterable<?>) key;
 
@@ -232,7 +229,9 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T get(final Object key, final Class<T> type) {
+
       if (key instanceof Iterable) {
+
         Assert.isAssignable(Iterable.class, type, String.format(
           "Expected return type (%1$s) must be Iterable when querying multiple keys (%2$s)",
             type.getName(), key));
@@ -252,7 +251,9 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
     @Override
     @SuppressWarnings("unchecked")
     public void put(final Object key, final Object value) {
+
       if (key instanceof Iterable) {
+
         Assert.isInstanceOf(Iterable.class, value, String.format(
           "Value (%1$s) must be an instance of Iterable when caching multiple keys (%2$s)",
             ObjectUtils.nullSafeClassName(value), key));
@@ -280,6 +281,7 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
 
     @Override
     public ValueWrapper putIfAbsent(final Object key, final Object value) {
+
       if (key instanceof Iterable) {
         throw new UnsupportedOperationException(String.format(
           "Cache (%1$s) wrapping (%2$s) does not currently support putIfAbsent for multiple key/values",
@@ -291,6 +293,7 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
 
     @Override
     public void evict(final Object key) {
+
       if (key instanceof Iterable) {
         for (Object singleKey : (Iterable) key) {
           getCache().evict(singleKey);
@@ -322,10 +325,11 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
       cacheMiss = value;
     }
 
-    // WARNING this implementation is purely for example purposes; a properly implemented factorial algorithm
-    // should use BigInteger!
+    // WARNING this implementation is purely for example purposes;
+    // A properly implemented factorial algorithm should use BigInteger!
     @Cacheable("Factorials")
     public long factorial(long number) {
+
       Assert.isTrue(number >= 0, String.format("Number [%d] must be greater than equal to 0", number));
 
       setCacheMiss(true);
@@ -345,6 +349,7 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
 
     @Cacheable("Factorials")
     public List<Long> factorials(List<Long> values) {
+
       setCacheMiss(true);
 
       List<Long> results = new ArrayList<>(values.size());
