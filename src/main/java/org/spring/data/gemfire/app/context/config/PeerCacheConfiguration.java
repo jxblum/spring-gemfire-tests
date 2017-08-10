@@ -60,6 +60,7 @@ public class PeerCacheConfiguration {
 
   @Bean
   public PropertyPlaceholderConfigurer gemfireApplicationSettings() {
+
     PropertyPlaceholderConfigurer propertyPlaceholderConfigurer = new PropertyPlaceholderConfigurer();
 
     Properties placeholders = new Properties();
@@ -77,6 +78,7 @@ public class PeerCacheConfiguration {
 
   @Bean
   public Properties gemfireProperties() {
+
     Properties gemfireProperties = new Properties();
 
     gemfireProperties.setProperty("name", "SpringApacheGeodePeerCacheExample");
@@ -94,13 +96,17 @@ public class PeerCacheConfiguration {
 
   @Bean
   public CacheFactoryBean gemfireCache(@Qualifier("gemfireProperties") Properties gemfireProperties) throws Exception {
+
     CacheFactoryBean cacheFactory = new CacheFactoryBean();
+
     cacheFactory.setProperties(gemfireProperties);
+
     return cacheFactory;
   }
 
   @Bean(name = "StaticReferenceData")
   public ReplicatedRegionFactoryBean<?, ?> exampleReplicateRegion(GemFireCache gemfireCache) {
+
     ReplicatedRegionFactoryBean<?, ?> staticReferenceData = new ReplicatedRegionFactoryBean<>();
 
     staticReferenceData.setCache(gemfireCache);
@@ -113,28 +119,32 @@ public class PeerCacheConfiguration {
 
   @Bean(name = "CustomersDataStore")
   public DiskStoreFactoryBean exampleDiskStore(Cache gemfireCache) {
+
     DiskStoreFactoryBean customersDiskStore = new DiskStoreFactoryBean();
+
     customersDiskStore.setCache(gemfireCache);
     customersDiskStore.setBeanName("CustomerDataStore");
     customersDiskStore.setAutoCompact(true);
     customersDiskStore.setDiskDirs(Collections.singletonList(new DiskDir("./gemfire/disk-stores/customers")));
     customersDiskStore.setCompactionThreshold(75);
-    customersDiskStore.setMaxOplogSize(10);
+    customersDiskStore.setMaxOplogSize(10L);
     customersDiskStore.setQueueSize(100);
-    customersDiskStore.setTimeInterval(300000);
+    customersDiskStore.setTimeInterval(300000L);
+
     return customersDiskStore;
   }
 
   @Bean(name = "Customers")
   public PartitionedRegionFactoryBean<Long, Customer> examplePartitionRegion(Cache gemfireCache,
-    @Qualifier("partitionRegionAttributes") RegionAttributes<Long, Customer> regionAttributes)
-      throws Exception
-  {
+      @Qualifier("partitionRegionAttributes") RegionAttributes<Long, Customer> regionAttributes) throws Exception {
+
     PartitionedRegionFactoryBean<Long , Customer> customers = new PartitionedRegionFactoryBean<>();
+
     customers.setAttributes(regionAttributes);
     customers.setCache(gemfireCache);
     customers.setName("Customers");
     customers.setPersistent(true);
+
     return customers;
   }
 
@@ -153,9 +163,10 @@ public class PeerCacheConfiguration {
   }
 
   @Bean
-  public PartitionAttributesFactoryBean examplePartitionAttributes(@Value("${app.gemfire.region.partition.local-max-memory}") int localMaxMemory,
-                                                                   @Value("${app.gemfire.region.partition.total-max-memory}") int totalMaxMemory)
-  {
+  public PartitionAttributesFactoryBean examplePartitionAttributes(
+      @Value("${app.gemfire.region.partition.local-max-memory}") int localMaxMemory,
+      @Value("${app.gemfire.region.partition.total-max-memory}") int totalMaxMemory) {
+
     PartitionAttributesFactoryBean partitionAttributes = new PartitionAttributesFactoryBean();
 
     partitionAttributes.setLocalMaxMemory(localMaxMemory);
@@ -165,8 +176,9 @@ public class PeerCacheConfiguration {
   }
 
   @Bean
-  public EvictionAttributesFactoryBean exampleEvictionAttributes(@Value("${app.gemfire.region.eviction.threshold}") int threshold)
-  {
+  public EvictionAttributesFactoryBean exampleEvictionAttributes(
+      @Value("${app.gemfire.region.eviction.threshold}") int threshold) {
+
     EvictionAttributesFactoryBean exampleEvictionAttributes = new EvictionAttributesFactoryBean();
 
     exampleEvictionAttributes.setAction(EvictionAction.OVERFLOW_TO_DISK);
@@ -177,8 +189,9 @@ public class PeerCacheConfiguration {
   }
 
   @Bean
-  public ExpirationAttributesFactoryBean exampleExpirationAttributes(@Value("${app.gemfire.region.entry.expiration.timeout}") int timeout)
-  {
+  public ExpirationAttributesFactoryBean exampleExpirationAttributes(
+      @Value("${app.gemfire.region.entry.expiration.timeout}") int timeout) {
+
     ExpirationAttributesFactoryBean exampleExpirationAttributes = new ExpirationAttributesFactoryBean();
 
     exampleExpirationAttributes.setAction(ExpirationAction.LOCAL_DESTROY);
@@ -189,6 +202,7 @@ public class PeerCacheConfiguration {
 
   @Bean
   public IndexFactoryBean exampleIndex(Cache gemfireCache) {
+
     IndexFactoryBean customerId = new IndexFactoryBean();
 
     customerId.setCache(gemfireCache);

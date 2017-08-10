@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Properties;
 
 import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.distributed.DistributedSystem;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,7 +60,8 @@ public class CachePrematureInitializationTest {
   @Autowired
   private Cache cache;
 
-  protected static void printCacheFactoryBeanSettings(final CacheFactoryBean cacheFactoryBean) {
+  private static void printCacheFactoryBeanSettings(final CacheFactoryBean cacheFactoryBean) {
+
     StringBuilder buffer = new StringBuilder("{copyOnRead = ")
       .append(cacheFactoryBean.getCopyOnRead())
       .append(", lock-lease = ").append(cacheFactoryBean.getLockLease())
@@ -71,7 +73,8 @@ public class CachePrematureInitializationTest {
     System.out.printf("Initialized CacheFactoryBean Settings: %1$s%n", buffer);
   }
 
-  protected static void printCacheSettings(final Cache cache) {
+  private static void printCacheSettings(final Cache cache) {
+
     StringBuilder buffer = new StringBuilder("{copyOnRead = ")
       .append(cache.getCopyOnRead())
       .append(", lock-lease = ").append(cache.getLockLease())
@@ -85,6 +88,7 @@ public class CachePrematureInitializationTest {
 
   @Test
   public void testCacheInitialization() {
+
     assertNotNull(cache);
 
     printCacheSettings(cache);
@@ -112,6 +116,7 @@ public class CachePrematureInitializationTest {
 
     @Override
     public Object postProcessBeforeInitialization(final Object bean, final String beanName) throws BeansException {
+
       System.out.printf("Bean (%1$s) of Type (%2$s) with Name (%3$s)%n", bean, ObjectUtils.nullSafeClassName(bean),
         beanName);
 
@@ -122,7 +127,7 @@ public class CachePrematureInitializationTest {
         try {
           // NOTE incorrectly use the CacheFactoryBean instance to get a reference to the GemFire Cache
           // before the CacheFactoryBean has been fully/properly initialized by the Spring container!
-          Cache cache = ((CacheFactoryBean) bean).getObject();
+          GemFireCache cache = ((CacheFactoryBean) bean).getObject();
 
           assertTrue("The Cache's 'copyOnRead' property was false!", cache.getCopyOnRead());
           // then, access properties/perform operations on the cache reference...
@@ -134,13 +139,5 @@ public class CachePrematureInitializationTest {
 
       return bean;
     }
-
-    @Override
-    public Object postProcessAfterInitialization(final Object bean, final String beanName) throws BeansException {
-      // NOTE, logic in postProcessBeforeInitialization causing the test to fail will not work here since the properties
-      // on the CacheFactoryBean would already be set!
-      return bean;
-    }
   }
-
 }
