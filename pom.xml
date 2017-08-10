@@ -36,8 +36,8 @@
     <assertj.version>3.6.2</assertj.version>
     <codeprimate-api.version>1.2.0.BUILD-SNAPSHOT</codeprimate-api.version>
     <easymock.version>3.4</easymock.version>
-    <gemfire.version>9.0.3</gemfire.version>
-    <geode.version>1.1.0</geode.version>
+    <gemfire.version>9.1.0</gemfire.version>
+    <geode.version>1.2.0</geode.version>
     <h2.version>1.3.168</h2.version>
     <hibernate.version>4.3.1.Final</hibernate.version>
     <hsqldb.version>2.3.3</hsqldb.version>
@@ -53,10 +53,10 @@
     <slf4j.version>1.7.22</slf4j.version>
     <spring.version>5.0.0.M5</spring.version>
     <spring-boot.version>2.0.0.BUILD-SNAPSHOT</spring-boot.version>
-    <spring-data-gemfire.version>2.0.0.BUILD-SNAPSHOT</spring-data-gemfire.version>
-    <spring-data-geode.version>1.1.0.BUILD-SNAPSHOT</spring-data-geode.version>
-    <spring-data-jpa.version>2.0.0.BUILD-SNAPSHOT</spring-data-jpa.version>
-    <spring-data-redis.version>2.0.0.BUILD-SNAPSHOT</spring-data-redis.version>
+    <spring-data-gemfire.version>2.0.0.RC2</spring-data-gemfire.version>
+    <spring-data-geode.version>2.0.0.RC2</spring-data-geode.version>
+    <spring-data-jpa.version>2.0.0.RC2</spring-data-jpa.version>
+    <spring-data-redis.version>2.0.0.RC2</spring-data-redis.version>
     <spring-shell.version>1.2.0.RELEASE</spring-shell.version>
     <sqlfire.version>1.1.2</sqlfire.version>
     <sqlfire-client.version>/Users/jblum/Downloads/Pivotal/GemStone/Products/VMWareSQLFire/Pivotal_SQLFire_112_b45732/lib/sqlfireclient.jar</sqlfire-client.version>
