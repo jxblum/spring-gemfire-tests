@@ -216,9 +216,12 @@ public class CachingWithRedisIntegrationTest {
 
     @Bean
     CacheManager cacheManager() {
+      /*
       RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate());
       cacheManager.setUsePrefix(true); // THIS IS NEEDED!
       return cacheManager;
+      */
+      return null;
     }
   }
 }
