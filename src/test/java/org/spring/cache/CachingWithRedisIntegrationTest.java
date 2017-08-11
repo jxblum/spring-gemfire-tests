@@ -37,10 +37,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.ActiveProfiles;
@@ -112,18 +112,22 @@ public class CachingWithRedisIntegrationTest {
   }
 
   interface MathService {
+
     boolean wasCacheMiss();
+
     long factorial(long number);
   }
 
+  @Configuration
   @EnableCaching
-  @SpringBootConfiguration
   @Import({ AutoRedisConfiguration.class, CustomRedisConfiguration.class })
   static class CachingWithRedisConfiguration {
 
     @Bean
     MathService mathService() {
+
       return new MathService() {
+
         private final AtomicBoolean cacheMiss = new AtomicBoolean(false);
 
         @Override
@@ -134,6 +138,7 @@ public class CachingWithRedisIntegrationTest {
         @Override
         @Cacheable(cacheNames = "Factorials")
         public long factorial(long number) {
+
           cacheMiss.set(true);
 
           Assert.isTrue(number >= 0L, String.format("Number [%d] must be greater than equal to 0", number));
@@ -172,13 +177,17 @@ public class CachingWithRedisIntegrationTest {
 
     @Bean
     static PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
+
       PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer =
         new PropertySourcesPlaceholderConfigurer();
+
       propertySourcesPlaceholderConfigurer.setProperties(redisProperties());
+
       return propertySourcesPlaceholderConfigurer;
     }
 
     static Properties redisProperties() {
+
       Properties redisProperties = new Properties();
 
       redisProperties.setProperty("spring.cache.type", "redis");
@@ -200,17 +209,23 @@ public class CachingWithRedisIntegrationTest {
 
     @Bean
     JedisConnectionFactory jedisConnectionFactory() {
+
       JedisConnectionFactory factory = new JedisConnectionFactory();
+
       factory.setHostName(REDIS_HOST);
       factory.setPort(REDIS_PORT);
       factory.setUsePool(true);
+
       return factory;
     }
 
     @Bean
     RedisTemplate<Object, Object> redisTemplate() {
+
       RedisTemplate<Object, Object> redisTemplate = new RedisTemplate<>();
+
       redisTemplate.setConnectionFactory(jedisConnectionFactory());
+
       return redisTemplate;
     }
 

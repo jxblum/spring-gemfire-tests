@@ -32,7 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.data.gemfire.CacheFactoryBean;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ObjectUtils;
 
 /**
@@ -52,7 +52,7 @@ import org.springframework.util.ObjectUtils;
  * @since 1.3.3 (Spring Data GemFire)
  * @since 7.0.1 (GemFire)
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @ContextConfiguration
 @SuppressWarnings("unused")
 public class CachePrematureInitializationTest {
