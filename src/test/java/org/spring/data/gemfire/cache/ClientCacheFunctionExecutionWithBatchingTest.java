@@ -39,10 +39,10 @@ import org.spring.data.gemfire.AbstractGemFireIntegrationTest;
 import org.springframework.data.gemfire.function.annotation.GemfireFunction;
 import org.springframework.data.gemfire.function.execution.GemfireOnRegionFunctionTemplate;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * The ClientCacheFunctionExecutionWithStreamingTest class...
+ * The ClientCacheFunctionExecutionWithBatchingTest class...
  * <p>
  * @author John Blum
  * @see org.junit.Test
@@ -51,10 +51,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
  * @since 1.0.0
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @ContextConfiguration
 @SuppressWarnings("unused")
-public class ClientCacheFunctionExecutionWithStreamingTest extends AbstractGemFireIntegrationTest {
+public class ClientCacheFunctionExecutionWithBatchingTest extends AbstractGemFireIntegrationTest {
 
   @Resource(name = "Collections")
   private Region<String, Object> collections;
@@ -64,11 +64,14 @@ public class ClientCacheFunctionExecutionWithStreamingTest extends AbstractGemFi
 
   @BeforeClass
   public static void startGemFireServer() throws IOException {
-    startSpringGemFireServer(toPathname(ClientCacheFunctionExecutionWithStreamingTest.class).concat("-server-context.xml"));
+
+    startSpringGemFireServer(toPathname(
+      ClientCacheFunctionExecutionWithBatchingTest.class).concat("-server-context.xml"));
   }
 
   @Before
   public void setup() {
+
     assertRegion(numbers, "Numbers");
 
     numbers.put("one", 1);
@@ -79,12 +82,13 @@ public class ClientCacheFunctionExecutionWithStreamingTest extends AbstractGemFi
 
     assertRegion(collections, "Collections");
 
-    collections.put("one", new ArrayList<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)));
-    collections.put("two", new ArrayList<String>(Arrays.asList("assert", "mock", "test")));
+    collections.put("one", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)));
+    collections.put("two", new ArrayList<>(Arrays.asList("assert", "mock", "test")));
   }
 
   @Test
   public void testClientServerFunctionExecution() {
+
     GemfireOnRegionFunctionTemplate onNumbersFunctionTemplate = new GemfireOnRegionFunctionTemplate(numbers);
 
     assertThat(onNumbersFunctionTemplate.executeAndextract("addition", Collections.emptySet(), "one", "two"),
@@ -92,7 +96,7 @@ public class ClientCacheFunctionExecutionWithStreamingTest extends AbstractGemFi
 
     GemfireOnRegionFunctionTemplate onCollectionsFunctionTemplate = new GemfireOnRegionFunctionTemplate(collections);
 
-    List<Object> integers = onCollectionsFunctionTemplate.executeAndextract("streaming", Collections.emptySet(), "one");
+    List<Object> integers = onCollectionsFunctionTemplate.executeAndextract("batching", Collections.emptySet(), "one");
 
     assertNotNull(integers);
     //assertEquals(10, integers.size());
@@ -103,7 +107,7 @@ public class ClientCacheFunctionExecutionWithStreamingTest extends AbstractGemFi
     assertThat(onNumbersFunctionTemplate.executeAndextract("addition", Collections.emptySet(), "four", "five"),
       is(equalTo(9)));
 
-    List<Object> strings = onCollectionsFunctionTemplate.executeAndextract("streaming", Collections.emptySet(), "two");
+    List<Object> strings = onCollectionsFunctionTemplate.executeAndextract("batching", Collections.emptySet(), "two");
 
     assertNotNull(strings);
     //assertEquals(3, strings.size());
@@ -115,14 +119,13 @@ public class ClientCacheFunctionExecutionWithStreamingTest extends AbstractGemFi
   public static class GemFireServerFunctions {
 
     @GemfireFunction(id = "addition")
-    public Integer addition(final String keyOne, final String keyTwo, final Region<String, Integer> region) {
+    public Integer addition(String keyOne, String keyTwo, Region<String, Integer> region) {
       return (region.get(keyOne) + region.get(keyTwo));
     }
 
-    @GemfireFunction(id = "streaming", batchSize = 2)
-    public List streaming(final String key, final Region<String, Iterable<Object>> region) {
+    @GemfireFunction(id = "batching", batchSize = 2)
+    public List batching(String key, Region<String, Iterable<Object>> region) {
       return List.class.cast(region.get(key));
     }
   }
-
 }

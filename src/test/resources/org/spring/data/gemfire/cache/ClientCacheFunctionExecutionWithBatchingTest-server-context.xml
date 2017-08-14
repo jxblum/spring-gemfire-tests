@@ -39,6 +39,6 @@
 
   <gfe:annotation-driven/>
 
-  <bean class="org.spring.data.gemfire.cache.ClientCacheFunctionExecutionWithStreamingTest$GemFireServerFunctions"/>
+  <bean class="org.spring.data.gemfire.cache.ClientCacheFunctionExecutionWithBatchingTest$GemFireServerFunctions"/>
 
 </beans>
