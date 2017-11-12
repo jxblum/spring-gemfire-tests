@@ -51,12 +51,12 @@
     <multithreadedtc.version>1.01</multithreadedtc.version>
     <reactor.version>3.1.0.BUILD-SNAPSHOT</reactor.version>
     <slf4j.version>1.7.22</slf4j.version>
-    <spring.version>5.0.0.M5</spring.version>
-    <spring-boot.version>2.0.0.M3</spring-boot.version>
-    <spring-data-gemfire.version>2.0.0.RC2</spring-data-gemfire.version>
-    <spring-data-geode.version>2.0.0.RC2</spring-data-geode.version>
-    <spring-data-jpa.version>2.0.0.RC2</spring-data-jpa.version>
-    <spring-data-redis.version>2.0.0.RC2</spring-data-redis.version>
+    <spring.version>5.0.1.RELEASE</spring.version>
+    <spring-boot.version>2.0.0.M5</spring-boot.version>
+    <spring-data-gemfire.version>2.0.1.RELEASE</spring-data-gemfire.version>
+    <spring-data-geode.version>2.0.1.RELEASE</spring-data-geode.version>
+    <spring-data-jpa.version>2.0.1.RELEASE</spring-data-jpa.version>
+    <spring-data-redis.version>2.0.1.RELEASE</spring-data-redis.version>
     <spring-shell.version>1.2.0.RELEASE</spring-shell.version>
     <sqlfire.version>1.1.2</sqlfire.version>
     <sqlfire-client.version>/Users/jblum/Downloads/Pivotal/GemStone/Products/VMWareSQLFire/Pivotal_SQLFire_112_b45732/lib/sqlfireclient.jar</sqlfire-client.version>
