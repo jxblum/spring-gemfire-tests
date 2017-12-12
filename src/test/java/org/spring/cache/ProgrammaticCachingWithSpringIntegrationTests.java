@@ -35,6 +35,7 @@ import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.cache.interceptor.CacheInterceptor;
@@ -182,11 +183,11 @@ public class ProgrammaticCachingWithSpringIntegrationTests {
   static class TestConfigurationTwo extends BaseTestConfiguration {
 
     @Bean
-    CacheInterceptor cacheInterceptor() {
+    CacheInterceptor cacheInterceptor(CacheManager cacheManager) {
 
       CacheInterceptor cacheInterceptor = new CacheInterceptor();
 
-      cacheInterceptor.setCacheManager(cacheManager());
+      cacheInterceptor.setCacheManager(cacheManager);
       cacheInterceptor.setCacheOperationSources(newCacheOperationSource(newCacheableOperation()));
 
       return cacheInterceptor;
