@@ -53,8 +53,8 @@
     <slf4j.version>1.7.22</slf4j.version>
     <spring.version>5.0.4.RELEASE</spring.version>
     <spring-boot.version>2.0.0.RELEASE</spring-boot.version>
-    <spring-data-gemfire.version>2.0.5.RELEASE</spring-data-gemfire.version>
-    <spring-data-geode.version>2.0.5.RELEASE</spring-data-geode.version>
+    <spring-data-gemfire.version>2.0.6.RELEASE</spring-data-gemfire.version>
+    <spring-data-geode.version>2.0.6.RELEASE</spring-data-geode.version>
     <spring-data-jpa.version>2.0.5.RELEASE</spring-data-jpa.version>
     <spring-data-redis.version>2.0.5.RELEASE</spring-data-redis.version>
     <spring-shell.version>1.2.0.RELEASE</spring-shell.version>
