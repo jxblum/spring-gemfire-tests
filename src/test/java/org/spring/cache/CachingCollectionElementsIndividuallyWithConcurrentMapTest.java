@@ -21,6 +21,11 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
+import static java.lang.String.format;
+import static java.util.stream.IntStream.range;
+import static java.util.stream.StreamSupport.stream;
+import static org.springframework.util.Assert.isInstanceOf;
+import static org.springframework.util.Assert.isTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -253,42 +258,32 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
     public void put(final Object key, final Object value) {
 
       if (key instanceof Iterable) {
+            isInstanceOf(Iterable.class, value, format(
+                    "Value (%1$s) must be an instance of Iterable when caching multiple keys (%2$s)",
+                    ObjectUtils.nullSafeClassName(value), key));
 
-        Assert.isInstanceOf(Iterable.class, value, String.format(
-          "Value (%1$s) must be an instance of Iterable when caching multiple keys (%2$s)",
-            ObjectUtils.nullSafeClassName(value), key));
-
-        Iterable<?> keys = (Iterable<?>) key;
-        List<Object> values = toList((Iterable) value);
-
-        int sizeOfKeys = sizeOf(keys);
-        int sizeOfValues = values.size();
-
-        Assert.isTrue(sizeOfValues == sizeOfKeys, String.format(
-          "The number of values (%1$d) must match the number of keys (%2$d)",
-            sizeOfValues, sizeOfKeys));
-
-        int index = 0;
-
-        for (Object singleKey : keys) {
-          getCache().put(singleKey, values.get(index++));
+            pairsFromKeysAndValues(toList((Iterable<?>) key), toList((Iterable<?>) value))
+                    .forEach(pair -> getCache().put(pair.getKey(), pair.getValue()));
         }
-      }
-      else {
-        getCache().put(key, value);
-      }
+        else {
+            getCache().put(key, value);
+        }
     }
 
     @Override
     public ValueWrapper putIfAbsent(final Object key, final Object value) {
+        if (key instanceof Iterable) {
+            isInstanceOf(Iterable.class, value, format(
+                    "Value (%1$s) must be an instance of Iterable when caching multiple keys (%2$s)",
+                    ObjectUtils.nullSafeClassName(value), key));
 
-      if (key instanceof Iterable) {
-        throw new UnsupportedOperationException(String.format(
-          "Cache (%1$s) wrapping (%2$s) does not currently support putIfAbsent for multiple key/values",
-            ObjectUtils.nullSafeClassName(this), ObjectUtils.nullSafeClassName(getNativeCache())));
-      }
+            return () -> pairsFromKeysAndValues(toList((Iterable<?>) key), toList((Iterable<?>) value))
+                    .stream()
+                    .map(pair -> getCache().putIfAbsent(pair.getKey(), pair.getValue()))
+                    .collect(Collectors.toCollection(ArrayList::new));
+        }
 
-      return getCache().putIfAbsent(key, value);
+        return getCache().putIfAbsent(key, value);
     }
 
     @Override
@@ -307,6 +302,18 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
     @Override
     public void clear() {
       getCache().clear();
+    }
+
+    private <K, V> List<Pair<K, V>> pairsFromKeysAndValues(final List<K> keys, final List<V> values) {
+        final int keysSize = keys.size();
+        isTrue(keysSize == values.size(), format(
+                "The number of values (%1$d) must match the number of keys (%2$d)",
+                values.size(), keysSize));
+
+        return range(0, keysSize)
+                .mapToObj(index -> new Pair<>(keys.get(index), values.get(index)))
+                .collect(Collectors.toCollection(ArrayList::new));
+
     }
   }
 
