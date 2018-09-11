@@ -1,0 +1,10 @@
+== Spring Data for Pivotal GemFire Tests Project
+
+This project contains many https://github.com/jxblum/spring-gemfire-tests/tree/master/src/test/java/org[test classes]
+with individual test cases testing https://spring.io/projects/spring-data-gemfire[Spring Data for Pivotal GemFire]
+in different contexts and use cases, based on customer POCs/prototypes and/or plain vanilla problems.
+
+Take a look around and use the https://github.com/jxblum/spring-gemfire-tests/issues[Issues]
+or https://github.com/jxblum/spring-gemfire-tests/pulls[PR] feature to provide feedback.
+
+Thanks!
