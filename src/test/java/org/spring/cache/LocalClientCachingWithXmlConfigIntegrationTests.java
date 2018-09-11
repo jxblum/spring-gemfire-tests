@@ -18,10 +18,12 @@ package org.spring.cache;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.Resource;
 
 import org.apache.geode.cache.Region;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration
+@SuppressWarnings("unused")
 public class LocalClientCachingWithXmlConfigIntegrationTests {
 
   @Autowired
@@ -51,6 +54,11 @@ public class LocalClientCachingWithXmlConfigIntegrationTests {
 
   @Resource(name = "Customers")
   private Region<Long, Customer> customers;
+
+  @Before
+  public void setup() {
+    //this.customers.removeAll(this.customers.keySetOnServer());
+  }
 
   @Test
   public void cachingWorks() {
@@ -65,14 +73,16 @@ public class LocalClientCachingWithXmlConfigIntegrationTests {
     assertThat(jonDoe.getId()).isEqualTo(1L);
     assertThat(jonDoe.getName()).isEqualTo("Jon Doe");
     assertThat(this.customerService.isCacheMiss()).isTrue();
+    //assertThat(this.customers.sizeOnServer()).isEqualTo(1);
     assertThat(this.customers).hasSize(1);
 
     Customer jonDoeReloaded = this.customerService.load(jonDoe.getId());
 
-    assertThat(jonDoeReloaded).isSameAs(jonDoe);
+    assertThat(jonDoeReloaded).isEqualTo(jonDoe);
     assertThat(this.customerService.isCacheMiss()).isFalse();
-    assertThat(this.customers).hasSize(1);
+    //assertThat(this.customers.sizeOnServer()).isEqualTo(1);
     assertThat(this.customerService.evictAll()).isTrue();
+    //assertThat(this.customers.sizeOnServer()).isEqualTo(0);
     assertThat(this.customers).isEmpty();
 
     Customer jonDoeTwo = this.customerService.load(2L);
@@ -81,6 +91,7 @@ public class LocalClientCachingWithXmlConfigIntegrationTests {
     assertThat(jonDoeTwo.getId()).isEqualTo(2L);
     assertThat(jonDoeTwo.getName()).isEqualTo("Jon Doe");
     assertThat(this.customerService.isCacheMiss()).isTrue();
+    //assertThat(this.customers.sizeOnServer()).isEqualTo(1);
     assertThat(this.customers).hasSize(1);
 
     Customer jonDoeThree = this.customerService.load(3L);
@@ -89,14 +100,16 @@ public class LocalClientCachingWithXmlConfigIntegrationTests {
     assertThat(jonDoeThree.getId()).isEqualTo(3L);
     assertThat(jonDoeThree.getName()).isEqualTo("Jon Doe");
     assertThat(this.customerService.isCacheMiss()).isTrue();
+    //assertThat(this.customers.sizeOnServer()).isEqualTo(2);
     assertThat(this.customers).hasSize(2);
 
     Customer jonDoeTwoReloaded = this.customerService.load(2L);
 
-    assertThat(jonDoeTwoReloaded).isSameAs(jonDoeTwo);
+    assertThat(jonDoeTwoReloaded).isEqualTo(jonDoeTwo);
     assertThat(this.customerService.isCacheMiss()).isFalse();
-    assertThat(this.customers).hasSize(2);
+    //assertThat(this.customers.sizeOnServer()).isEqualTo(2);
     assertThat(this.customerService.evictAll()).isTrue();
+    //assertThat(this.customers.sizeOnServer()).isEqualTo(0);
     assertThat(this.customers).isEmpty();
   }
 
@@ -124,7 +137,7 @@ public class LocalClientCachingWithXmlConfigIntegrationTests {
 
   @Data
   @RequiredArgsConstructor(staticName = "newCustomer")
-  static class Customer {
+  static class Customer implements Serializable {
 
     @Id @NonNull
     private Long id;
