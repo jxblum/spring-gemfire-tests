@@ -16,24 +16,18 @@
 
 package org.spring.cache;
 
-import static java.util.stream.StreamSupport.stream;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
-import static java.lang.String.format;
-import static java.util.stream.IntStream.range;
-import static java.util.stream.StreamSupport.stream;
-import static org.springframework.util.Assert.isInstanceOf;
-import static org.springframework.util.Assert.isTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.StreamSupport;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -48,6 +42,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.util.Pair;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -64,6 +60,7 @@ import org.springframework.util.ObjectUtils;
  *   not present in the cache is considered a cache miss even if other keys are present)!
  *
  * @author John Blum
+ * @author Stefan Schrass
  * @see org.junit.Test
  * @see org.junit.runner.RunWith
  * @see org.springframework.cache.Cache
@@ -88,48 +85,42 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
   @Autowired
   private CalculatorService calculatorService;
 
-  protected void assertFactorials(List<Long> actualValues, long... expectedValues) {
+  private void assertFactorials(List<Long> actualValues, Long... expectedValues) {
 
-    assertThat(actualValues, is(notNullValue()));
-    assertThat(expectedValues, is(notNullValue()));
-    assertThat(actualValues.size(), is(equalTo(expectedValues.length)));
-
-    int index = 0;
-
-    for (long actualValue : actualValues) {
-      assertThat(actualValue, is(equalTo(expectedValues[index++])));
-    }
+    assertThat(actualValues).isNotNull();
+    assertThat(expectedValues).isNotNull();
+    assertThat(actualValues).containsExactly(expectedValues);
   }
 
   @Test
   public void cacheHitsAndMisses() {
 
-    assertThat(calculatorService.isCacheMiss(), is(false));
+    assertThat(this.calculatorService.isCacheMiss()).isFalse();
 
-    List<Long> results = calculatorService.factorials(Arrays.asList(1L, 2L, 3L, 4L, 5L));
+    List<Long> results = this.calculatorService.factorials(Arrays.asList(1L, 2L, 3L, 4L, 5L));
 
-    assertThat(calculatorService.isCacheMiss(), is(true));
-    assertFactorials(results, 1, 2, 6, 24, 120);
+    assertThat(this.calculatorService.isCacheMiss()).isTrue();
+    assertFactorials(results, 1L, 2L, 6L, 24L, 120L);
 
-    results = calculatorService.factorials(Arrays.asList(1L, 2L, 3L, 4L, 5L));
+    results = this.calculatorService.factorials(Arrays.asList(1L, 2L, 3L, 4L, 5L));
 
-    assertThat(calculatorService.isCacheMiss(), is(false));
-    assertFactorials(results, 1, 2, 6, 24, 120);
+    assertThat(this.calculatorService.isCacheMiss()).isFalse();
+    assertFactorials(results, 1L, 2L, 6L, 24L, 120L);
 
-    results = calculatorService.factorials(Arrays.asList(6L, 7L, 8L, 9L));
+    results = this.calculatorService.factorials(Arrays.asList(6L, 7L, 8L, 9L));
 
-    assertThat(calculatorService.isCacheMiss(), is(true));
-    assertFactorials(results, 720, 5040, 40320, 362880);
+    assertThat(this.calculatorService.isCacheMiss()).isTrue();
+    assertFactorials(results, 720L, 5040L, 40320L, 362880L);
   }
 
   @Test
   public void partialMissesAreConsideredACompleteCacheMiss() {
 
-    List<Long> results = calculatorService.factorials(Arrays.asList(2L, 4L, 8L, 16L));
+    List<Long> results = this.calculatorService.factorials(Arrays.asList(2L, 4L, 8L, 16L));
 
     // in fact, the 16! == null, because it is not in the cache!!!
-    assertThat(calculatorService.isCacheMiss(), is(true));
-    assertFactorials(results, 2, 24, 40320, 20922789888000L);
+    assertThat(this.calculatorService.isCacheMiss()).isTrue();
+    assertFactorials(results, 2L, 24L, 40320L, 20922789888000L);
   }
 
   @Configuration
@@ -138,8 +129,11 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
 
     @Bean
     public CacheManager cacheManager() {
+
       return new ConcurrentMapCacheManager() {
-        @Override protected Cache createConcurrentMapCache(final String name) {
+
+        @Override
+        protected Cache createConcurrentMapCache(String name) {
           return new ConcurrentMapCollectionHandlingDecoratedCache(super.createConcurrentMapCache(name));
         }
       };
@@ -162,13 +156,7 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
 
       ConcurrentMap nativeCache = (ConcurrentMap) getNativeCache();
 
-      boolean result = true;
-
-      for (Object key : keys) {
-        result &= nativeCache.containsKey(key);
-      }
-
-      return result;
+      return StreamSupport.stream(keys.spliterator(), false).allMatch(nativeCache::containsKey);
     }
   }
 
@@ -184,7 +172,7 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
     }
 
     protected Cache getCache() {
-      return cache;
+      return this.cache;
     }
 
     @Override
@@ -201,18 +189,19 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
 
     @SuppressWarnings("unused")
     protected int sizeOf(Iterable<?> iterable) {
-      return Long.valueOf(stream(iterable.spliterator(), false).count()).intValue();
+      return Long.valueOf(StreamSupport.stream(iterable.spliterator(), false).count()).intValue();
     }
 
     protected <T> List<T> toList(Iterable<T> iterable) {
-      return stream(iterable.spliterator(), false).collect(Collectors.toList());
+      return StreamSupport.stream(iterable.spliterator(), false).collect(Collectors.toList());
     }
 
     @Override
     @SuppressWarnings("all")
-    public ValueWrapper get(final Object key) {
+    public ValueWrapper get(Object key) {
 
       if (key instanceof Iterable) {
+
         Iterable<?> keys = (Iterable<?>) key;
 
         if (!areAllKeysPresentInCache(keys)) {
@@ -233,66 +222,67 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T get(final Object key, final Class<T> type) {
+    public <T> T get(Object key, Class<T> type) {
 
       if (key instanceof Iterable) {
 
-        Assert.isAssignable(Iterable.class, type, String.format(
-          "Expected return type (%1$s) must be Iterable when querying multiple keys (%2$s)",
+        Assert.isAssignable(Iterable.class, type,
+          String.format("Expected return type [%1$s] must be Iterable when querying multiple keys [%2$s]",
             type.getName(), key));
 
-        return (T) get(key).get();
+        return (T) Optional.ofNullable(get(key)).map(Cache.ValueWrapper::get).orElse(null);
       }
 
       return getCache().get(key, type);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("all")
     public <T> T get(Object key, Callable<T> valueLoader) {
       return (T) get(key, Object.class);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public void put(final Object key, final Object value) {
+    public void put(@NonNull Object key, Object value) {
 
       if (key instanceof Iterable) {
-            isInstanceOf(Iterable.class, value, format(
-                    "Value (%1$s) must be an instance of Iterable when caching multiple keys (%2$s)",
-                    ObjectUtils.nullSafeClassName(value), key));
 
-            pairsFromKeysAndValues(toList((Iterable<?>) key), toList((Iterable<?>) value))
-                    .forEach(pair -> getCache().put(pair.getKey(), pair.getValue()));
-        }
-        else {
-            getCache().put(key, value);
-        }
+        Assert.isInstanceOf(Iterable.class, value,
+          String.format("Value [%1$s] must be an instance of Iterable when caching multiple keys [%2$s]",
+            ObjectUtils.nullSafeClassName(value), key));
+
+        pairsFromKeysAndValues(toList((Iterable<?>) key), toList((Iterable<?>) value))
+          .forEach(pair -> getCache().put(pair.getFirst(), pair.getSecond()));
+      }
+      else {
+        getCache().put(key, value);
+      }
     }
 
     @Override
-    public ValueWrapper putIfAbsent(final Object key, final Object value) {
-        if (key instanceof Iterable) {
-            isInstanceOf(Iterable.class, value, format(
-                    "Value (%1$s) must be an instance of Iterable when caching multiple keys (%2$s)",
-                    ObjectUtils.nullSafeClassName(value), key));
+    public ValueWrapper putIfAbsent(Object key, Object value) {
 
-            return () -> pairsFromKeysAndValues(toList((Iterable<?>) key), toList((Iterable<?>) value))
-                    .stream()
-                    .map(pair -> getCache().putIfAbsent(pair.getKey(), pair.getValue()))
-                    .collect(Collectors.toCollection(ArrayList::new));
-        }
+      if (key instanceof Iterable) {
 
-        return getCache().putIfAbsent(key, value);
+        Assert.isInstanceOf(Iterable.class, value,
+          String.format("Value [%1$s] must be an instance of Iterable when caching multiple keys [%2$s]",
+            ObjectUtils.nullSafeClassName(value), key));
+
+        return () -> pairsFromKeysAndValues(toList((Iterable<?>) key), toList((Iterable<?>) value)).stream()
+          .map(pair -> getCache().putIfAbsent(pair.getFirst(), pair.getSecond()))
+          .collect(Collectors.toList());
+      }
+
+      return getCache().putIfAbsent(key, value);
     }
 
     @Override
-    public void evict(final Object key) {
+    @SuppressWarnings("unchecked")
+    public void evict(Object key) {
 
       if (key instanceof Iterable) {
-        for (Object singleKey : (Iterable) key) {
-          getCache().evict(singleKey);
-        }
+        StreamSupport.stream(((Iterable) key).spliterator(), false).forEach(getCache()::evict);
       }
       else {
         getCache().evict(key);
@@ -304,15 +294,17 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
       getCache().clear();
     }
 
-    private <K, V> List<Pair<K, V>> pairsFromKeysAndValues(final List<K> keys, final List<V> values) {
-        final int keysSize = keys.size();
-        isTrue(keysSize == values.size(), format(
-                "The number of values (%1$d) must match the number of keys (%2$d)",
-                values.size(), keysSize));
+    private <K, V> List<Pair<K, V>> pairsFromKeysAndValues(List<K> keys, List<V> values) {
 
-        return range(0, keysSize)
-                .mapToObj(index -> new Pair<>(keys.get(index), values.get(index)))
-                .collect(Collectors.toCollection(ArrayList::new));
+      final int keysSize = keys.size();
+
+      Assert.isTrue(keysSize == values.size(),
+        String.format("The number of values [%1$d] must match the number of keys [%2$d]",
+          values.size(), keysSize));
+
+      return IntStream.range(0, keysSize)
+        .mapToObj(index -> Pair.of(keys.get(index), values.get(index)))
+        .collect(Collectors.toList());
 
     }
   }
@@ -323,13 +315,16 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
     private boolean cacheMiss;
 
     public synchronized boolean isCacheMiss() {
-      boolean localCacheMiss = cacheMiss;
+
+      boolean cacheMiss = this.cacheMiss;
+
       setCacheMiss(false);
-      return localCacheMiss;
+
+      return cacheMiss;
     }
 
-    public synchronized void setCacheMiss(boolean value) {
-      cacheMiss = value;
+    public synchronized void setCacheMiss(boolean cacheMiss) {
+      this.cacheMiss = cacheMiss;
     }
 
     // WARNING this implementation is purely for example purposes;
@@ -337,12 +332,13 @@ public class CachingCollectionElementsIndividuallyWithConcurrentMapTest {
     @Cacheable("Factorials")
     public long factorial(long number) {
 
-      Assert.isTrue(number >= 0, String.format("Number [%d] must be greater than equal to 0", number));
+      Assert.isTrue(number >= 0,
+        String.format("Number [%d] must be greater than equal to 0", number));
 
       setCacheMiss(true);
 
       if (number <= 2L) {
-        return (number == 2L ? 2L : 1L);
+        return number == 2L ? 2L : 1L;
       }
 
       long result = number;
